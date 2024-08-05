@@ -1,4 +1,4 @@
-module capymind
+module github.com/capymind
 
 go 1.22
 

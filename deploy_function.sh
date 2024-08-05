@@ -4,14 +4,14 @@
 TEMP_DIR="deployment"
 mkdir -p $TEMP_DIR
 
-# Copy cloud/cloud.go to the temporary folder and rename it to function.go
-cp cloud/cloud.go $TEMP_DIR/function.go
+# Copy the function file to the temporary folder
+cp function.go $TEMP_DIR/function.go
+
+# copy telegram folder to the temporary folder
+cp -r telegram $TEMP_DIR/
 
 # Copy go.mod to the temporary folder
 cp go.mod $TEMP_DIR/
-
-# Replace "module capymind" with "github.com/capymind/cloud" in the go.mod file
-sed -i '' 's/module capymind/module github.com\/capymind\/cloud/' $TEMP_DIR/go.mod
 
 # Replace "Handler" with "handler" in the function.go file
 sed -i '' 's/Handler/handler/g' $TEMP_DIR/function.go
