@@ -18,10 +18,16 @@ type Update struct {
 type Message struct {
 	Text string `json:"text"`
 	Chat Chat   `json:"chat"`
+	From User   `json:"from"`
+	Date int    `json:"date"`
 }
 
 type Chat struct {
 	Id int `json:"id"`
+}
+
+type User struct {
+	ID int64 `json:"id"`
 }
 
 func Parse(r *http.Request) (*Update, error) {
