@@ -13,12 +13,15 @@ cp go.mod $TEMP_DIR/
 # Replace "module capymind" with "github.com/capymind/cloud" in the go.mod file
 sed -i '' 's/module capymind/module github.com\/capymind\/cloud/' $TEMP_DIR/go.mod
 
+# Replace "Handler" with "handler" in the function.go file
+sed -i '' 's/Handler/handler/g' $TEMP_DIR/function.go
+
 # SZip the contents of the temporary folder
 ZIP_FILE="deploy.zip"
 zip -r $TEMP_DIR/$ZIP_FILE $TEMP_DIR
 
 # Set the function name
-FUNCTION_NAME="Handler"
+FUNCTION_NAME="handler"
 # Set the entry point
 ENTRY_POINT="handler"
 # Set the runtime
@@ -27,6 +30,12 @@ RUNTIME="go122"
 PROJECT_ID=$CAPY_PROJECT_ID
 # Set the region
 REGION=$CAPY_SERVER_REGION
+# Set the telegram token
+TELEGRAM_TOKEN=$CAPY_TELEGRAM_BOT_TOKEN
+# Set environment variables
+ENV_VARS="TELEGRAM_BOT_TOKEN=$TELEGRAM_TOKEN"
+# Set memory parameter
+MEMORY="256MB"
 
 # Deploy the function
 gcloud functions deploy $FUNCTION_NAME \
@@ -37,7 +46,9 @@ gcloud functions deploy $FUNCTION_NAME \
     --project $PROJECT_ID \
     --gen2 \
     --region $REGION \
-    --source $TEMP_DIR
+    --source $TEMP_DIR \
+    --set-env-vars $ENV_VARS \
+    --memory $MEMORY
 
 # Print the deployment status
 if [ $? -eq 0 ]; then
