@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	functions.HTTP("Handler", Handler)
+	functions.HTTP("handler", Handler)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {

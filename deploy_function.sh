@@ -7,8 +7,11 @@ mkdir -p $TEMP_DIR
 # Copy cloud/cloud.go to the temporary folder and rename it to function.go
 cp cloud/cloud.go $TEMP_DIR/function.go
 
-# Step 4: Copy go.mod to the temporary folder
+# Copy go.mod to the temporary folder
 cp go.mod $TEMP_DIR/
+
+# Replace "module capymind" with "github.com/capymind/cloud" in the go.mod file
+sed -i '' 's/module capymind/module github.com\/capymind\/cloud/' $TEMP_DIR/go.mod
 
 # SZip the contents of the temporary folder
 ZIP_FILE="deploy.zip"
@@ -17,7 +20,7 @@ zip -r $TEMP_DIR/$ZIP_FILE $TEMP_DIR
 # Set the function name
 FUNCTION_NAME="Handler"
 # Set the entry point
-ENTRY_POINT="Handler"
+ENTRY_POINT="handler"
 # Set the runtime
 RUNTIME="go122"
 # Set the project ID
@@ -44,5 +47,4 @@ else
 fi
 
 # Clean up
-# rm -rf $TEMP_DIR
-# rm $ZIP_FILE
+rm -rf $TEMP_DIR
