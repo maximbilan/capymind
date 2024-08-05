@@ -26,3 +26,6 @@ go.work.sum
 
 # executable
 capymind
+
+# folder
+deployment/
