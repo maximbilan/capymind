@@ -30,6 +30,12 @@ type User struct {
 	ID int64 `json:"id"`
 }
 
+var baseURL string
+
+func init() {
+	baseURL = "https://api.telegram.org/bot" + os.Getenv("CAPY_TELEGRAM_BOT_TOKEN")
+}
+
 func Parse(r *http.Request) (*Update, error) {
 	var update Update
 	if err := json.NewDecoder(r.Body).Decode(&update); err != nil {
@@ -41,7 +47,7 @@ func Parse(r *http.Request) (*Update, error) {
 
 func SendMessage(chatId int, text string) (string, error) {
 	log.Printf("Sending %s to chat_id: %d", text, chatId)
-	var telegramApi string = "https://api.telegram.org/bot" + os.Getenv("CAPY_TELEGRAM_BOT_TOKEN") + "/sendMessage"
+	var telegramApi string = baseURL + "/sendMessage"
 	response, err := http.PostForm(
 		telegramApi,
 		url.Values{
