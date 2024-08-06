@@ -5,7 +5,13 @@ import (
 	"os"
 )
 
-var translations map[string]map[string]string
+type Locale string
+
+const (
+	EN Locale = "en"
+)
+
+var translations map[Locale]map[string]string
 
 func Load(filename string) error {
 	file, err := os.Open(filename)
@@ -22,6 +28,6 @@ func Load(filename string) error {
 	return nil
 }
 
-func Translate(lang, key string) string {
-	return translations[lang][key]
+func Localize(locale Locale, key string) string {
+	return translations[locale][key]
 }

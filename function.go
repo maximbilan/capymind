@@ -28,8 +28,6 @@ func init() {
 	if err != nil {
 		log.Fatalf("Failed to load translations: %v", err)
 	}
-
-	fmt.Println(localizer.Translate("en", "welcome"))
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -39,40 +37,45 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	text := update.Message.Text
-	command := Command(text)
 	message := update.Message
+	text := message.Text
+	command := Command(text)
+	locale := localizer.EN
 
 	switch command {
 	case Start:
-		handleStart(message)
+		handleStart(message, locale)
 	case Note:
-		handleNote(message)
+		handleNote(message, locale)
 	case Info:
-		handleInfo(message)
+		handleInfo(message, locale)
 	default:
-		handleUnknownState(message)
+		handleUnknownState(message, locale)
 	}
 	ctx := context.Background()
 	saveNote(ctx, update.Message)
 
-	var telegramResponseBody, errTelegram = telegram.SendMessage(update.Message.Chat.Id, "Now I can respond to you!")
-	if errTelegram != nil {
-		log.Printf("got error %s from telegram, reponse body is %s", errTelegram.Error(), telegramResponseBody)
+}
+
+func handleStart(message telegram.Message, locale localizer.Locale) {
+	sendMessage(message.Chat.Id, locale, "welcome")
+}
+
+func handleNote(message telegram.Message, locale localizer.Locale) {
+}
+
+func handleUnknownState(message telegram.Message, locale localizer.Locale) {
+}
+
+func handleInfo(message telegram.Message, locale localizer.Locale) {
+	sendMessage(message.Chat.Id, locale, "info")
+}
+
+func sendMessage(chatId int, locale localizer.Locale, text string) {
+	body, err := telegram.SendMessage(chatId, localizer.Localize(locale, text))
+	if err != nil {
+		log.Printf("Got error %s from telegram, reponse body is %s", err.Error(), body)
 	}
-}
-
-func handleStart(message telegram.Message) {
-}
-
-func handleNote(telegram.Message) {
-}
-
-func handleUnknownState(message telegram.Message) {
-}
-
-func handleInfo(message telegram.Message) {
-
 }
 
 func saveNote(ctx context.Context, message telegram.Message) {
