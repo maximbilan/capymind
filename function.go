@@ -11,6 +11,7 @@ import (
 	"github.com/capymind/firestore"
 	"github.com/capymind/localizer"
 	"github.com/capymind/telegram"
+	"github.com/capymind/utils"
 )
 
 type Command string
@@ -21,6 +22,8 @@ const (
 	Info  Command = "/info"
 )
 
+var userIds *utils.ThreadSafeArray[int64]
+
 func init() {
 	functions.HTTP("handler", Handler)
 
@@ -28,6 +31,8 @@ func init() {
 	if err != nil {
 		log.Fatalf("Failed to load translations: %v", err)
 	}
+
+	userIds = utils.NewThreadSafeArray[int64]()
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -54,9 +59,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	default:
 		handleUnknownState(message, locale)
 	}
-	ctx := context.Background()
-	saveNote(ctx, update.Message)
-
 }
 
 func handleStart(message telegram.Message, locale localizer.Locale) {
@@ -65,10 +67,21 @@ func handleStart(message telegram.Message, locale localizer.Locale) {
 
 func handleNote(message telegram.Message, locale localizer.Locale) {
 	sendMessage(message.Chat.Id, locale, "start_note")
+
+	userId := message.From.ID
+	userIds.Append(userId)
 }
 
 func handleUnknownState(message telegram.Message, locale localizer.Locale) {
-	// logic to handle unknown state
+	userId := message.From.ID
+	if userIds.Contains(userId) {
+		ctx := context.Background()
+		saveNote(ctx, message)
+		sendMessage(message.Chat.Id, locale, "finish_note")
+		userIds.Remove(userId)
+	} else {
+		handleStart(message, locale)
+	}
 }
 
 func handleInfo(message telegram.Message, locale localizer.Locale) {
