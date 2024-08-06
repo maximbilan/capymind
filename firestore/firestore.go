@@ -22,7 +22,7 @@ type User struct {
 
 func NewClient(ctx context.Context) (*firestore.Client, error) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
-	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile("credentials.json"))
+	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile("./credentials.json"))
 	if err != nil {
 		return nil, err
 	}
