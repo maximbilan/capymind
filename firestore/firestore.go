@@ -38,12 +38,21 @@ func credentialsPath() string {
 
 func NewClient(ctx context.Context) (*firestore.Client, error) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
-	path := credentialsPath()
-	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile(path))
-	if err != nil {
-		return nil, err
+
+	if os.Getenv("CLOUD") == "true" {
+		client, err := firestore.NewClient(ctx, projectID)
+		if err != nil {
+			return nil, err
+		}
+		return client, nil
+	} else {
+		path := credentialsPath()
+		client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile(path))
+		if err != nil {
+			return nil, err
+		}
+		return client, nil
 	}
-	return client, nil
 }
 
 func NewRecord(ctx context.Context, client *firestore.Client, user User, note Note) error {

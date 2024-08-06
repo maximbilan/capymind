@@ -27,12 +27,6 @@ var userIds *utils.ThreadSafeArray[int64]
 
 func init() {
 	functions.HTTP("handler", Handler)
-
-	err := localizer.Load(localizer.Path())
-	if err != nil {
-		log.Fatalf("Failed to load translations: %v", err)
-	}
-
 	userIds = utils.NewThreadSafeArray[int64]()
 }
 

@@ -2,7 +2,7 @@ package localizer
 
 import (
 	"encoding/json"
-	"os"
+	"log"
 )
 
 type Locale string
@@ -13,29 +13,21 @@ const (
 
 var translations map[Locale]map[string]string
 
-func Path() string {
-	var path = "localizer/translations.json"
-	if os.Getenv("DEBUG_MODE") == "true" {
-		path = "./../" + path
-	} else {
-		path = "./" + path
-	}
-	return path
-}
+const translationsJSON = `{
+    "en": {
+        "welcome": "Welcome to CapyMind! Your personal mental health journal is just a few taps away. Start making entries to reflect on your thoughts and emotions.",
+        "info": "CapyMind is here to assist you in maintaining a personal journal for your mental health. You can record your thoughts and feelings, track your emotional journey, and reflect on your progress over time. Use the commands to start making entries and take a step towards self-awareness and mental well-being.",
+        "start_note" : "Please input your thoughts and feelings in the text field and send them to me. Your personal reflections will be safely stored in your journal.",
+        "finish_note" : "Your thoughts have been successfully stored. Thank you for sharing with CapyMind. Remember, every note is a step towards better mental well-being.",
+        "your_last_note": "Here is your last note: ",
+        "no_notes": "You have not made any entries yet. Start by sharing your thoughts and feelings with CapyMind."
+    }
+}`
 
-func Load(filename string) error {
-	file, err := os.Open(filename)
-	if err != nil {
-		return err
+func init() {
+	if err := json.Unmarshal([]byte(translationsJSON), &translations); err != nil {
+		log.Fatalf("Failed to parse JSON: %v", err)
 	}
-	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&translations)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func Localize(locale Locale, key string) string {

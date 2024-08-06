@@ -16,9 +16,6 @@ cp -r utils $TEMP_DIR/
 # Copy go.mod to the temporary folder
 cp go.mod $TEMP_DIR/
 
-# Copy credentials.json to the temporary folder
-cp credentials.json $TEMP_DIR/
-
 # Replace "Handler" with "handler" in the function.go file
 sed -i '' 's/Handler/handler/g' $TEMP_DIR/function.go
 
@@ -38,7 +35,7 @@ PROJECT_ID=$CAPY_PROJECT_ID
 REGION=$CAPY_SERVER_REGION
 
 # Set environment variables
-PARAMS=("CAPY_TELEGRAM_BOT_TOKEN=$CAPY_TELEGRAM_BOT_TOKEN" "CAPY_PROJECT_ID=$CAPY_PROJECT_ID")
+PARAMS=("CAPY_TELEGRAM_BOT_TOKEN=$CAPY_TELEGRAM_BOT_TOKEN" "CAPY_PROJECT_ID=$CAPY_PROJECT_ID" "CLOUD=true")
 ENV_VARS=""
 for PARAM in "${PARAMS[@]}"; do
   ENV_VARS+="$PARAM,"
