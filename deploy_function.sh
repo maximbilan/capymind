@@ -7,11 +7,17 @@ mkdir -p $TEMP_DIR
 # Copy the function file to the temporary folder
 cp function.go $TEMP_DIR/function.go
 
-# copy telegram folder to the temporary folder
+# copy needed folders to the temporary folder
+cp -r firestore $TEMP_DIR/
+cp -r localizer $TEMP_DIR/
 cp -r telegram $TEMP_DIR/
+cp -r utils $TEMP_DIR/
 
 # Copy go.mod to the temporary folder
 cp go.mod $TEMP_DIR/
+
+# Copy credentials.json to the temporary folder
+cp credentials.json $TEMP_DIR/
 
 # Replace "Handler" with "handler" in the function.go file
 sed -i '' 's/Handler/handler/g' $TEMP_DIR/function.go
