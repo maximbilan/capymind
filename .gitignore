@@ -26,9 +26,11 @@ go.work.sum
 
 # executable
 capymind
+__debug_*
 
 # folder
 deployment/
 
 # credentials
 credentials.json
+

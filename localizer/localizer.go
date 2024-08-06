@@ -13,6 +13,16 @@ const (
 
 var translations map[Locale]map[string]string
 
+func Path() string {
+	var path = "localizer/translations.json"
+	if os.Getenv("DEBUG_MODE") == "true" {
+		path = "./../" + path
+	} else {
+		path = "./" + path
+	}
+	return path
+}
+
 func Load(filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
