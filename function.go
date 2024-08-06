@@ -16,9 +16,9 @@ import (
 type Command string
 
 const (
-	Start Command = "start"
-	Note  Command = "note"
-	Info  Command = "info"
+	Start Command = "/start"
+	Note  Command = "/note"
+	Info  Command = "/info"
 )
 
 func init() {
@@ -42,6 +42,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	command := Command(text)
 	locale := localizer.EN
 
+	fmt.Printf("Received message text: %v\n", text)
+
 	switch command {
 	case Start:
 		handleStart(message, locale)
@@ -62,9 +64,11 @@ func handleStart(message telegram.Message, locale localizer.Locale) {
 }
 
 func handleNote(message telegram.Message, locale localizer.Locale) {
+	sendMessage(message.Chat.Id, locale, "start_note")
 }
 
 func handleUnknownState(message telegram.Message, locale localizer.Locale) {
+	// logic to handle unknown state
 }
 
 func handleInfo(message telegram.Message, locale localizer.Locale) {
