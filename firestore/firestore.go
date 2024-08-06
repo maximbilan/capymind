@@ -28,8 +28,8 @@ func NewClient(ctx context.Context) (*firestore.Client, error) {
 	return client, nil
 }
 
-func SaveNote(ctx context.Context, client *firestore.Client, note Note) error {
-	userRef := client.Collection("users").Doc(note.ID)
+func SaveNote(ctx context.Context, client *firestore.Client, userId string, note Note) error {
+	userRef := client.Collection("users").Doc(userId)
 	_, _, err := client.Collection("notes").Add(ctx, map[string]interface{}{
 		"id":        note.ID,
 		"text":      note.Text,
