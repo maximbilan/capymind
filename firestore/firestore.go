@@ -17,8 +17,14 @@ type Note struct {
 }
 
 type User struct {
-	ID string `firestore:"id"`
+	ID   string `firestore:"id"`
+	Name string `firestore:"name"`
 }
+
+const (
+	users string = "users"
+	notes string = "notes"
+)
 
 func NewClient(ctx context.Context) (*firestore.Client, error) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
@@ -29,10 +35,28 @@ func NewClient(ctx context.Context) (*firestore.Client, error) {
 	return client, nil
 }
 
-func SaveNote(ctx context.Context, client *firestore.Client, userId string, note Note) error {
-	userRef := client.Collection("users").Doc(userId)
-	_, _, err := client.Collection("notes").Add(ctx, map[string]interface{}{
-		"id":        note.ID,
+func NewRecord(ctx context.Context, client *firestore.Client, user User, note Note) error {
+	err := newUser(ctx, client, user)
+	if err != nil {
+		return err
+	}
+	err = newNote(ctx, client, user, note)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func newUser(ctx context.Context, client *firestore.Client, user User) error {
+	_, err := client.Collection(users).Doc(user.ID).Set(ctx, map[string]interface{}{
+		"name": user.Name,
+	})
+	return err
+}
+
+func newNote(ctx context.Context, client *firestore.Client, user User, note Note) error {
+	userRef := client.Collection(users).Doc(user.ID)
+	_, _, err := client.Collection(notes).Add(ctx, map[string]interface{}{
 		"text":      note.Text,
 		"timestamp": note.Timestamp,
 		"user":      userRef,
