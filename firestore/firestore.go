@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -62,4 +63,21 @@ func newNote(ctx context.Context, client *firestore.Client, user User, note Note
 		"user":      userRef,
 	})
 	return err
+}
+
+func LastNote(ctx context.Context, client *firestore.Client, user User) (*Note, error) {
+	iter := client.Collection(notes).Where("user", "==", client.Collection(users).Doc(user.ID)).OrderBy("timestamp", firestore.Desc).Limit(1).Documents(ctx)
+	defer iter.Stop()
+	var note Note
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		doc.DataTo(&note)
+	}
+	return &note, nil
 }

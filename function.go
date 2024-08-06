@@ -19,6 +19,7 @@ type Command string
 const (
 	Start Command = "/start"
 	Note  Command = "/note"
+	Last  Command = "/last"
 	Info  Command = "/info"
 )
 
@@ -54,6 +55,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		handleStart(message, locale)
 	case Note:
 		handleNote(message, locale)
+	case Last:
+		handleLast(message, locale)
 	case Info:
 		handleInfo(message, locale)
 	default:
@@ -70,6 +73,17 @@ func handleNote(message telegram.Message, locale localizer.Locale) {
 
 	userId := message.From.ID
 	userIds.Append(userId)
+}
+
+func handleLast(message telegram.Message, locale localizer.Locale) {
+	ctx := context.Background()
+	note := getLastNote(ctx, message)
+	if note != nil {
+		var response string = localizer.Localize(locale, "your_last_note") + note.Text
+		sendMessage(message.Chat.Id, locale, response)
+	} else {
+		sendMessage(message.Chat.Id, locale, "no_notes")
+	}
 }
 
 func handleUnknownState(message telegram.Message, locale localizer.Locale) {
@@ -120,4 +134,23 @@ func saveNote(ctx context.Context, message telegram.Message) {
 	if err != nil {
 		log.Printf("Error saving note to firestore, %s", err.Error())
 	}
+}
+
+func getLastNote(ctx context.Context, message telegram.Message) *firestore.Note {
+	var client, err = firestore.NewClient(ctx)
+	if err != nil {
+		log.Printf("Error creating firestore client, %s", err.Error())
+	}
+	defer client.Close()
+
+	var user = firestore.User{
+		ID:   fmt.Sprintf("%d", message.Chat.Id),
+		Name: message.From.Username,
+	}
+
+	note, err := firestore.LastNote(ctx, client, user)
+	if err != nil {
+		log.Printf("Error getting last note from firestore, %s", err.Error())
+	}
+	return note
 }
