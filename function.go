@@ -80,7 +80,7 @@ func handleLast(message telegram.Message, locale localizer.Locale) {
 	note := getLastNote(ctx, message)
 	if note != nil {
 		var response string = localizer.Localize(locale, "your_last_note") + note.Text
-		sendMessage(message.Chat.Id, locale, response)
+		sendLocalizedMessage(message.Chat.Id, locale, response)
 	} else {
 		sendMessage(message.Chat.Id, locale, "no_notes")
 	}
@@ -103,7 +103,12 @@ func handleInfo(message telegram.Message, locale localizer.Locale) {
 }
 
 func sendMessage(chatId int, locale localizer.Locale, text string) {
-	body, err := telegram.SendMessage(chatId, localizer.Localize(locale, text))
+	localizedMessage := localizer.Localize(locale, text)
+	sendLocalizedMessage(chatId, locale, localizedMessage)
+}
+
+func sendLocalizedMessage(chatId int, locale localizer.Locale, text string) {
+	body, err := telegram.SendMessage(chatId, text)
 	if err != nil {
 		log.Printf("Got error %s from telegram, reponse body is %s", err.Error(), body)
 	}
