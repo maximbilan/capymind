@@ -12,6 +12,14 @@ import (
 	"github.com/capymind/telegram"
 )
 
+type Command string
+
+const (
+	Start Command = "start"
+	Note  Command = "note"
+	Info  Command = "info"
+)
+
 func init() {
 	functions.HTTP("handler", Handler)
 }
@@ -19,12 +27,24 @@ func init() {
 func Handler(w http.ResponseWriter, r *http.Request) {
 	var update, err = telegram.Parse(r)
 	if err != nil {
-		log.Printf("error parsing update, %s", err.Error())
+		log.Printf("Error parsing update, %s", err.Error())
 		return
 	}
 
-	fmt.Println("Server received message: ", update.Message.Text)
+	text := update.Message.Text
+	command := Command(text)
+	message := update.Message
 
+	switch command {
+	case Start:
+		handleStart(message)
+	case Note:
+		handleNote(message)
+	case Info:
+		handleInfo(message)
+	default:
+		handleUnknownState(message)
+	}
 	ctx := context.Background()
 	saveNote(ctx, update.Message)
 
@@ -32,6 +52,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if errTelegram != nil {
 		log.Printf("got error %s from telegram, reponse body is %s", errTelegram.Error(), telegramResponseBody)
 	}
+}
+
+func handleStart(message telegram.Message) {
+}
+
+func handleNote(telegram.Message) {
+}
+
+func handleUnknownState(message telegram.Message) {
+}
+
+func handleInfo(message telegram.Message) {
+
 }
 
 func saveNote(ctx context.Context, message telegram.Message) {
