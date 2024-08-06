@@ -65,8 +65,9 @@ func newNote(ctx context.Context, client *firestore.Client, user User, note Note
 	return err
 }
 
-func LastNote(ctx context.Context, client *firestore.Client, user User) (*Note, error) {
-	iter := client.Collection(notes).Where("user", "==", client.Collection(users).Doc(user.ID)).OrderBy("timestamp", firestore.Desc).Limit(1).Documents(ctx)
+func LastNote(ctx context.Context, client *firestore.Client, userId string) (*Note, error) {
+	userRef := client.Collection(users).Doc(userId)
+	iter := client.Collection(notes).Where("user", "==", userRef).OrderBy("timestamp", firestore.Desc).Limit(1).Documents(ctx)
 	defer iter.Stop()
 	var note Note
 	for {

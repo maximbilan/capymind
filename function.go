@@ -143,12 +143,8 @@ func getLastNote(ctx context.Context, message telegram.Message) *firestore.Note 
 	}
 	defer client.Close()
 
-	var user = firestore.User{
-		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: message.From.Username,
-	}
-
-	note, err := firestore.LastNote(ctx, client, user)
+	var userId = fmt.Sprintf("%d", message.From.ID)
+	note, err := firestore.LastNote(ctx, client, userId)
 	if err != nil {
 		log.Printf("Error getting last note from firestore, %s", err.Error())
 	}
