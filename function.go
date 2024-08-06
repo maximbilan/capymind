@@ -9,6 +9,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/capymind/firestore"
+	"github.com/capymind/localizer"
 	"github.com/capymind/telegram"
 )
 
@@ -22,6 +23,13 @@ const (
 
 func init() {
 	functions.HTTP("handler", Handler)
+
+	err := localizer.Load("./localizer/translations.json")
+	if err != nil {
+		log.Fatalf("Failed to load translations: %v", err)
+	}
+
+	fmt.Println(localizer.Translate("en", "welcome"))
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {

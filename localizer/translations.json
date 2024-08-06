@@ -1,0 +1,8 @@
+{
+    "en": {
+        "welcome": "Welcome to CapyMind! Your personal mental health journal is just a few taps away. Start making entries to reflect on your thoughts and emotions.",
+        "info": "CapyMind is here to assist you in maintaining a personal journal for your mental health. You can record your thoughts and feelings, track your emotional journey, and reflect on your progress over time. Use the commands to start making entries and take a step towards self-awareness and mental well-being.",
+        "start_note" : "Please input your thoughts and feelings in the text field and send them to me. Your personal reflections will be safely stored in your journal.",
+        "finish_note" : "Your thoughts have been successfully stored. Thank you for sharing with CapyMind. Remember, every note is a step towards better mental well-being."
+    }
+}
