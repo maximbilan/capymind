@@ -2,9 +2,11 @@ package firestore
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"cloud.google.com/go/firestore"
+	"google.golang.org/api/option"
 )
 
 type Note struct {
@@ -19,9 +21,8 @@ type User struct {
 }
 
 func NewClient(ctx context.Context) (*firestore.Client, error) {
-	projectID := "YOUR_PROJECT_ID"
-
-	client, err := firestore.NewClient(ctx, projectID)
+	projectID := os.Getenv("CAPY_PROJECT_ID")
+	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile("credentials.json"))
 	if err != nil {
 		return nil, err
 	}
