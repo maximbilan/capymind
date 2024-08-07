@@ -21,6 +21,7 @@ const (
 	Note  Command = "/note"
 	Last  Command = "/last"
 	Info  Command = "/info"
+	Help  Command = "/help"
 )
 
 var userIds *utils.ThreadSafeArray[int64]
@@ -53,6 +54,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		handleLast(message, locale)
 	case Info:
 		handleInfo(message, locale)
+	case Help:
+		handleHelp(message, locale)
 	default:
 		handleUnknownState(message, locale)
 	}
@@ -88,12 +91,16 @@ func handleUnknownState(message telegram.Message, locale localizer.Locale) {
 		sendMessage(message.Chat.Id, locale, "finish_note")
 		userIds.Remove(userId)
 	} else {
-		handleStart(message, locale)
+		handleHelp(message, locale)
 	}
 }
 
 func handleInfo(message telegram.Message, locale localizer.Locale) {
 	sendMessage(message.Chat.Id, locale, "info")
+}
+
+func handleHelp(message telegram.Message, locale localizer.Locale) {
+	sendMessage(message.Chat.Id, locale, "commands_hint")
 }
 
 func sendMessage(chatId int, locale localizer.Locale, text string) {

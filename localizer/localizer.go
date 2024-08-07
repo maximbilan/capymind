@@ -20,7 +20,8 @@ const translationsJSON = `{
         "start_note" : "Please input your thoughts and feelings in the text field and send them to me. Your personal reflections will be safely stored in your journal.",
         "finish_note" : "Your thoughts have been successfully stored. Thank you for sharing with CapyMind. Remember, every note is a step towards better mental well-being.",
         "your_last_note": "Here is your last note: ",
-        "no_notes": "You have not made any entries yet. Start by sharing your thoughts and feelings with CapyMind."
+        "no_notes": "You have not made any entries yet. Start by sharing your thoughts and feelings with CapyMind.",
+        "commands_hint": "You can use the following commands to interact with CapyMind:\n/start - Start the bot/note - Make a journal entry\n/last - View your last entry\n/info - Learn more about CapyMind/help - Get help with using CapyMind\n"
     }
 }`
 
