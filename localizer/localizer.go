@@ -21,7 +21,7 @@ const translationsJSON = `{
         "finish_note" : "Your thoughts have been successfully stored. Thank you for sharing with CapyMind. Remember, every note is a step towards better mental well-being.",
         "your_last_note": "Here is your last note: ",
         "no_notes": "You have not made any entries yet. Start by sharing your thoughts and feelings with CapyMind.",
-        "commands_hint": "You can use the following commands to interact with CapyMind:\n/start - Start the bot/note - Make a journal entry\n/last - View your last entry\n/info - Learn more about CapyMind/help - Get help with using CapyMind\n"
+        "commands_hint": "You can use the following commands to interact with CapyMind:\n/start - Start the bot\n/note - Make a journal entry\n/last - View your last entry\n/info - Learn more about CapyMind\n/help - Get help with using CapyMind\n"
     }
 }`
 
