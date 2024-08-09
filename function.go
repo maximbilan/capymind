@@ -45,6 +45,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("Received message text: %v\n", text)
 
+	handleUser(message, locale)
+
 	switch command {
 	case Start:
 		handleStart(message, locale)
@@ -59,6 +61,14 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	default:
 		handleUnknownState(message, locale)
 	}
+}
+
+func handleUser(message telegram.Message, locale localizer.Locale) {
+	if message.Text == "" {
+		return
+	}
+	ctx := context.Background()
+	createOrUpdateUser(ctx, message)
 }
 
 func handleStart(message telegram.Message, locale localizer.Locale) {
@@ -155,4 +165,22 @@ func getLastNote(ctx context.Context, message telegram.Message) *firestore.Note 
 		log.Printf("Error getting last note from firestore, %s", err.Error())
 	}
 	return note
+}
+
+func createOrUpdateUser(ctx context.Context, message telegram.Message) {
+	var client, err = firestore.NewClient(ctx)
+	if err != nil {
+		log.Printf("Error creating firestore client, %s", err.Error())
+	}
+	defer client.Close()
+
+	var user = firestore.User{
+		ID:   fmt.Sprintf("%d", message.Chat.Id),
+		Name: message.From.Username,
+	}
+
+	err = firestore.NewUser(ctx, client, user)
+	if err != nil {
+		log.Printf("Error creating user in firestore, %s", err.Error())
+	}
 }

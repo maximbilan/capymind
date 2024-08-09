@@ -56,7 +56,7 @@ func NewClient(ctx context.Context) (*firestore.Client, error) {
 }
 
 func NewRecord(ctx context.Context, client *firestore.Client, user User, note Note) error {
-	err := newUser(ctx, client, user)
+	err := NewUser(ctx, client, user)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func NewRecord(ctx context.Context, client *firestore.Client, user User, note No
 	return nil
 }
 
-func newUser(ctx context.Context, client *firestore.Client, user User) error {
+func NewUser(ctx context.Context, client *firestore.Client, user User) error {
 	_, err := client.Collection(users).Doc(user.ID).Set(ctx, map[string]interface{}{
 		"name": user.Name,
 	})
