@@ -19,9 +19,9 @@ jobs:
 
     - uses: 'google-github-actions/auth@v2.1.4'
       env:
-        PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
-        WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
-        SERVICE_ACCOUNT: ${{ secrets.CAPY_SERVICE_ACCOUNT }}
+        PROJECT_ID: '${{ secrets.CAPY_PROJECT_ID }}'
+        WORKLOAD_IDENTITY_PROVIDER: '${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}'
+        SERVICE_ACCOUNT: '${{ secrets.CAPY_SERVICE_ACCOUNT }}'
       with:
         project_id: 'PROJECT_ID'
         workload_identity_provider: 'WORKLOAD_IDENTITY_PROVIDER'
