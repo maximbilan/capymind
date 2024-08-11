@@ -40,7 +40,7 @@ gcloud iam service-accounts add-iam-policy-binding $SERVICE_ACCOUNT \
 
 MEMBER_NAME="serviceAccount:$SERVICE_ACCOUNT"
 
-gcloud functions add-invoker-policy-binding handler \
-    --project=$PROJECT_ID \
+gcloud run services add-iam-policy-binding handler \
     --region=$REGION \
-    --member=$MEMBER_NAME
+    --member=$MEMBER_NAME \
+    --role='roles/run.invoker'
