@@ -29,15 +29,13 @@ jobs:
       with:
         version: '>= 487.0.0'
 
-    - name: Set up environment variables
-      run: |
-        echo "CAPY_TELEGRAM_BOT_TOKEN=$(echo CAPY_TELEGRAM_BOT_TOKEN)" >> $GITHUB_ENV
-        echo "CAPY_CLOUD_FUNCTION_URL=$(echo CAPY_CLOUD_FUNCTION_URL)" >> $GITHUB_ENV
-        echo "CAPY_PROJECT_ID=$(echo CAPY_PROJECT_ID)" >> $GITHUB_ENV
-        echo "CAPY_SERVER_REGION=$(echo CAPY_SERVER_REGION)" >> $GITHUB_ENV
-
     - name: Run script file
       run: |
          chmod +x ./scripts/deploy_function.sh
          ./scripts/deploy_function.sh
+      env:
+        CAPY_TELEGRAM_BOT_TOKEN: ${{ vars.CAPY_TELEGRAM_BOT_TOKEN }}
+        CAPY_CLOUD_FUNCTION_URL: ${{ vars.CAPY_CLOUD_FUNCTION_URL }}
+        CAPY_PROJECT_ID: ${{ vars.CAPY_PROJECT_ID }}
+        CAPY_SERVER_REGION: ${{ vars.CAPY_SERVER_REGION }}
       shell: bash
