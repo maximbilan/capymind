@@ -28,8 +28,8 @@ jobs:
     - uses: 'google-github-actions/auth@v2.1.4'
       with:
         project_id: ${{ env.CAPY_PROJECT_ID }}
-        workload_identity_provider: ${{ env.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ env.CAPY_SERVICE_ACCOUNT }}
+        workload_identity_provider: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.CAPY_SERVICE_ACCOUNT }}
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
