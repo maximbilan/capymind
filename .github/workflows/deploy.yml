@@ -15,19 +15,12 @@ jobs:
       id-token: 'write'
 
     steps:
-    - name: Set up environment variables
-      run: |
-        echo "CAPY_TELEGRAM_BOT_TOKEN=$(echo CAPY_TELEGRAM_BOT_TOKEN)" >> $GITHUB_ENV
-        echo "CAPY_CLOUD_FUNCTION_URL=$(echo CAPY_CLOUD_FUNCTION_URL)" >> $GITHUB_ENV
-        echo "CAPY_PROJECT_ID=$(echo CAPY_PROJECT_ID)" >> $GITHUB_ENV
-        echo "CAPY_SERVER_REGION=$(echo CAPY_SERVER_REGION)" >> $GITHUB_ENV
-
     - name: Checkout repository
       uses: actions/checkout@v4
 
     - uses: 'google-github-actions/auth@v2.1.4'
       with:
-        project_id: ${{ env.CAPY_PROJECT_ID }}
+        project_id: ${{ secrets.CAPY_PROJECT_ID }}
         workload_identity_provider: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.CAPY_SERVICE_ACCOUNT }}
 
@@ -35,6 +28,13 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v2'
       with:
         version: '>= 487.0.0'
+
+    - name: Set up environment variables
+      run: |
+        echo "CAPY_TELEGRAM_BOT_TOKEN=$(echo CAPY_TELEGRAM_BOT_TOKEN)" >> $GITHUB_ENV
+        echo "CAPY_CLOUD_FUNCTION_URL=$(echo CAPY_CLOUD_FUNCTION_URL)" >> $GITHUB_ENV
+        echo "CAPY_PROJECT_ID=$(echo CAPY_PROJECT_ID)" >> $GITHUB_ENV
+        echo "CAPY_SERVER_REGION=$(echo CAPY_SERVER_REGION)" >> $GITHUB_ENV
 
     - name: Run script file
       run: |
