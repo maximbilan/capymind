@@ -1,0 +1,33 @@
+name: Deploy Function
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  setup-telegram-bot:
+    name: Deploy Google Cloud Function
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+      with:
+        version: '>= 487.0.0'
+
+    - name: Set up environment variables
+      run: |
+        echo "CAPY_TELEGRAM_BOT_TOKEN=$(echo CAPY_TELEGRAM_BOT_TOKEN)" >> $GITHUB_ENV
+        echo "CAPY_CLOUD_FUNCTION_URL=$(echo CAPY_CLOUD_FUNCTION_URL)" >> $GITHUB_ENV
+        echo "CAPY_PROJECT_ID=$(echo CAPY_PROJECT_ID)" >> $GITHUB_ENV
+        echo "CAPY_SERVER_REGION=$(echo CAPY_SERVER_REGION)" >> $GITHUB_ENV
+
+    - name: Run script file
+      run: |
+         chmod +x ./scripts/deploy_function.sh
+         ./scripts/deploy_function.sh
+      shell: bash
