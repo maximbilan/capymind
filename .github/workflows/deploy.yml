@@ -13,6 +13,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
 
+    steps:
     - name: Set up environment variables
       run: |
         echo "CAPY_TELEGRAM_BOT_TOKEN=$(echo CAPY_TELEGRAM_BOT_TOKEN)" >> $GITHUB_ENV
@@ -22,7 +23,6 @@ jobs:
         echo "WORKLOAD_IDENTITY_PROVIDER=$(echo CAPY_WORKLOAD_IDENTITY_PROVIDER)" >> $GITHUB_ENV
         echo "SERVICE_ACCOUNT=$(echo CAPY_SERVICE_ACCOUNT)" >> $GITHUB_ENV
 
-    steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
