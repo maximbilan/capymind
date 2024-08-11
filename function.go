@@ -9,9 +9,9 @@ import (
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/capymind/internal/firestore"
+	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
-	"github.com/capymind/telegram"
-	"github.com/capymind/utils"
+	"github.com/capymind/internal/utils"
 )
 
 type Command string
