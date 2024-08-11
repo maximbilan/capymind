@@ -1,17 +1,18 @@
-name: Deploy function
+name: Setup Telegram Bot
 
-on:
+ on:
   workflow_dispatch:
 
-jobs:
-  deploy-function:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+ jobs:
+   setup-telegram-bot:
+     runs-on: ubuntu-latest
+
+     steps:
+     - name: Checkout repository
+       uses: actions/checkout@v4
 
     - name: 'Setup Telegram Bot'
       uses: './scripts/setup_telegram_bot.sh'
       env:
         CAPY_TELEGRAM_BOT_TOKEN: ${{ secrets.CAPY_TELEGRAM_BOT_TOKEN }}
-        CAPY_CLOUD_FUNCTION_URL: ${{ env.CAPY_CLOUD_FUNCTION_URL }}  
+        CAPY_CLOUD_FUNCTION_URL: ${{ env.CAPY_CLOUD_FUNCTION_URL }}
