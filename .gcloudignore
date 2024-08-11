@@ -15,3 +15,14 @@
 
 node_modules
 #!include:.gitignore
+
+.github/
+.vscode/
+assets/
+cmd/
+scripts/
+
+capymind
+credentials.json
+go.sum
+README.md

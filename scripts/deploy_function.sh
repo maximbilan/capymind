@@ -1,9 +1,5 @@
 #!/bin/bash
 
-ZIP_FILE="deploy.zip"
-FILES_AND_FOLDERS="function.go go.mod internal/"
-zip -r $ZIP_FILE $FILES_AND_FOLDERS
-
 # Set the function name
 FUNCTION_NAME="handler"
 # Set the entry point
@@ -44,6 +40,3 @@ if [ $? -eq 0 ]; then
 else
     echo "Failed to deploy function $FUNCTION_NAME."
 fi
-
-# Clean up
-rm $ZIP_FILE
