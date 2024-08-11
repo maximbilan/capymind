@@ -29,8 +29,6 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("Received message text: %v\n", text)
 
-	handleUser(message, locale)
-
 	switch command {
 	case Start:
 		handleStart(message, locale)
@@ -57,6 +55,7 @@ func handleUser(message telegram.Message, locale translator.Locale) {
 
 func handleStart(message telegram.Message, locale translator.Locale) {
 	sendMessage(message.Chat.Id, locale, "welcome")
+	handleUser(message, locale)
 }
 
 func handleNote(message telegram.Message, locale translator.Locale) {
