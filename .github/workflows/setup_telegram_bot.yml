@@ -9,13 +9,15 @@ jobs:
   setup-telegram-bot:
     name: Setup Telegram Bot
     runs-on: ubuntu-latest
+
+    CAPY_TELEGRAM_BOT_TOKEN: ${{ secrets.CAPY_TELEGRAM_BOT_TOKEN }}
+    CAPY_CLOUD_FUNCTION_URL: ${{ env.CAPY_CLOUD_FUNCTION_URL }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
     - name: Run script file
-      env:
-        CAPY_TELEGRAM_BOT_TOKEN: ${{ secrets.CAPY_TELEGRAM_BOT_TOKEN }}
-        CAPY_CLOUD_FUNCTION_URL: ${{ env.CAPY_CLOUD_FUNCTION_URL }}
       run: |
          chmod +x ./scripts/setup_telegram_bot.sh
          ./scripts/setup_telegram_bot.sh
