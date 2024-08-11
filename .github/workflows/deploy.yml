@@ -7,12 +7,11 @@ on:
 
 jobs:
   setup-telegram-bot:
+    name: Deploy Google Cloud Function
+    runs-on: ubuntu-latest
     permissions:
       contents: 'read'
       id-token: 'write'
-    name: Deploy Google Cloud Function
-    
-    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
