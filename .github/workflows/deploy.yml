@@ -16,8 +16,8 @@ jobs:
 
     - uses: 'google-github-actions/auth@v2'
       with:
-        project_id: ${{ secrets.CAPY_PROJECT_ID }}
-        workload_identity_provider: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
+        project_id: '${{ secrets.CAPY_PROJECT_ID }}'
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
