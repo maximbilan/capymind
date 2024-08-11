@@ -1,15 +1,15 @@
 name: Setup Telegram Bot
 
- on:
+on:
   workflow_dispatch:
 
- jobs:
-   setup-telegram-bot:
-     runs-on: ubuntu-latest
+jobs:
+  setup-telegram-bot:
+    runs-on: ubuntu-latest
 
-     steps:
-     - name: Checkout repository
-       uses: actions/checkout@v4
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: 'Setup Telegram Bot'
       uses: './scripts/setup_telegram_bot.sh'
