@@ -17,7 +17,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - uses: 'google-github-actions/auth@v2'
+    - uses: 'google-github-actions/auth@v2.1.4'
       env:
         PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
         WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
