@@ -1,27 +1,8 @@
 #!/bin/bash
 
-# Create a temporary folder
-TEMP_DIR="deployment"
-mkdir -p $TEMP_DIR
-
-# Copy the function file to the temporary folder
-cp function.go $TEMP_DIR/function.go
-
-# copy needed folders to the temporary folder
-cp -r firestore $TEMP_DIR/
-cp -r localizer $TEMP_DIR/
-cp -r telegram $TEMP_DIR/
-cp -r utils $TEMP_DIR/
-
-# Copy go.mod to the temporary folder
-cp go.mod $TEMP_DIR/
-
-# Replace "Handler" with "handler" in the function.go file
-sed -i '' 's/Handler/handler/g' $TEMP_DIR/function.go
-
-# SZip the contents of the temporary folder
 ZIP_FILE="deploy.zip"
-zip -r $TEMP_DIR/$ZIP_FILE $TEMP_DIR
+FILES_AND_FOLDERS="function.go go.mod internal/"
+zip -r $ZIP_FILE $FILES_AND_FOLDERS
 
 # Set the function name
 FUNCTION_NAME="handler"
@@ -54,7 +35,6 @@ gcloud functions deploy $FUNCTION_NAME \
     --project $PROJECT_ID \
     --gen2 \
     --region $REGION \
-    --source $TEMP_DIR \
     --set-env-vars $ENV_VARS \
     --memory $MEMORY
 
@@ -66,4 +46,4 @@ else
 fi
 
 # Clean up
-rm -rf $TEMP_DIR
+rm $ZIP_FILE
