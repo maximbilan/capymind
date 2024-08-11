@@ -20,17 +20,15 @@ jobs:
         echo "CAPY_CLOUD_FUNCTION_URL=$(echo CAPY_CLOUD_FUNCTION_URL)" >> $GITHUB_ENV
         echo "CAPY_PROJECT_ID=$(echo CAPY_PROJECT_ID)" >> $GITHUB_ENV
         echo "CAPY_SERVER_REGION=$(echo CAPY_SERVER_REGION)" >> $GITHUB_ENV
-        echo "WORKLOAD_IDENTITY_PROVIDER=$(echo CAPY_WORKLOAD_IDENTITY_PROVIDER)" >> $GITHUB_ENV
-        echo "SERVICE_ACCOUNT=$(echo CAPY_SERVICE_ACCOUNT)" >> $GITHUB_ENV
 
     - name: Checkout repository
       uses: actions/checkout@v4
 
     - uses: 'google-github-actions/auth@v2.1.4'
       with:
-        project_id: ${{ env.CAPY_PROJECT_ID }}
-        workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ env.SERVICE_ACCOUNT }}
+        project_id: ${{ vars.CAPY_PROJECT_ID }}
+        workload_identity_provider: ${{ vars.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ vars.CAPY_SERVICE_ACCOUNT }}
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
