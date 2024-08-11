@@ -3,6 +3,7 @@
 PROJECT_ID=$CAPY_PROJECT_ID
 SERVICE_ACCOUNT=$CAPY_SERVICE_ACCOUNT
 PROJECT_NUMBER=$CAPY_PROJECT_NUMBER
+REGION=$CAPY_SERVER_REGION
 POOL_ID="githubci"
 POOL_NAME="GitHubCI"
 LOCATION="global"
@@ -36,3 +37,10 @@ gcloud iam service-accounts add-iam-policy-binding $SERVICE_ACCOUNT \
   --project=$PROJECT_ID \
   --role="roles/iam.workloadIdentityUser" \
   --member=$PRINCIPAL_SET
+
+MEMBER_NAME="serviceAccount:$SERVICE_ACCOUNT"
+
+gcloud functions add-invoker-policy-binding handler \
+    --project=$PROJECT_ID \
+    --region=$REGION \
+    --member=$MEMBER_NAME
