@@ -15,6 +15,10 @@ import (
 
 var userIds *utils.ThreadSafeArray[int64]
 
+func init() {
+	userIds = utils.NewThreadSafeArray[int64]()
+}
+
 func Parse(w http.ResponseWriter, r *http.Request) {
 	var update, err = telegram.Parse(r)
 	if err != nil {
