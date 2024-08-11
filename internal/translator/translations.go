@@ -1,17 +1,4 @@
-package localizer
-
-import (
-	"encoding/json"
-	"log"
-)
-
-type Locale string
-
-const (
-	EN Locale = "en"
-)
-
-var translations map[Locale]map[string]string
+package translator
 
 const translationsJSON = `{
     "en": {
@@ -24,13 +11,3 @@ const translationsJSON = `{
         "commands_hint": "You can use the following commands to interact with CapyMind:\n/start - Start the bot\n/note - Make a journal entry\n/last - View your last entry\n/info - Learn more about CapyMind\n/help - Get help with using CapyMind\n"
     }
 }`
-
-func init() {
-	if err := json.Unmarshal([]byte(translationsJSON), &translations); err != nil {
-		log.Fatalf("Failed to parse JSON: %v", err)
-	}
-}
-
-func Localize(locale Locale, key string) string {
-	return translations[locale][key]
-}

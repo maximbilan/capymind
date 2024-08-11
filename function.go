@@ -9,7 +9,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/capymind/firestore"
-	"github.com/capymind/localizer"
+	"github.com/capymind/internal/translator"
 	"github.com/capymind/telegram"
 	"github.com/capymind/utils"
 )
@@ -41,7 +41,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	message := update.Message
 	text := message.Text
 	command := Command(text)
-	locale := localizer.EN
+	locale := translator.EN
 
 	fmt.Printf("Received message text: %v\n", text)
 
@@ -63,7 +63,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleUser(message telegram.Message, locale localizer.Locale) {
+func handleUser(message telegram.Message, locale translator.Locale) {
 	if message.Text == "" {
 		return
 	}
@@ -71,29 +71,29 @@ func handleUser(message telegram.Message, locale localizer.Locale) {
 	createOrUpdateUser(ctx, message)
 }
 
-func handleStart(message telegram.Message, locale localizer.Locale) {
+func handleStart(message telegram.Message, locale translator.Locale) {
 	sendMessage(message.Chat.Id, locale, "welcome")
 }
 
-func handleNote(message telegram.Message, locale localizer.Locale) {
+func handleNote(message telegram.Message, locale translator.Locale) {
 	sendMessage(message.Chat.Id, locale, "start_note")
 
 	userId := message.From.ID
 	userIds.Append(userId)
 }
 
-func handleLast(message telegram.Message, locale localizer.Locale) {
+func handleLast(message telegram.Message, locale translator.Locale) {
 	ctx := context.Background()
 	note := getLastNote(ctx, message)
 	if note != nil {
-		var response string = localizer.Localize(locale, "your_last_note") + note.Text
+		var response string = translator.Translate(locale, "your_last_note") + note.Text
 		sendLocalizedMessage(message.Chat.Id, locale, response)
 	} else {
 		sendMessage(message.Chat.Id, locale, "no_notes")
 	}
 }
 
-func handleUnknownState(message telegram.Message, locale localizer.Locale) {
+func handleUnknownState(message telegram.Message, locale translator.Locale) {
 	userId := message.From.ID
 	if userIds.Contains(userId) {
 		ctx := context.Background()
@@ -105,20 +105,20 @@ func handleUnknownState(message telegram.Message, locale localizer.Locale) {
 	}
 }
 
-func handleInfo(message telegram.Message, locale localizer.Locale) {
+func handleInfo(message telegram.Message, locale translator.Locale) {
 	sendMessage(message.Chat.Id, locale, "info")
 }
 
-func handleHelp(message telegram.Message, locale localizer.Locale) {
+func handleHelp(message telegram.Message, locale translator.Locale) {
 	sendMessage(message.Chat.Id, locale, "commands_hint")
 }
 
-func sendMessage(chatId int, locale localizer.Locale, text string) {
-	localizedMessage := localizer.Localize(locale, text)
+func sendMessage(chatId int, locale translator.Locale, text string) {
+	localizedMessage := translator.Translate(locale, text)
 	sendLocalizedMessage(chatId, locale, localizedMessage)
 }
 
-func sendLocalizedMessage(chatId int, locale localizer.Locale, text string) {
+func sendLocalizedMessage(chatId int, locale translator.Locale, text string) {
 	body, err := telegram.SendMessage(chatId, text)
 	if err != nil {
 		log.Printf("Got error %s from telegram, reponse body is %s", err.Error(), body)
