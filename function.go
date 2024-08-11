@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
-	"github.com/capymind/firestore"
+	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/translator"
 	"github.com/capymind/telegram"
 	"github.com/capymind/utils"

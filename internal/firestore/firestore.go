@@ -3,27 +3,9 @@ package firestore
 import (
 	"context"
 	"os"
-	"time"
 
 	"cloud.google.com/go/firestore"
 	"google.golang.org/api/option"
-)
-
-type Note struct {
-	ID        string                 `firestore:"id"`
-	Text      string                 `firestore:"text"`
-	Timestamp time.Time              `firestore:"timestamp"`
-	User      *firestore.DocumentRef `firestore:"user"`
-}
-
-type User struct {
-	ID   string `firestore:"id"`
-	Name string `firestore:"name"`
-}
-
-const (
-	users string = "users"
-	notes string = "notes"
 )
 
 func credentialsPath() string {
