@@ -4,16 +4,15 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
-  workflow_call:
-    secrets:
-      CAPY_WORKLOAD_IDENTITY_PROVIDER:
-        required: true
-      CAPY_SERVICE_ACCOUNT:
-        required: true
 
 jobs:
   setup-telegram-bot:
     name: Deploy Google Cloud Function
+    envinronment: Production
+    env:
+      PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
+      WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
+      SERVICE_ACCOUNT: ${{ secrets.CAPY_SERVICE_ACCOUNT }}
     runs-on: ubuntu-latest
 
     steps:
@@ -22,9 +21,9 @@ jobs:
 
     - uses: 'google-github-actions/auth@v2'
       with:
-        project_id: ${{ secrets.CAPY_PROJECT_ID }}
-        workload_identity_provider: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.CAPY_SERVICE_ACCOUNT }}
+        project_id: ${{ PROJECT_ID }}
+        workload_identity_provider: ${{ WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ CAPY_SERVICE_ACCOUNT }}
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
