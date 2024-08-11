@@ -8,7 +8,6 @@ on:
 jobs:
   setup-telegram-bot:
     name: Deploy Google Cloud Function
-    envinronment: Production
     env:
       PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
       WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
