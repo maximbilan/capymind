@@ -17,6 +17,3 @@ jobs:
          chmod +x ./scripts/setup_telegram_bot.sh
          ./scripts/setup_telegram_bot.sh
       shell: bash
-      env:
-        CAPY_TELEGRAM_BOT_TOKEN: ${{ secrets.CAPY_TELEGRAM_BOT_TOKEN }}
-        CAPY_CLOUD_FUNCTION_URL: ${{ env.CAPY_CLOUD_FUNCTION_URL }}
