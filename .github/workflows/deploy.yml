@@ -25,7 +25,7 @@ jobs:
       with:
         project_id: 'PROJECT_ID'
         workload_identity_provider: 'WORKLOAD_IDENTITY_PROVIDER'
-        service_account: 'CAPY_SERVICE_ACCOUNT'
+        service_account: 'SERVICE_ACCOUNT'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
