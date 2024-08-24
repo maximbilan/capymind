@@ -82,3 +82,29 @@ func LastNote(ctx context.Context, client *firestore.Client, userId string) (*No
 	}
 	return nil, nil
 }
+
+func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
+	doc, err := client.Collection(users).Doc(userId).Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var user User
+	doc.DataTo(&user)
+	return &user, nil
+}
+
+func UserLocale(ctx context.Context, client *firestore.Client, userId string) *string {
+	user, err := getUser(ctx, client, userId)
+	if err != nil {
+		return nil
+	}
+	return &user.Locale
+}
+
+func UpdateUserLocale(ctx context.Context, client *firestore.Client, userId string, locale string) error {
+	_, err := client.Collection(users).Doc(userId).Set(ctx, map[string]interface{}{
+		"locale": locale,
+	}, firestore.MergeAll)
+	return err
+}
