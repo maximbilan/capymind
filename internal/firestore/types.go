@@ -14,8 +14,9 @@ type Note struct {
 }
 
 type User struct {
-	ID   string `firestore:"id"`
-	Name string `firestore:"name"`
+	ID     string `firestore:"id"`
+	Name   string `firestore:"name"`
+	Locale string `firestore:"locale"`
 }
 
 const (
