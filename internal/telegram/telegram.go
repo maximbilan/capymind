@@ -1,7 +1,9 @@
 package telegram
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -50,4 +52,37 @@ func SendMessage(chatId int, text string) (string, error) {
 	log.Printf("Body of Telegram Response: %s", bodyString)
 
 	return bodyString, nil
+}
+
+func SendMessageWithButtons(chatID int, text string, replyMarkup InlineKeyboardMarkup) error {
+	var url string = baseURL + "/sendMessage"
+
+	message := SendMessageRequest{
+		ChatID:      chatID,
+		Text:        text,
+		ReplyMarkup: replyMarkup,
+	}
+
+	jsonData, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	log.Printf("Telegram response: %s", body)
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to send message: %s", resp.Status)
+	}
+
+	return nil
 }

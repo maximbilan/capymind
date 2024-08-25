@@ -26,10 +26,30 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	callbackQuery := update.CallbackQuery
+	if callbackQuery != nil && callbackQuery.Data != "" {
+		fmt.Printf("Received callback data: %v\n", callbackQuery.Data)
+		locale, ok := translator.ParseLocale(callbackQuery.Data)
+		if ok && locale != nil {
+			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
+			setupLocale(userId, *locale)
+			sendLocalizedMessage(callbackQuery.Message.Chat.Id, translator.EN, "Locale has been updated")
+		}
+		return
+	}
+
 	message := update.Message
+
+	var locale translator.Locale
+	userLocale := getUserLocale(message)
+	if userLocale != nil {
+		locale = *userLocale
+	} else {
+		locale = translator.EN
+	}
+
 	text := message.Text
 	command := Command(text)
-	locale := translator.EN
 
 	fmt.Printf("Received message text: %v\n", text)
 
@@ -40,6 +60,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		handleNote(message, locale)
 	case Last:
 		handleLast(message, locale)
+	case Locale:
+		handleLocale(message)
 	case Info:
 		handleInfo(message, locale)
 	case Help:
@@ -77,6 +99,38 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 		sendLocalizedMessage(message.Chat.Id, locale, response)
 	} else {
 		sendMessage(message.Chat.Id, locale, "no_notes")
+	}
+}
+
+func handleLocale(message telegram.Message) {
+	replyMarkup := telegram.InlineKeyboardMarkup{
+		InlineKeyboard: [][]telegram.InlineKeyboardButton{
+			{
+				{Text: translator.English.String(), CallbackData: translator.GetLocaleParameter(translator.EN)},
+				{Text: translator.Ukrainian.String(), CallbackData: translator.GetLocaleParameter(translator.UK)},
+			},
+		},
+	}
+
+	err := telegram.SendMessageWithButtons(message.Chat.Id, "Select your language:", replyMarkup)
+	if err != nil {
+		fmt.Println("Error sending message:", err)
+	} else {
+		fmt.Println("Message sent successfully")
+	}
+}
+
+func setupLocale(userId string, locale string) {
+	ctx := context.Background()
+	var client, err = firestore.NewClient(ctx)
+	if err != nil {
+		log.Printf("Error creating firestore client, %s", err.Error())
+	}
+	defer client.Close()
+
+	err = firestore.UpdateUserLocale(ctx, client, userId, locale)
+	if err != nil {
+		log.Printf("Error updating user locale in firestore, %s", err.Error())
 	}
 }
 
@@ -170,4 +224,27 @@ func createOrUpdateUser(ctx context.Context, message telegram.Message) {
 	if err != nil {
 		log.Printf("Error creating user in firestore, %s", err.Error())
 	}
+}
+
+func getUserLocale(message telegram.Message) *translator.Locale {
+	ctx := context.Background()
+	var client, err = firestore.NewClient(ctx)
+	if err != nil {
+		log.Printf("Error creating firestore client, %s", err.Error())
+	}
+	defer client.Close()
+
+	var userId = fmt.Sprintf("%d", message.From.ID)
+	localeStr, err := firestore.UserLocale(ctx, client, userId)
+	if err != nil {
+		log.Printf("Error getting user locale from firestore, %s", err.Error())
+		return nil
+	}
+	if localeStr == nil || *localeStr == "" {
+		log.Printf("User locale is nil")
+		return nil
+	}
+
+	var locale = translator.Locale(*localeStr)
+	return &locale
 }
