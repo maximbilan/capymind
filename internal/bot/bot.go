@@ -39,9 +39,17 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	message := update.Message
+
+	var locale translator.Locale
+	userLocale := getUserLocale(message)
+	if userLocale != nil {
+		locale = *userLocale
+	} else {
+		locale = translator.EN
+	}
+
 	text := message.Text
 	command := Command(text)
-	locale := translator.EN
 
 	fmt.Printf("Received message text: %v\n", text)
 
@@ -216,4 +224,27 @@ func createOrUpdateUser(ctx context.Context, message telegram.Message) {
 	if err != nil {
 		log.Printf("Error creating user in firestore, %s", err.Error())
 	}
+}
+
+func getUserLocale(message telegram.Message) *translator.Locale {
+	ctx := context.Background()
+	var client, err = firestore.NewClient(ctx)
+	if err != nil {
+		log.Printf("Error creating firestore client, %s", err.Error())
+	}
+	defer client.Close()
+
+	var userId = fmt.Sprintf("%d", message.From.ID)
+	localeStr, err := firestore.UserLocale(ctx, client, userId)
+	if err != nil {
+		log.Printf("Error getting user locale from firestore, %s", err.Error())
+		return nil
+	}
+	if localeStr == nil || *localeStr == "" {
+		log.Printf("User locale is nil")
+		return nil
+	}
+
+	var locale = translator.Locale(*localeStr)
+	return &locale
 }

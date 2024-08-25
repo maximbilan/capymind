@@ -94,12 +94,12 @@ func getUser(ctx context.Context, client *firestore.Client, userId string) (*Use
 	return &user, nil
 }
 
-func UserLocale(ctx context.Context, client *firestore.Client, userId string) *string {
+func UserLocale(ctx context.Context, client *firestore.Client, userId string) (*string, error) {
 	user, err := getUser(ctx, client, userId)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-	return &user.Locale
+	return &user.Locale, nil
 }
 
 func UpdateUserLocale(ctx context.Context, client *firestore.Client, userId string, locale string) error {
