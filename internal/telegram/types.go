@@ -1,16 +1,16 @@
 package telegram
 
 type Update struct {
-	UpdateId int     `json:"update_id"`
-	Message  Message `json:"message"`
+	UpdateId      int           `json:"update_id"`
+	Message       Message       `json:"message"`
+	CallbackQuery CallbackQuery `json:"callback_query,omitempty"`
 }
 
 type Message struct {
-	Text        string               `json:"text"`
-	Chat        Chat                 `json:"chat"`
-	From        User                 `json:"from"`
-	Date        int                  `json:"date"`
-	ReplyMarkup InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	Text string `json:"text"`
+	Chat Chat   `json:"chat"`
+	From User   `json:"from"`
+	Date int    `json:"date"`
 }
 
 type SendMessageRequest struct {
@@ -35,4 +35,11 @@ type InlineKeyboardMarkup struct {
 type InlineKeyboardButton struct {
 	Text         string `json:"text"`
 	CallbackData string `json:"callback_data,omitempty"`
+}
+
+type CallbackQuery struct {
+	ID      string   `json:"id"`
+	From    *User    `json:"from"`
+	Message *Message `json:"message,omitempty"`
+	Data    string   `json:"data,omitempty"`
 }
