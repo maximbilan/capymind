@@ -40,6 +40,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		handleNote(message, locale)
 	case Last:
 		handleLast(message, locale)
+	case Locale:
+		handleLocale(message)
 	case Info:
 		handleInfo(message, locale)
 	case Help:
@@ -79,6 +81,35 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 		sendMessage(message.Chat.Id, locale, "no_notes")
 	}
 }
+
+func handleLocale(message telegram.Message) {
+	replyMarkup := telegram.InlineKeyboardMarkup{
+		InlineKeyboard: [][]telegram.InlineKeyboardButton{
+			{
+				{Text: "English", CallbackData: "en"},
+				{Text: "Ukrainian", CallbackData: "uk"},
+			},
+		},
+	}
+
+	err := telegram.SendMessageWithButtons(message.Chat.Id, "Choose an option:", replyMarkup)
+	if err != nil {
+		fmt.Println("Error sending message:", err)
+	} else {
+		fmt.Println("Message sent successfully")
+	}
+}
+
+// func setupLocale(message telegram.Message) {
+// 	ctx := context.Background()
+// 	var client, err = firestore.NewClient(ctx)
+// 	if err != nil {
+// 		log.Printf("Error creating firestore client, %s", err.Error())
+// 	}
+// 	defer client.Close()
+
+// 	var userId = fmt.Sprintf("%d", message.From.ID)
+// }
 
 func handleUnknownState(message telegram.Message, locale translator.Locale) {
 	userId := message.From.ID
