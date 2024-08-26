@@ -52,7 +52,7 @@ func NewRecord(ctx context.Context, client *firestore.Client, user User, note No
 func NewUser(ctx context.Context, client *firestore.Client, user User) error {
 	_, err := client.Collection(users).Doc(user.ID).Set(ctx, map[string]interface{}{
 		"name": user.Name,
-	})
+	}, firestore.MergeAll)
 	return err
 }
 
