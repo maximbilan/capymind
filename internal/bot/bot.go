@@ -95,7 +95,7 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 	note := getLastNote(ctx, message)
 	if note != nil {
 		var response string = translator.Translate(locale, "your_last_note") + note.Text
-		LocalizeAndSendMessage(message.Chat.Id, locale, response)
+		SendMessage(message.Chat.Id, response)
 	} else {
 		LocalizeAndSendMessage(message.Chat.Id, locale, "no_notes")
 	}
