@@ -12,14 +12,3 @@ type Note struct {
 	Timestamp time.Time              `firestore:"timestamp"`
 	User      *firestore.DocumentRef `firestore:"user"`
 }
-
-type User struct {
-	ID     string `firestore:"id"`
-	Name   string `firestore:"name"`
-	Locale string `firestore:"locale"`
-}
-
-const (
-	users string = "users"
-	notes string = "notes"
-)
