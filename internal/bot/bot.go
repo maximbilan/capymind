@@ -20,20 +20,19 @@ func init() {
 }
 
 func Parse(w http.ResponseWriter, r *http.Request) {
-	var update, err = telegram.Parse(r)
-	if err != nil {
-		log.Printf("Error parsing update, %s", err.Error())
+	update := telegram.Parse(r)
+	if update == nil {
 		return
 	}
 
 	callbackQuery := update.CallbackQuery
 	if callbackQuery != nil && callbackQuery.Data != "" {
-		fmt.Printf("Received callback data: %v\n", callbackQuery.Data)
+		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
 		locale, ok := translator.ParseLocale(callbackQuery.Data)
 		if ok && locale != nil {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
 			setupLocale(userId, *locale)
-			sendLocalizedMessage(callbackQuery.Message.Chat.Id, translator.EN, "Locale has been updated")
+			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, translator.Locale(*locale), "locale_set")
 		}
 		return
 	}
@@ -51,7 +50,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	text := message.Text
 	command := Command(text)
 
-	fmt.Printf("Received message text: %v\n", text)
+	log.Printf("[Bot] Received message text: %s", text)
 
 	switch command {
 	case Start:
@@ -61,7 +60,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	case Last:
 		handleLast(message, locale)
 	case Locale:
-		handleLocale(message)
+		handleLocale(message, locale)
 	case Info:
 		handleInfo(message, locale)
 	case Help:
@@ -80,12 +79,12 @@ func handleUser(message telegram.Message, locale translator.Locale) {
 }
 
 func handleStart(message telegram.Message, locale translator.Locale) {
-	sendMessage(message.Chat.Id, locale, "welcome")
+	LocalizeAndSendMessage(message.Chat.Id, locale, "welcome")
 	handleUser(message, locale)
 }
 
 func handleNote(message telegram.Message, locale translator.Locale) {
-	sendMessage(message.Chat.Id, locale, "start_note")
+	LocalizeAndSendMessage(message.Chat.Id, locale, "start_note")
 
 	userId := message.From.ID
 	userIds.Append(userId)
@@ -96,13 +95,13 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 	note := getLastNote(ctx, message)
 	if note != nil {
 		var response string = translator.Translate(locale, "your_last_note") + note.Text
-		sendLocalizedMessage(message.Chat.Id, locale, response)
+		LocalizeAndSendMessage(message.Chat.Id, locale, response)
 	} else {
-		sendMessage(message.Chat.Id, locale, "no_notes")
+		LocalizeAndSendMessage(message.Chat.Id, locale, "no_notes")
 	}
 }
 
-func handleLocale(message telegram.Message) {
+func handleLocale(message telegram.Message, locale translator.Locale) {
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
@@ -111,13 +110,7 @@ func handleLocale(message telegram.Message) {
 			},
 		},
 	}
-
-	err := telegram.SendMessageWithButtons(message.Chat.Id, "Select your language:", replyMarkup)
-	if err != nil {
-		fmt.Println("Error sending message:", err)
-	} else {
-		fmt.Println("Message sent successfully")
-	}
+	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "language_select", &replyMarkup)
 }
 
 func setupLocale(userId string, locale string) {
@@ -139,7 +132,7 @@ func handleUnknownState(message telegram.Message, locale translator.Locale) {
 	if userIds.Contains(userId) {
 		ctx := context.Background()
 		saveNote(ctx, message)
-		sendMessage(message.Chat.Id, locale, "finish_note")
+		LocalizeAndSendMessage(message.Chat.Id, locale, "finish_note")
 		userIds.Remove(userId)
 	} else {
 		handleHelp(message, locale)
@@ -147,23 +140,11 @@ func handleUnknownState(message telegram.Message, locale translator.Locale) {
 }
 
 func handleInfo(message telegram.Message, locale translator.Locale) {
-	sendMessage(message.Chat.Id, locale, "info")
+	LocalizeAndSendMessage(message.Chat.Id, locale, "info")
 }
 
 func handleHelp(message telegram.Message, locale translator.Locale) {
-	sendMessage(message.Chat.Id, locale, "commands_hint")
-}
-
-func sendMessage(chatId int, locale translator.Locale, text string) {
-	localizedMessage := translator.Translate(locale, text)
-	sendLocalizedMessage(chatId, locale, localizedMessage)
-}
-
-func sendLocalizedMessage(chatId int, locale translator.Locale, text string) {
-	body, err := telegram.SendMessage(chatId, text)
-	if err != nil {
-		log.Printf("Got error %s from telegram, reponse body is %s", err.Error(), body)
-	}
+	LocalizeAndSendMessage(message.Chat.Id, locale, "commands_hint")
 }
 
 func saveNote(ctx context.Context, message telegram.Message) {
