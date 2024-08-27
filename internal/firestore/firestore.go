@@ -50,15 +50,15 @@ func NewRecord(ctx context.Context, client *firestore.Client, user User, note No
 }
 
 func NewUser(ctx context.Context, client *firestore.Client, user User) error {
-	_, err := client.Collection(users).Doc(user.ID).Set(ctx, map[string]interface{}{
+	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, map[string]interface{}{
 		"name": user.Name,
 	}, firestore.MergeAll)
 	return err
 }
 
 func newNote(ctx context.Context, client *firestore.Client, user User, note Note) error {
-	userRef := client.Collection(users).Doc(user.ID)
-	_, _, err := client.Collection(notes).Add(ctx, map[string]interface{}{
+	userRef := client.Collection(users.String()).Doc(user.ID)
+	_, _, err := client.Collection(notes.String()).Add(ctx, map[string]interface{}{
 		"text":      note.Text,
 		"timestamp": note.Timestamp,
 		"user":      userRef,
@@ -67,8 +67,8 @@ func newNote(ctx context.Context, client *firestore.Client, user User, note Note
 }
 
 func LastNote(ctx context.Context, client *firestore.Client, userId string) (*Note, error) {
-	userRef := client.Collection(users).Doc(userId)
-	query := client.Collection(notes).OrderBy("timestamp", firestore.Desc).Where("user", "==", userRef).Limit(1)
+	userRef := client.Collection(users.String()).Doc(userId)
+	query := client.Collection(notes.String()).OrderBy("timestamp", firestore.Desc).Where("user", "==", userRef).Limit(1)
 
 	docs, err := query.Documents(ctx).GetAll()
 	if err != nil {
@@ -84,7 +84,7 @@ func LastNote(ctx context.Context, client *firestore.Client, userId string) (*No
 }
 
 func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
-	doc, err := client.Collection(users).Doc(userId).Get(ctx)
+	doc, err := client.Collection(users.String()).Doc(userId).Get(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func UserLocale(ctx context.Context, client *firestore.Client, userId string) (*
 }
 
 func UpdateUserLocale(ctx context.Context, client *firestore.Client, userId string, locale string) error {
-	_, err := client.Collection(users).Doc(userId).Set(ctx, map[string]interface{}{
+	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
 		"locale": locale,
 	}, firestore.MergeAll)
 	return err
