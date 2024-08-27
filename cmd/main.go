@@ -2,16 +2,20 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/capymind/internal/bot"
 )
 
+const port = 8080
+
 func main() {
-	fmt.Println("Starting capymind...")
+	log.Println("Starting capymind...")
+	log.Printf("Starting server on localhost:%d", port)
+
 	http.HandleFunc("/", bot.Parse)
-	fmt.Println("Starting server on localhost:8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Println("Error starting server:", err)
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil); err != nil {
+		log.Fatalf("Error starting server: %s", err)
 	}
 }
