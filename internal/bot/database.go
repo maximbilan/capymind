@@ -53,11 +53,11 @@ func GetUserLocale(message telegram.Message) *translator.Locale {
 	var userId = fmt.Sprintf("%d", message.From.ID)
 	localeStr, err := firestore.UserLocale(ctx, client, userId)
 	if err != nil {
-		log.Printf("Error getting user locale from firestore, %s", err.Error())
+		log.Printf("[Database] Error getting user locale from firestore, %s", err.Error())
 		return nil
 	}
 	if localeStr == nil || *localeStr == "" {
-		log.Printf("User locale is nil")
+		log.Printf("[Database] User locale is nil")
 		return nil
 	}
 
@@ -83,7 +83,7 @@ func SaveNote(message telegram.Message) {
 
 	err := firestore.NewRecord(ctx, client, user, note)
 	if err != nil {
-		log.Printf("Error saving note to firestore, %s", err.Error())
+		log.Printf("[Database] Error saving note to firestore, %s", err.Error())
 	}
 }
 
@@ -94,7 +94,7 @@ func GetLastNote(message telegram.Message) *firestore.Note {
 	var userId = fmt.Sprintf("%d", message.From.ID)
 	note, err := firestore.LastNote(ctx, client, userId)
 	if err != nil {
-		log.Printf("Error getting last note from firestore, %s", err.Error())
+		log.Printf("[Database] Error getting last note from firestore, %s", err.Error())
 	}
 	return note
 }
