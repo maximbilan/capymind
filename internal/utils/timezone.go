@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -68,7 +69,7 @@ func GetTimezoneParameter(info TimeZoneInfo) string {
 func ParseTimezone(input string) (*int, bool) {
 	parts := strings.Split(input, "_")
 	if len(parts) == 2 && parts[0] == "timezone" {
-		secondsFromUTC, err := fmt.Sscanf(parts[1], "%d")
+		secondsFromUTC, err := strconv.Atoi(parts[1])
 		if err != nil {
 			return nil, false
 		}
