@@ -5,7 +5,8 @@ import "strings"
 type CallbackParameter string
 
 const (
-	Locale CallbackParameter = "locale"
+	Locale   CallbackParameter = "locale"
+	Timezone CallbackParameter = "timezone"
 )
 
 func (c CallbackParameter) String() string {

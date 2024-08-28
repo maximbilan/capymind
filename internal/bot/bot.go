@@ -58,6 +58,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		handleLast(message, locale)
 	case Locale:
 		handleLocale(message, locale)
+	case Timezone:
+		handleTimezone(message, locale)
 	case Info:
 		handleInfo(message, locale)
 	case Help:
@@ -105,6 +107,23 @@ func handleLocale(message telegram.Message, locale translator.Locale) {
 			},
 		},
 	}
+	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "language_select", &replyMarkup)
+}
+
+func handleTimezone(message telegram.Message, locale translator.Locale) {
+	timeZones := utils.GetTimeZones()
+
+	var inlineKeyboard [][]telegram.InlineKeyboardButton
+	for _, tz := range timeZones {
+		inlineKeyboard = append(inlineKeyboard, []telegram.InlineKeyboardButton{
+			{Text: tz.String(), CallbackData: utils.GetTimezoneParameter(tz)},
+		})
+	}
+
+	replyMarkup := telegram.InlineKeyboardMarkup{
+		InlineKeyboard: inlineKeyboard,
+	}
+
 	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "language_select", &replyMarkup)
 }
 

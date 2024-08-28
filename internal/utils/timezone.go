@@ -59,3 +59,7 @@ func GetTimeZones() []TimeZoneInfo {
 func (info TimeZoneInfo) String() string {
 	return fmt.Sprintf("UTC %+d - %s", info.Offset, info.Description)
 }
+
+func GetTimezoneParameter(info TimeZoneInfo) string {
+	return "timezone_" + fmt.Sprintf("%d", info.SecondsFromUTC)
+}
