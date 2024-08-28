@@ -47,10 +47,14 @@ func SetupLocale(userId string, locale string) {
 }
 
 func GetUserLocale(message telegram.Message) *translator.Locale {
+	var userId = fmt.Sprintf("%d", message.From.ID)
+	return GetUserLocaleByUserId(userId)
+}
+
+func GetUserLocaleByUserId(userId string) *translator.Locale {
 	client, ctx := createClient()
 	defer client.Close()
 
-	var userId = fmt.Sprintf("%d", message.From.ID)
 	localeStr, err := firestore.UserLocale(ctx, client, userId)
 	if err != nil {
 		log.Printf("[Database] Error getting user locale from firestore, %s", err.Error())
@@ -97,4 +101,14 @@ func GetLastNote(message telegram.Message) *firestore.Note {
 		log.Printf("[Database] Error getting last note from firestore, %s", err.Error())
 	}
 	return note
+}
+
+func SetupTimezone(userId string, secondsFromUTC int) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.UpdateUserTimezone(ctx, client, userId, secondsFromUTC)
+	if err != nil {
+		log.Printf("[Database] Error updating user timezone in firestore, %s", err.Error())
+	}
 }

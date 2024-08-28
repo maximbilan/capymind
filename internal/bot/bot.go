@@ -25,12 +25,28 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	callbackQuery := update.CallbackQuery
 	if callbackQuery != nil && callbackQuery.Data != "" {
 		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
-		locale, ok := translator.ParseLocale(callbackQuery.Data)
-		if ok && locale != nil {
+		updatedLocale, ok := translator.ParseLocale(callbackQuery.Data)
+		if ok && updatedLocale != nil {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			SetupLocale(userId, *locale)
-			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, translator.Locale(*locale), "locale_set")
+			SetupLocale(userId, *updatedLocale)
+			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, translator.Locale(*updatedLocale), "locale_set")
+			return
 		}
+
+		secondsFromUTC, ok := utils.ParseTimezone(callbackQuery.Data)
+		if ok && secondsFromUTC != nil {
+			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
+			SetupTimezone(userId, *secondsFromUTC)
+
+			userLocale := GetUserLocaleByUserId(userId)
+			locale := translator.EN
+			if userLocale != nil {
+				locale = translator.Locale(*userLocale)
+			}
+			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, locale, "timezone_set")
+			return
+		}
+
 		return
 	}
 
@@ -58,6 +74,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		handleLast(message, locale)
 	case Locale:
 		handleLocale(message, locale)
+	case Timezone:
+		handleTimezone(message, locale)
 	case Info:
 		handleInfo(message, locale)
 	case Help:
@@ -106,6 +124,23 @@ func handleLocale(message telegram.Message, locale translator.Locale) {
 		},
 	}
 	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "language_select", &replyMarkup)
+}
+
+func handleTimezone(message telegram.Message, locale translator.Locale) {
+	timeZones := utils.GetTimeZones()
+
+	var inlineKeyboard [][]telegram.InlineKeyboardButton
+	for _, tz := range timeZones {
+		inlineKeyboard = append(inlineKeyboard, []telegram.InlineKeyboardButton{
+			{Text: tz.String(), CallbackData: utils.GetTimezoneParameter(tz)},
+		})
+	}
+
+	replyMarkup := telegram.InlineKeyboardMarkup{
+		InlineKeyboard: inlineKeyboard,
+	}
+
+	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "timezone_select", &replyMarkup)
 }
 
 func handleUnknownState(message telegram.Message, locale translator.Locale) {

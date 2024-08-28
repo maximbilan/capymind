@@ -108,3 +108,10 @@ func UpdateUserLocale(ctx context.Context, client *firestore.Client, userId stri
 	}, firestore.MergeAll)
 	return err
 }
+
+func UpdateUserTimezone(ctx context.Context, client *firestore.Client, userId string, secondsFromUTC int) error {
+	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
+		"secondsFromUTC": secondsFromUTC,
+	}, firestore.MergeAll)
+	return err
+}
