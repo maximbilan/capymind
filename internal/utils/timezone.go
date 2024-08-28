@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"sort"
+	"strings"
 )
 
 type TimeZoneInfo struct {
@@ -62,4 +63,16 @@ func (info TimeZoneInfo) String() string {
 
 func GetTimezoneParameter(info TimeZoneInfo) string {
 	return "timezone_" + fmt.Sprintf("%d", info.SecondsFromUTC)
+}
+
+func ParseTimezone(input string) (*int, bool) {
+	parts := strings.Split(input, "_")
+	if len(parts) == 2 && parts[0] == "timezone" {
+		secondsFromUTC, err := fmt.Sscanf(parts[1], "%d")
+		if err != nil {
+			return nil, false
+		}
+		return &secondsFromUTC, true
+	}
+	return nil, false
 }

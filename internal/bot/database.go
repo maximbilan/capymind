@@ -98,3 +98,13 @@ func GetLastNote(message telegram.Message) *firestore.Note {
 	}
 	return note
 }
+
+func SetupTimezone(userId string, secondsFromUTC int) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.UpdateUserTimezone(ctx, client, userId, secondsFromUTC)
+	if err != nil {
+		log.Printf("[Database] Error updating user timezone in firestore, %s", err.Error())
+	}
+}

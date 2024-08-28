@@ -10,7 +10,9 @@ const translationsJSON = `{
         "no_notes": "You have not made any entries yet. Start by sharing your thoughts and feelings with CapyMind.",
         "commands_hint": "You can use the following commands to interact with CapyMind:\n/start - Start the bot\n/note - Make a journal entry\n/last - View your last entry\n/locale - Set up a locale\n/info - Learn more about CapyMind\n/help - Get help with using CapyMind\n",
         "locale_set": "Locale has been updated successfully",
-        "language_select": "Choose your language:"
+        "language_select": "Choose your language:",
+        "timezone_select": "Choose your timezone:",
+        "timezone_set": "Timezone has been updated successfully"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind! Ваш особистий журнал психічного здоров'я всього в кількох кроках. Почніть робити записи, щоб розмірковувати над своїми думками та емоціями.",
@@ -21,6 +23,8 @@ const translationsJSON = `{
         "no_notes": "Ви ще не зробили жодного запису. Почніть ділитися своїми думками та почуттями з CapyMind.",
         "commands_hint": "Ви можете використовувати наступні команди для взаємодії з CapyMind:\n/start - Запустити бота\n/note - Зробити запис в журнал\n/last - Переглянути ваш останній запис\n/locale - Налаштувати мову\n/info - Дізнатися більше про CapyMind\n/help - Отримати допомогу з використання CapyMind\n",
         "locale_set": "Мова успішно оновлена",
-        "language_select": "Оберіть вашу мову:"
+        "language_select": "Оберіть вашу мову:",
+        "timezone_select": "Оберіть ваш часовий пояс:",
+        "timezone_set": "Часовий пояс успішно оновлено"
     }
 }`

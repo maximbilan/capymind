@@ -22,18 +22,6 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	callbackQuery := update.CallbackQuery
-	if callbackQuery != nil && callbackQuery.Data != "" {
-		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
-		locale, ok := translator.ParseLocale(callbackQuery.Data)
-		if ok && locale != nil {
-			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			SetupLocale(userId, *locale)
-			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, translator.Locale(*locale), "locale_set")
-		}
-		return
-	}
-
 	message := update.Message
 
 	var locale translator.Locale
@@ -42,6 +30,26 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		locale = *userLocale
 	} else {
 		locale = translator.EN
+	}
+
+	callbackQuery := update.CallbackQuery
+	if callbackQuery != nil && callbackQuery.Data != "" {
+		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
+		updatedLocale, ok := translator.ParseLocale(callbackQuery.Data)
+		if ok && updatedLocale != nil {
+			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
+			SetupLocale(userId, *updatedLocale)
+			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, translator.Locale(*updatedLocale), "locale_set")
+			return
+		}
+
+		secondsFromUTC, ok := utils.ParseTimezone(callbackQuery.Data)
+		if ok && secondsFromUTC != nil {
+			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
+			SetupTimezone(userId, *secondsFromUTC)
+			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, locale, "timezone_set")
+			return
+		}
 	}
 
 	text := message.Text
@@ -124,7 +132,7 @@ func handleTimezone(message telegram.Message, locale translator.Locale) {
 		InlineKeyboard: inlineKeyboard,
 	}
 
-	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "language_select", &replyMarkup)
+	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "timezone_select", &replyMarkup)
 }
 
 func handleUnknownState(message telegram.Message, locale translator.Locale) {
