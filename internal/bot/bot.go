@@ -37,7 +37,13 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		if ok && secondsFromUTC != nil {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
 			SetupTimezone(userId, *secondsFromUTC)
-			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, translator.EN, "timezone_set")
+
+			userLocale := GetUserLocaleByUserId(userId)
+			locale := translator.EN
+			if userLocale != nil {
+				locale = translator.Locale(*userLocale)
+			}
+			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, locale, "timezone_set")
 			return
 		}
 
