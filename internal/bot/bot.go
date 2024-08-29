@@ -28,22 +28,22 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		updatedLocale, ok := translator.ParseLocale(callbackQuery.Data)
 		if ok && updatedLocale != nil {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			SetupLocale(userId, *updatedLocale)
-			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, translator.Locale(*updatedLocale), "locale_set")
+			setupLocale(userId, *updatedLocale)
+			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, translator.Locale(*updatedLocale), "locale_set")
 			return
 		}
 
 		secondsFromUTC, ok := utils.ParseTimezone(callbackQuery.Data)
 		if ok && secondsFromUTC != nil {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			SetupTimezone(userId, *secondsFromUTC)
+			setupTimezone(userId, *secondsFromUTC)
 
-			userLocale := GetUserLocaleByUserId(userId)
+			userLocale := getUserLocaleByUserId(userId)
 			locale := translator.EN
 			if userLocale != nil {
 				locale = translator.Locale(*userLocale)
 			}
-			LocalizeAndSendMessage(callbackQuery.Message.Chat.Id, locale, "timezone_set")
+			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "timezone_set")
 			return
 		}
 
@@ -53,7 +53,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	message := update.Message
 
 	var locale translator.Locale
-	userLocale := GetUserLocale(message)
+	userLocale := getUserLocale(message)
 	if userLocale != nil {
 		locale = *userLocale
 	} else {
@@ -89,32 +89,35 @@ func handleUser(message telegram.Message) {
 	if message.Text == "" {
 		return
 	}
-	CreateOrUpdateUser(message)
+	createOrUpdateUser(message)
 }
 
 func handleStart(message telegram.Message, locale translator.Locale) {
-	LocalizeAndSendMessage(message.Chat.Id, locale, "welcome")
+	userId := fmt.Sprintf("%d", message.From.ID)
+	localizeAndSendMessage(message.Chat.Id, userId, locale, "welcome")
 	handleUser(message)
 }
 
 func handleNote(message telegram.Message, locale translator.Locale) {
-	LocalizeAndSendMessage(message.Chat.Id, locale, "start_note")
-
 	userId := message.From.ID
+	userIdStr := fmt.Sprintf("%d", userId)
+	localizeAndSendMessage(message.Chat.Id, userIdStr, locale, "start_note")
 	userIds.Append(userId)
 }
 
 func handleLast(message telegram.Message, locale translator.Locale) {
-	note := GetLastNote(message)
+	userId := fmt.Sprintf("%d", message.From.ID)
+	note := getLastNote(message)
 	if note != nil {
 		var response string = translator.Translate(locale, "your_last_note") + note.Text
-		SendMessage(message.Chat.Id, response)
+		sendMessage(message.Chat.Id, userId, response)
 	} else {
-		LocalizeAndSendMessage(message.Chat.Id, locale, "no_notes")
+		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_notes")
 	}
 }
 
 func handleLocale(message telegram.Message, locale translator.Locale) {
+	userId := fmt.Sprintf("%d", message.From.ID)
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
@@ -123,10 +126,11 @@ func handleLocale(message telegram.Message, locale translator.Locale) {
 			},
 		},
 	}
-	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "language_select", &replyMarkup)
+	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "language_select", &replyMarkup)
 }
 
 func handleTimezone(message telegram.Message, locale translator.Locale) {
+	userId := fmt.Sprintf("%d", message.From.ID)
 	timeZones := utils.GetTimeZones()
 
 	var inlineKeyboard [][]telegram.InlineKeyboardButton
@@ -140,14 +144,15 @@ func handleTimezone(message telegram.Message, locale translator.Locale) {
 		InlineKeyboard: inlineKeyboard,
 	}
 
-	LocalizeAndSendMessageWithReply(message.Chat.Id, locale, "timezone_select", &replyMarkup)
+	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "timezone_select", &replyMarkup)
 }
 
 func handleUnknownState(message telegram.Message, locale translator.Locale) {
 	userId := message.From.ID
+	userIdStr := fmt.Sprintf("%d", userId)
 	if userIds.Contains(userId) {
-		SaveNote(message)
-		LocalizeAndSendMessage(message.Chat.Id, locale, "finish_note")
+		saveNote(message)
+		localizeAndSendMessage(message.Chat.Id, userIdStr, locale, "finish_note")
 		userIds.Remove(userId)
 	} else {
 		handleHelp(message, locale)
@@ -155,9 +160,11 @@ func handleUnknownState(message telegram.Message, locale translator.Locale) {
 }
 
 func handleInfo(message telegram.Message, locale translator.Locale) {
-	LocalizeAndSendMessage(message.Chat.Id, locale, "info")
+	userId := fmt.Sprintf("%d", message.From.ID)
+	localizeAndSendMessage(message.Chat.Id, userId, locale, "info")
 }
 
 func handleHelp(message telegram.Message, locale translator.Locale) {
-	LocalizeAndSendMessage(message.Chat.Id, locale, "commands_hint")
+	userId := fmt.Sprintf("%d", message.From.ID)
+	localizeAndSendMessage(message.Chat.Id, userId, locale, "commands_hint")
 }

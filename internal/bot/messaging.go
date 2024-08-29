@@ -5,20 +5,22 @@ import (
 	"github.com/capymind/internal/translator"
 )
 
-func SendMessage(chatId int, text string) {
+func sendMessage(chatId int, userId string, text string) {
+	saveLastChatId(chatId, userId)
 	telegram.SendMessage(chatId, text, nil)
 }
 
-func SendMessageWithReply(chatId int, text string, replyMarkup *telegram.InlineKeyboardMarkup) {
+func sendMessageWithReply(chatId int, userId string, text string, replyMarkup *telegram.InlineKeyboardMarkup) {
+	saveLastChatId(chatId, userId)
 	telegram.SendMessage(chatId, text, replyMarkup)
 }
 
-func LocalizeAndSendMessage(chatId int, locale translator.Locale, text string) {
+func localizeAndSendMessage(chatId int, userId string, locale translator.Locale, text string) {
 	localizedMessage := translator.Translate(locale, text)
-	SendMessage(chatId, localizedMessage)
+	sendMessage(chatId, userId, localizedMessage)
 }
 
-func LocalizeAndSendMessageWithReply(chatId int, locale translator.Locale, text string, replyMarkup *telegram.InlineKeyboardMarkup) {
+func localizeAndSendMessageWithReply(chatId int, userId string, locale translator.Locale, text string, replyMarkup *telegram.InlineKeyboardMarkup) {
 	localizedMessage := translator.Translate(locale, text)
-	SendMessageWithReply(chatId, localizedMessage, replyMarkup)
+	sendMessageWithReply(chatId, userId, localizedMessage, replyMarkup)
 }

@@ -21,7 +21,7 @@ func createClient() (*google.Client, context.Context) {
 	return client, ctx
 }
 
-func CreateOrUpdateUser(message telegram.Message) {
+func createOrUpdateUser(message telegram.Message) {
 	client, ctx := createClient()
 	defer client.Close()
 
@@ -36,7 +36,7 @@ func CreateOrUpdateUser(message telegram.Message) {
 	}
 }
 
-func SetupLocale(userId string, locale string) {
+func setupLocale(userId string, locale string) {
 	client, ctx := createClient()
 	defer client.Close()
 
@@ -46,12 +46,12 @@ func SetupLocale(userId string, locale string) {
 	}
 }
 
-func GetUserLocale(message telegram.Message) *translator.Locale {
+func getUserLocale(message telegram.Message) *translator.Locale {
 	var userId = fmt.Sprintf("%d", message.From.ID)
-	return GetUserLocaleByUserId(userId)
+	return getUserLocaleByUserId(userId)
 }
 
-func GetUserLocaleByUserId(userId string) *translator.Locale {
+func getUserLocaleByUserId(userId string) *translator.Locale {
 	client, ctx := createClient()
 	defer client.Close()
 
@@ -69,7 +69,7 @@ func GetUserLocaleByUserId(userId string) *translator.Locale {
 	return &locale
 }
 
-func SaveNote(message telegram.Message) {
+func saveNote(message telegram.Message) {
 	client, ctx := createClient()
 	defer client.Close()
 
@@ -91,7 +91,7 @@ func SaveNote(message telegram.Message) {
 	}
 }
 
-func GetLastNote(message telegram.Message) *firestore.Note {
+func getLastNote(message telegram.Message) *firestore.Note {
 	client, ctx := createClient()
 	defer client.Close()
 
@@ -103,12 +103,22 @@ func GetLastNote(message telegram.Message) *firestore.Note {
 	return note
 }
 
-func SetupTimezone(userId string, secondsFromUTC int) {
+func setupTimezone(userId string, secondsFromUTC int) {
 	client, ctx := createClient()
 	defer client.Close()
 
 	err := firestore.UpdateUserTimezone(ctx, client, userId, secondsFromUTC)
 	if err != nil {
 		log.Printf("[Database] Error updating user timezone in firestore, %s", err.Error())
+	}
+}
+
+func saveLastChatId(chatId int, userId string) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.SaveLastChatId(ctx, client, userId, chatId)
+	if err != nil {
+		log.Printf("[Database] Error saving last chat id to firestore, %s", err.Error())
 	}
 }
