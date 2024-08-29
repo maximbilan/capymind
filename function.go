@@ -5,12 +5,18 @@ import (
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/capymind/internal/bot"
+	"github.com/capymind/internal/scheduler"
 )
 
 func init() {
 	functions.HTTP("handler", handler)
+	functions.HTTP("schedule", schedule)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	bot.Parse(w, r)
+}
+
+func schedule(w http.ResponseWriter, r *http.Request) {
+	scheduler.Schedule()
 }
