@@ -34,8 +34,8 @@ jobs:
          chmod +x ./scripts/deploy_function.sh
          ./scripts/deploy_function.sh
       env:
-        CAPY_TELEGRAM_BOT_TOKEN: ${{ vars.CAPY_TELEGRAM_BOT_TOKEN }}
-        CAPY_CLOUD_FUNCTION_URL: ${{ vars.CAPY_CLOUD_FUNCTION_URL }}
-        CAPY_PROJECT_ID: ${{ vars.CAPY_PROJECT_ID }}
-        CAPY_SERVER_REGION: ${{ vars.CAPY_SERVER_REGION }}
+        CAPY_TELEGRAM_BOT_TOKEN: ${{ secrets.CAPY_TELEGRAM_BOT_TOKEN }}
+        CAPY_CLOUD_FUNCTION_URL: ${{ secrets.CAPY_CLOUD_FUNCTION_URL }}
+        CAPY_PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
+        CAPY_SERVER_REGION: ${{ secrets.CAPY_SERVER_REGION }}
       shell: bash

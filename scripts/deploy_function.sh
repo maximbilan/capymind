@@ -12,12 +12,20 @@ PROJECT_ID=$CAPY_PROJECT_ID
 REGION=$CAPY_SERVER_REGION
 
 # Set environment variables
-PARAMS=("CAPY_TELEGRAM_BOT_TOKEN=$CAPY_TELEGRAM_BOT_TOKEN" "CAPY_PROJECT_ID=$CAPY_PROJECT_ID" "CLOUD=true")
+ENV_PARAMS=("CLOUD=true")
 ENV_VARS=""
-for PARAM in "${PARAMS[@]}"; do
+for PARAM in "${ENV_PARAMS[@]}"; do
   ENV_VARS+="$PARAM,"
 done
 ENV_VARS=${ENV_VARS%,}
+
+# Set the secret environment variables
+SECRET_PARAMS=("CAPY_TELEGRAM_BOT_TOKEN=$CAPY_TELEGRAM_BOT_TOKEN" "CAPY_PROJECT_ID=$CAPY_PROJECT_ID")
+SECRETS=""
+for PARAM in "${SECRET_PARAMS[@]}"; do
+  SECRETS+="$PARAM,"
+done
+SECRETS=${SECRETS%,}
 
 # Set memory parameter
 MEMORY="256MB"
@@ -32,6 +40,7 @@ gcloud functions deploy $FUNCTION_NAME \
     --gen2 \
     --region $REGION \
     --set-env-vars $ENV_VARS \
+    --set-secrets $SECRETS \
     --memory $MEMORY
 
 # Print the deployment status
