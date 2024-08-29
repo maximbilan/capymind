@@ -44,3 +44,10 @@ func UpdateUserTimezone(ctx context.Context, client *firestore.Client, userId st
 	}, firestore.MergeAll)
 	return err
 }
+
+func SaveLastChatId(ctx context.Context, client *firestore.Client, userId string, chatId int) error {
+	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
+		"lastChatId": chatId,
+	}, firestore.MergeAll)
+	return err
+}
