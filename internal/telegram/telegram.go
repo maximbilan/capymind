@@ -24,13 +24,14 @@ func Parse(r *http.Request) *Update {
 	return &update
 }
 
-func SendMessage(chatID int, text string, replyMarkup *InlineKeyboardMarkup) {
+func SendMessage(chatID int, text string, replyMarkup *InlineKeyboardMarkup, scheduledDate *int64) {
 	var url string = baseURL + "/sendMessage"
 
 	message := SendMessageRequest{
-		ChatID:      chatID,
-		Text:        text,
-		ReplyMarkup: replyMarkup,
+		ChatID:       chatID,
+		Text:         text,
+		ReplyMarkup:  replyMarkup,
+		ScheduleDate: scheduledDate,
 	}
 
 	jsonData, err := json.Marshal(message)

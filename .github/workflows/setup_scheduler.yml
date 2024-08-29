@@ -1,0 +1,23 @@
+name: Setup Scheduler
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-telegram-bot:
+    name: Setup Scheduler
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run script file
+      run: |
+         chmod +x ./scripts/schedule_jobs.sh
+         ./scripts/schedule_jobs.sh
+      env:
+        CAPY_PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
+        CAPY_SERVER_REGION: ${{ secrets.CAPY_SERVER_REGION }}
+      shell: bash

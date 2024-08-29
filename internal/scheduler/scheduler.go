@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
 	google "cloud.google.com/go/firestore"
 	"github.com/capymind/internal/firestore"
@@ -32,7 +33,10 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 			// Handle empty fields later
 			userLocale := translator.Locale(user.Locale)
 			localizedMessage := translator.Translate(userLocale, "how_are_you")
-			telegram.SendMessage(user.LastChatId, localizedMessage, nil)
+			scheduledTime := time.Now().Add(9 * time.Hour)
+			scheduledTime = scheduledTime.Add(-time.Duration(user.SecondsFromUTC) * time.Second)
+			scheduledUnixTime := scheduledTime.Unix()
+			telegram.SendMessage(user.LastChatId, localizedMessage, nil, &scheduledUnixTime)
 		}
 		return nil
 	})
