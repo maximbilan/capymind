@@ -18,5 +18,5 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func schedule(w http.ResponseWriter, r *http.Request) {
-	scheduler.Schedule()
+	scheduler.Schedule(w, r)
 }

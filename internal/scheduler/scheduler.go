@@ -3,6 +3,7 @@ package scheduler
 import (
 	"context"
 	"log"
+	"net/http"
 
 	google "cloud.google.com/go/firestore"
 	"github.com/capymind/internal/firestore"
@@ -19,7 +20,7 @@ func createClient() (*google.Client, context.Context) {
 	return client, ctx
 }
 
-func Schedule() {
+func Schedule(w http.ResponseWriter, r *http.Request) {
 	log.Println("Schedule capymind...")
 
 	client, ctx := createClient()
