@@ -7,6 +7,7 @@ import (
 	google "cloud.google.com/go/firestore"
 	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/telegram"
+	"github.com/capymind/internal/translator"
 )
 
 func createClient() (*google.Client, context.Context) {
@@ -27,7 +28,10 @@ func Schedule() {
 	firestore.ForEachUser(ctx, client, func(users []firestore.User) error {
 		for _, user := range users {
 			log.Printf("[Scheduler] User: %s", user.ID)
-			telegram.SendMessage(user.LastChatId, "Hello from scheduler!", nil)
+			// Handle empty fields later
+			userLocale := translator.Locale(user.Locale)
+			localizedMessage := translator.Translate(userLocale, "how_are_you")
+			telegram.SendMessage(user.LastChatId, localizedMessage, nil)
 		}
 		return nil
 	})
