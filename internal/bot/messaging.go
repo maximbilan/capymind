@@ -7,12 +7,12 @@ import (
 
 func sendMessage(chatId int, userId string, text string) {
 	saveLastChatId(chatId, userId)
-	telegram.SendMessage(chatId, text, nil)
+	telegram.SendMessage(chatId, text, nil, nil)
 }
 
 func sendMessageWithReply(chatId int, userId string, text string, replyMarkup *telegram.InlineKeyboardMarkup) {
 	saveLastChatId(chatId, userId)
-	telegram.SendMessage(chatId, text, replyMarkup)
+	telegram.SendMessage(chatId, text, replyMarkup, nil)
 }
 
 func localizeAndSendMessage(chatId int, userId string, locale translator.Locale, text string) {

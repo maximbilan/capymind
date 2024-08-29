@@ -8,7 +8,8 @@ type Message struct {
 }
 
 type SendMessageRequest struct {
-	ChatID      int                   `json:"chat_id"`
-	Text        string                `json:"text"`
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ChatID       int                   `json:"chat_id"`
+	Text         string                `json:"text"`
+	ReplyMarkup  *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ScheduleDate *int64                `json:"schedule_date,omitempty"`
 }

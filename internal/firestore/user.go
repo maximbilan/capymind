@@ -7,10 +7,11 @@ import (
 )
 
 type User struct {
-	ID         string `firestore:"id"`
-	Name       string `firestore:"name"`
-	Locale     string `firestore:"locale"`
-	LastChatId int    `firestore:"lastChatId"`
+	ID             string `firestore:"id"`
+	Name           string `firestore:"name"`
+	Locale         string `firestore:"locale"`
+	LastChatId     int    `firestore:"lastChatId"`
+	SecondsFromUTC int64  `firestore:"secondsFromUTC"`
 }
 
 func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
