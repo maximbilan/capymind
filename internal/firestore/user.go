@@ -7,9 +7,10 @@ import (
 )
 
 type User struct {
-	ID     string `firestore:"id"`
-	Name   string `firestore:"name"`
-	Locale string `firestore:"locale"`
+	ID         string `firestore:"id"`
+	Name       string `firestore:"name"`
+	Locale     string `firestore:"locale"`
+	LastChatId int    `firestore:"lastChatId"`
 }
 
 func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
@@ -50,4 +51,37 @@ func SaveLastChatId(ctx context.Context, client *firestore.Client, userId string
 		"lastChatId": chatId,
 	}, firestore.MergeAll)
 	return err
+}
+
+func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]User) error) error {
+	var lastDoc *firestore.DocumentSnapshot
+	for {
+		query := client.Collection(users.String()).OrderBy(firestore.DocumentID, firestore.Asc).Limit(100)
+		if lastDoc != nil {
+			query = query.StartAfter(lastDoc)
+		}
+
+		docs, err := query.Documents(ctx).GetAll()
+		if err != nil {
+			return err
+		}
+
+		var users []User
+		for _, doc := range docs {
+			var user User
+			doc.DataTo(&user)
+			users = append(users, user)
+		}
+
+		err = callback(users)
+		if err != nil {
+			return err
+		}
+
+		if len(docs) < 100 {
+			break
+		}
+		lastDoc = docs[len(docs)-1]
+	}
+	return nil
 }

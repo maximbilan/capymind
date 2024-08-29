@@ -12,7 +12,8 @@ const translationsJSON = `{
         "locale_set": "Locale has been updated successfully",
         "language_select": "Choose your language:",
         "timezone_select": "Choose your timezone:",
-        "timezone_set": "Timezone has been updated successfully"
+        "timezone_set": "Timezone has been updated successfully",
+        "how_are_you": "How are you feeling today?"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind! Ваш особистий журнал психічного здоров'я всього в кількох кроках. Почніть робити записи, щоб розмірковувати над своїми думками та емоціями.",
@@ -25,6 +26,7 @@ const translationsJSON = `{
         "locale_set": "Мова успішно оновлена",
         "language_select": "Оберіть вашу мову:",
         "timezone_select": "Оберіть ваш часовий пояс:",
-        "timezone_set": "Часовий пояс успішно оновлено"
+        "timezone_set": "Часовий пояс успішно оновлено",
+        "how_are_you": "Як ви себе почуваєте сьогодні?"
     }
 }`

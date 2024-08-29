@@ -31,8 +31,8 @@ jobs:
 
     - name: Run script file
       run: |
-         chmod +x ./scripts/deploy_function.sh
-         ./scripts/deploy_function.sh
+         chmod +x ./scripts/deploy_functions.sh
+         ./scripts/deploy_functions.sh
       env:
         CAPY_PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
         CAPY_SERVER_REGION: ${{ secrets.CAPY_SERVER_REGION }}
