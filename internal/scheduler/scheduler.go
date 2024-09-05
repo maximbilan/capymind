@@ -51,7 +51,7 @@ func scheduleTask(ctx context.Context, client *cloudtasks.Client, chatId int, te
 		Task: &taskspb.Task{
 			MessageType: &taskspb.Task_HttpRequest{
 				HttpRequest: &taskspb.HttpRequest{
-					HttpMethod: taskspb.HttpMethod_GET,
+					HttpMethod: taskspb.HttpMethod_POST,
 					Url:        url,
 				},
 			},
