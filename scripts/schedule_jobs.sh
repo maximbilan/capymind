@@ -8,7 +8,6 @@ gcloud scheduler jobs create http schedule-morning-messages \
   --project $PROJECT_ID \
   --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME" \
   --schedule="0 0 * * *" \
-  --time-zone="UTC" \
   --http-method=GET \
   --location=$REGION
 
@@ -16,7 +15,6 @@ gcloud scheduler jobs create http schedule-evening-messages \
   --project $PROJECT_ID \
   --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME" \
   --schedule="0 12 * * *" \
-  --time-zone="UTC" \
   --http-method=GET \
   --location=$REGION
 
