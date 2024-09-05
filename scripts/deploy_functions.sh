@@ -9,11 +9,9 @@ SCHEDULER_FUNC_NAME="schedule"
 RUNTIME="go122"
 # Set the project ID
 PROJECT_ID=$CAPY_PROJECT_ID
-# Set the region
-REGION=$CAPY_SERVER_REGION
 
 # Set environment variables
-ENV_PARAMS=("CAPY_PROJECT_ID=$CAPY_PROJECT_ID" "CLOUD=true")
+ENV_PARAMS=("CAPY_PROJECT_ID=$CAPY_PROJECT_ID" "CAPY_SERVER_REGION=$CAPY_SERVER_REGION" "CLOUD=true")
 ENV_VARS=""
 for PARAM in "${ENV_PARAMS[@]}"; do
   ENV_VARS+="$PARAM,"
@@ -39,7 +37,7 @@ gcloud functions deploy $HANDLER_FUNC_NAME \
     --entry-point $HANDLER_FUNC_NAME \
     --project $PROJECT_ID \
     --gen2 \
-    --region $REGION \
+    --region $CAPY_SERVER_REGION \
     --set-env-vars $ENV_VARS \
     --set-secrets $SECRETS \
     --memory $MEMORY
@@ -59,7 +57,7 @@ gcloud functions deploy $SCHEDULER_FUNC_NAME \
     --entry-point $SCHEDULER_FUNC_NAME \
     --project $PROJECT_ID \
     --gen2 \
-    --region $REGION \
+    --region $CAPY_SERVER_REGION \
     --set-env-vars $ENV_VARS \
     --set-secrets $SECRETS \
     --memory $MEMORY
