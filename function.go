@@ -11,6 +11,7 @@ import (
 func init() {
 	functions.HTTP("handler", handler)
 	functions.HTTP("schedule", schedule)
+	functions.HTTP("sendMessage", sendMessage)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -19,4 +20,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func schedule(w http.ResponseWriter, r *http.Request) {
 	scheduler.Schedule(w, r)
+}
+
+func sendMessage(w http.ResponseWriter, r *http.Request) {
+	scheduler.SendMessage(w, r)
 }
