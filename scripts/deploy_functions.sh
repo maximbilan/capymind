@@ -4,6 +4,8 @@
 HANDLER_FUNC_NAME="handler"
 # Set the function name for Message Scheduler
 SCHEDULER_FUNC_NAME="schedule"
+# Set the function name for Send Message
+SEND_MESSAGE_FUNC_NAME="sendMessage"
 
 # Set the runtime
 RUNTIME="go122"
@@ -67,4 +69,24 @@ if [ $? -eq 0 ]; then
     echo "Function $SCHEDULER_FUNC_NAME deployed successfully."
 else
     echo "Failed to deploy function $SCHEDULER_FUNC_NAME."
+fi
+
+# Deploy the send message function
+gcloud functions deploy $SEND_MESSAGE_FUNC_NAME \
+    --runtime $RUNTIME \
+    --trigger-http \
+    --allow-unauthenticated \
+    --entry-point $SEND_MESSAGE_FUNC_NAME \
+    --project $PROJECT_ID \
+    --gen2 \
+    --region $CAPY_SERVER_REGION \
+    --set-env-vars $ENV_VARS \
+    --set-secrets $SECRETS \
+    --memory $MEMORY
+
+# Print the deployment status
+if [ $? -eq 0 ]; then
+    echo "Function $SEND_MESSAGE_FUNC_NAME deployed successfully."
+else
+    echo "Failed to deploy function $SEND_MESSAGE_FUNC_NAME."
 fi
