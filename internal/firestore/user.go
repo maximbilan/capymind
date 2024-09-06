@@ -7,11 +7,11 @@ import (
 )
 
 type User struct {
-	ID             string `firestore:"id"`
-	Name           string `firestore:"name"`
-	Locale         string `firestore:"locale"`
-	LastChatId     int    `firestore:"lastChatId"`
-	SecondsFromUTC int64  `firestore:"secondsFromUTC"`
+	ID             string  `firestore:"id"`
+	Name           string  `firestore:"name"`
+	Locale         *string `firestore:"locale"`
+	LastChatId     *int    `firestore:"lastChatId"`
+	SecondsFromUTC *int64  `firestore:"secondsFromUTC"`
 }
 
 func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
@@ -30,7 +30,7 @@ func UserLocale(ctx context.Context, client *firestore.Client, userId string) (*
 	if err != nil {
 		return nil, err
 	}
-	return &user.Locale, nil
+	return user.Locale, nil
 }
 
 func UpdateUserLocale(ctx context.Context, client *firestore.Client, userId string, locale string) error {

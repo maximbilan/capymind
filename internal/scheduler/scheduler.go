@@ -100,13 +100,16 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	firestore.ForEachUser(ctx, dbClient, func(users []firestore.User) error {
 		for _, user := range users {
 			log.Printf("[Scheduler] User: %s", user.ID)
-			// Handle empty fields later
-			userLocale := translator.Locale(user.Locale)
+			if user.LastChatId == nil || user.Locale == nil || user.SecondsFromUTC == nil {
+				break
+			}
+
+			userLocale := translator.Locale(*user.Locale)
 			localizedMessage := translator.Translate(userLocale, "how_are_you")
 			scheduledTime := time.Now().Add(9 * time.Hour)
-			scheduledTime = scheduledTime.Add(-time.Duration(user.SecondsFromUTC) * time.Second)
+			scheduledTime = scheduledTime.Add(-time.Duration(*user.SecondsFromUTC) * time.Second)
 
-			scheduleTask(ctx, tasksClient, user.LastChatId, localizedMessage, scheduledTime)
+			scheduleTask(ctx, tasksClient, *user.LastChatId, localizedMessage, scheduledTime)
 		}
 		return nil
 	})
