@@ -103,6 +103,18 @@ func getLastNote(message telegram.Message) *firestore.Note {
 	return note
 }
 
+func getNotes(message telegram.Message) []firestore.Note {
+	client, ctx := createClient()
+	defer client.Close()
+
+	var userId = fmt.Sprintf("%d", message.From.ID)
+	notes, err := firestore.GetNotes(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error getting notes from firestore, %s", err.Error())
+	}
+	return notes
+}
+
 func setupTimezone(userId string, secondsFromUTC int) {
 	client, ctx := createClient()
 	defer client.Close()

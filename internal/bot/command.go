@@ -6,6 +6,7 @@ const (
 	Start    Command = "/start"
 	Note     Command = "/note"
 	Last     Command = "/last"
+	Analysis Command = "/analysis"
 	Locale   Command = "/locale"
 	Timezone Command = "/timezone"
 	Info     Command = "/info"

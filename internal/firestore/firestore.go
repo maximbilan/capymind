@@ -82,3 +82,21 @@ func LastNote(ctx context.Context, client *firestore.Client, userId string) (*No
 	}
 	return nil, nil
 }
+
+func GetNotes(ctx context.Context, client *firestore.Client, userId string) ([]Note, error) {
+	userRef := client.Collection(users.String()).Doc(userId)
+	query := client.Collection(notes.String()).Where("user", "==", userRef).Limit(100)
+
+	docs, err := query.Documents(ctx).GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	var notes []Note
+	for _, doc := range docs {
+		var note Note
+		doc.DataTo(&note)
+		notes = append(notes, note)
+	}
+	return notes, nil
+}

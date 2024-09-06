@@ -72,6 +72,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		handleNote(message, locale)
 	case Last:
 		handleLast(message, locale)
+	case Analysis:
+		handleAnalysis(message, locale)
 	case Locale:
 		handleLocale(message, locale)
 	case Timezone:
@@ -111,6 +113,17 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 	if note != nil {
 		var response string = translator.Translate(locale, "your_last_note") + note.Text
 		sendMessage(message.Chat.Id, userId, response)
+	} else {
+		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_notes")
+	}
+}
+
+func handleAnalysis(message telegram.Message, locale translator.Locale) {
+	userId := fmt.Sprintf("%d", message.From.ID)
+	notes := getNotes(message)
+	if len(notes) > 0 {
+		analysis := "Pretty Good"
+		sendMessage(message.Chat.Id, userId, analysis)
 	} else {
 		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_notes")
 	}
