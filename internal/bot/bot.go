@@ -123,7 +123,13 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
 	notes := getNotes(message)
 	if len(notes) > 0 {
-		strings := make([]string, len(notes))
+		var strings []string
+		for _, note := range notes {
+			if note.Text != "" {
+				strings = append(strings, note.Text)
+			}
+		}
+
 		analysis := ai.GetAnalysis(strings, locale)
 		if analysis != nil {
 			sendMessage(message.Chat.Id, userId, *analysis)
