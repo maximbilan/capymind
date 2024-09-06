@@ -59,20 +59,16 @@ func scheduleTask(ctx context.Context, client *cloudtasks.Client, chatId int, te
 		},
 	}
 
-	// Create a ScheduledMesaage object
 	scheduledMessage := ScheduledMessage{
 		ChatId: chatId,
 		Text:   text,
 	}
 
-	// Pass the ScheduledMessage object to the task as a payload
 	payload, err := json.Marshal(scheduledMessage)
 	if err != nil {
 		log.Printf("[Scheduler] Error marshalling payload, %s", err.Error())
 		return
 	}
-
-	// Pass the payload to the task
 	req.Task.GetHttpRequest().Body = payload
 
 	createdTask, err := client.CreateTask(ctx, req)
@@ -99,14 +95,17 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 	firestore.ForEachUser(ctx, dbClient, func(users []firestore.User) error {
 		for _, user := range users {
-			log.Printf("[Scheduler] User: %s", user.ID)
-			// Handle empty fields later
-			userLocale := translator.Locale(user.Locale)
+			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
+			if user.LastChatId == nil || user.Locale == nil || user.SecondsFromUTC == nil {
+				break
+			}
+
+			userLocale := translator.Locale(*user.Locale)
 			localizedMessage := translator.Translate(userLocale, "how_are_you")
 			scheduledTime := time.Now().Add(9 * time.Hour)
-			scheduledTime = scheduledTime.Add(-time.Duration(user.SecondsFromUTC) * time.Second)
+			scheduledTime = scheduledTime.Add(-time.Duration(*user.SecondsFromUTC) * time.Second)
 
-			scheduleTask(ctx, tasksClient, user.LastChatId, localizedMessage, scheduledTime)
+			scheduleTask(ctx, tasksClient, *user.LastChatId, localizedMessage, scheduledTime)
 		}
 		return nil
 	})
@@ -118,6 +117,5 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[Scheduler] Could not parse message %s", err.Error())
 		return
 	}
-
-	telegram.SendMessage(msg.ChatId, msg.Text, nil, nil)
+	telegram.SendMessage(msg.ChatId, msg.Text, nil)
 }
