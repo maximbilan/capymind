@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/capymind/internal/ai"
 	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 	"github.com/capymind/internal/utils"
@@ -72,6 +73,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		handleNote(message, locale)
 	case Last:
 		handleLast(message, locale)
+	case Analysis:
+		handleAnalysis(message, locale)
 	case Locale:
 		handleLocale(message, locale)
 	case Timezone:
@@ -113,6 +116,29 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 		sendMessage(message.Chat.Id, userId, response)
 	} else {
 		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_notes")
+	}
+}
+
+func handleAnalysis(message telegram.Message, locale translator.Locale) {
+	userId := fmt.Sprintf("%d", message.From.ID)
+	notes := getNotes(message)
+	if len(notes) > 0 {
+		var strings []string
+		for _, note := range notes {
+			if note.Text != "" {
+				strings = append(strings, note.Text)
+			}
+		}
+
+		localizeAndSendMessage(message.Chat.Id, userId, locale, "analysis_waiting")
+		analysis := ai.GetAnalysis(strings, locale)
+		if analysis != nil {
+			sendMessage(message.Chat.Id, userId, *analysis)
+		} else {
+			localizeAndSendMessage(message.Chat.Id, userId, locale, "no_analysis")
+		}
+	} else {
+		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_analysis")
 	}
 }
 
