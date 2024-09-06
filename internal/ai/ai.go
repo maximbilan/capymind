@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/capymind/internal/translator"
 	"github.com/invopop/jsonschema"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
@@ -32,11 +33,14 @@ func generateSchema[T any]() interface{} {
 	return schema
 }
 
-func GetAnalysis(notes []string) *string {
+func GetAnalysis(notes []string, locale translator.Locale) *string {
 	ctx := context.Background()
 	client := createClient(ctx)
 
-	prompt := "You're a professional therapist. A patient comes to you with the following notes. What would you say to them?"
+	prompt := translator.Translate(locale, "ai_analysis_prompt")
+	for index, note := range notes {
+		prompt += string(index+1) + " " + note + " "
+	}
 
 	var responseSchema = generateSchema[Analysis]()
 

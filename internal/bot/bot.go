@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/capymind/internal/ai"
 	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 	"github.com/capymind/internal/utils"
@@ -122,10 +123,15 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
 	notes := getNotes(message)
 	if len(notes) > 0 {
-		analysis := "Pretty Good"
-		sendMessage(message.Chat.Id, userId, analysis)
+		strings := make([]string, len(notes))
+		analysis := ai.GetAnalysis(strings, locale)
+		if analysis != nil {
+			sendMessage(message.Chat.Id, userId, *analysis)
+		} else {
+			localizeAndSendMessage(message.Chat.Id, userId, locale, "no_analysis")
+		}
 	} else {
-		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_notes")
+		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_analysis")
 	}
 }
 
