@@ -40,7 +40,7 @@ func GetAnalysis(notes []string, locale translator.Locale) *string {
 
 	prompt := translator.Translate(locale, "ai_analysis_prompt")
 	for index, note := range notes {
-		prompt += fmt.Sprintf("%d %s ", index+1, note)
+		prompt += fmt.Sprintf("%d. %s ", index+1, note)
 	}
 
 	var responseSchema = generateSchema[Analysis]()
@@ -65,6 +65,11 @@ func GetAnalysis(notes []string, locale translator.Locale) *string {
 	})
 
 	analysis := Analysis{}
+	if err == nil {
+		log.Printf("[AI] Error parsing analysis: %s", err.Error())
+		return nil
+	}
+
 	err = json.Unmarshal([]byte(chat.Choices[0].Message.Content), &analysis)
 	if err == nil {
 		log.Printf("[AI] Error parsing analysis: %s", err.Error())
