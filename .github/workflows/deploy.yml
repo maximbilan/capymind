@@ -36,4 +36,5 @@ jobs:
       env:
         CAPY_PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
         CAPY_SERVER_REGION: ${{ secrets.CAPY_SERVER_REGION }}
+        CAPY_AI_KEY: ${{ secrets.CAPY_AI_KEY }}
       shell: bash
