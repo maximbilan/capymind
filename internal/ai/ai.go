@@ -46,8 +46,10 @@ func GetAnalysis(notes []string, locale translator.Locale) *string {
 	var responseSchema = generateSchema[Analysis]()
 
 	schemaParam := openai.ResponseFormatJSONSchemaJSONSchemaParam{
-		Schema: openai.F(responseSchema),
-		Strict: openai.Bool(true),
+		Name:        openai.F("therapy-analysis"),
+		Description: openai.F("Analysis of the user's journal entries"),
+		Schema:      openai.F(responseSchema),
+		Strict:      openai.Bool(true),
 	}
 
 	chat, err := client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
@@ -65,13 +67,13 @@ func GetAnalysis(notes []string, locale translator.Locale) *string {
 	})
 
 	analysis := Analysis{}
-	if err == nil {
+	if err != nil {
 		log.Printf("[AI] Error parsing analysis: %s", err.Error())
 		return nil
 	}
 
 	err = json.Unmarshal([]byte(chat.Choices[0].Message.Content), &analysis)
-	if err == nil {
+	if err != nil {
 		log.Printf("[AI] Error parsing analysis: %s", err.Error())
 		return nil
 	}
