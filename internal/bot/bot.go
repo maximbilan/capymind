@@ -130,6 +130,7 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 			}
 		}
 
+		localizeAndSendMessage(message.Chat.Id, userId, locale, "analysis_waiting")
 		analysis := ai.GetAnalysis(strings, locale)
 		if analysis != nil {
 			sendMessage(message.Chat.Id, userId, *analysis)
