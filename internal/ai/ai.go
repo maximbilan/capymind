@@ -3,6 +3,7 @@ package ai
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 
@@ -39,7 +40,7 @@ func GetAnalysis(notes []string, locale translator.Locale) *string {
 
 	prompt := translator.Translate(locale, "ai_analysis_prompt")
 	for index, note := range notes {
-		prompt += string(index+1) + " " + note + " "
+		prompt += fmt.Sprintf("%d %s ", index+1, note)
 	}
 
 	var responseSchema = generateSchema[Analysis]()
