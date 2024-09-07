@@ -21,7 +21,7 @@ func createTasksClient(ctx context.Context) *cloudtasks.Client {
 	return client
 }
 
-func scheduleTask(ctx context.Context, client *cloudtasks.Client, chatId int, text string, timeOffset time.Time) {
+func scheduleTask(ctx context.Context, client *cloudtasks.Client, scheduledMessage ScheduledMessage, timeOffset time.Time) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
 	locationID := os.Getenv("CAPY_SERVER_REGION")
 	queueID := "messages"
@@ -44,11 +44,6 @@ func scheduleTask(ctx context.Context, client *cloudtasks.Client, chatId int, te
 			},
 			ScheduleTime: &timestamp,
 		},
-	}
-
-	scheduledMessage := ScheduledMessage{
-		ChatId: chatId,
-		Text:   text,
 	}
 
 	payload, err := json.Marshal(scheduledMessage)
