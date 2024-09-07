@@ -1,11 +1,11 @@
-name: Setup Scheduler for messages
+name: Setup Message Scheduler
 
 on:
   workflow_dispatch:
 
 jobs:
   setup-telegram-bot:
-    name: Setup Scheduler
+    name: Setup Google Cloud Scheduler
     runs-on: ubuntu-latest
     environment: production
     permissions:
