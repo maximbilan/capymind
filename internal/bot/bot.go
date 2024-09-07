@@ -39,7 +39,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 			sendHelpMessage(callbackQuery.Message.Chat.Id, userId, locale)
 			return
 		} else if callbackQuery.Data == "locale_setup" {
-			sendLocaleSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
+			sendLanguageSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
 		} else if callbackQuery.Data == "timezone_setup" {
 			sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
 		}
@@ -88,7 +88,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	case Analysis:
 		handleAnalysis(message, locale)
 	case Language:
-		handleLocale(message, locale)
+		handleLanguage(message, locale)
 	case Timezone:
 		handleTimezone(message, locale)
 	case Help:

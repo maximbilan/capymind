@@ -88,12 +88,12 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "no_analysis", &replyMarkup)
 }
 
-func handleLocale(message telegram.Message, locale translator.Locale) {
+func handleLanguage(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
-	sendLocaleSetMessage(message.Chat.Id, userId, locale)
+	sendLanguageSetMessage(message.Chat.Id, userId, locale)
 }
 
-func sendLocaleSetMessage(chatId int, userId string, locale translator.Locale) {
+func sendLanguageSetMessage(chatId int, userId string, locale translator.Locale) {
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
