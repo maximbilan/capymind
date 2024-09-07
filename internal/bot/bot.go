@@ -43,11 +43,12 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		if ok && updatedLocale != nil {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
 			setupLocale(userId, *updatedLocale)
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, translator.Locale(*updatedLocale), "locale_set")
+			newLocale := translator.Locale(*updatedLocale)
+			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, newLocale, "locale_set")
 
 			// If the user is setting the locale for the first time, also set the timezone
 			if getTimeZone(userId) == nil {
-				sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
+				sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, newLocale)
 			}
 			return
 		}
