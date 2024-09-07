@@ -54,5 +54,12 @@ func Request(notes []string, locale translator.Locale) *string {
 		log.Printf("[AI] Error parsing analysis: %s", err.Error())
 		return nil
 	}
-	return &response.Text
+
+	var analysis string
+	if response.Text != "" {
+		analysis = fmt.Sprintf("%s%s", translator.Translate(locale, "weekly_analysis"), response.Text)
+		return &analysis
+	} else {
+		return nil
+	}
 }
