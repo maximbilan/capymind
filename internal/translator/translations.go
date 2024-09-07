@@ -2,8 +2,7 @@ package translator
 
 const translationsJSON = `{
     "en": {
-        "welcome": "Welcome to CapyMind! Your personal mental health journal is just a few taps away. Start making entries to reflect on your thoughts and emotions.",
-        "info": "CapyMind is here to assist you in maintaining a personal journal for your mental health. You can record your thoughts and feelings, track your emotional journey, and reflect on your progress over time. Use the commands to start making entries and take a step towards self-awareness and mental well-being.",
+        "welcome": "Welcome to CapyMind! Your personal journal for mental health notes is here to help you on your journey. Reflect on your thoughts and emotions, use reminders to stay on track, and explore therapy insights to deepen your self-awareness.",
         "start_note" : "Please input your thoughts and feelings in the text field and send them to me. Your personal reflections will be safely stored in your journal.",
         "finish_note" : "Your thoughts have been successfully stored. Thank you for sharing with CapyMind. Remember, every note is a step towards better mental well-being.",
         "your_last_note": "Here is your last note: ",
@@ -21,7 +20,7 @@ const translationsJSON = `{
         "ai_analysis_prompt": "You're a professional therapist at Capymind. A patient comes to you with the following notes. What would you say to them? (Shortly summary) Notes: "
     },
     "uk": {
-        "welcome": "Ласкаво просимо до CapyMind! Ваш особистий журнал психічного здоров'я всього в кількох кроках. Почніть робити записи, щоб розмірковувати над своїми думками та емоціями.",
+        "welcome": "Ласкаво просимо до CapyMind! Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
         "info": "CapyMind допомагає вам вести особистий журнал вашого психічного здоров'я. Ви можете записувати свої думки та почуття, відстежувати свій емоційний шлях і розмірковувати над своїм прогресом з часом. Використовуйте команди, щоб почати робити записи та зробити крок до самосвідомості та психічного благополуччя.",
         "start_note" : "Будь ласка, введіть свої думки та почуття в текстове поле та надішліть їх мені. Ваші особисті роздуми будуть надійно збережені в вашому журналі.",
         "finish_note" : "Ваші думки успішно збережені. Дякую за те, що поділилися з CapyMind. Пам'ятайте, кожен запис - це крок до кращого психічного благополуччя.",
