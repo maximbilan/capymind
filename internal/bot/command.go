@@ -7,7 +7,7 @@ const (
 	Note     Command = "/note"
 	Last     Command = "/last"
 	Analysis Command = "/analysis"
-	Locale   Command = "/locale"
+	Language Command = "/language"
 	Timezone Command = "/timezone"
 	Help     Command = "/help"
 )
