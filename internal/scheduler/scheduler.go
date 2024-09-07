@@ -3,6 +3,7 @@ package scheduler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,6 +19,14 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	log.Println("Schedule capymind...")
 
 	typeStr := r.URL.Query().Get("type")
+	offsetStr := r.URL.Query().Get("offset") // hours (from UTC 0)
+	var offset int = 0
+	if offsetStr != "" {
+		_, err := fmt.Sscanf(offsetStr, "%d", &offset)
+		if err != nil {
+			log.Printf("[Scheduler] Error getting offset parameter, %s", err.Error())
+		}
+	}
 	messageType := MessageType(typeStr)
 
 	var message string
@@ -83,7 +92,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 			var scheduledTime time.Time
 			if isCloud {
-				scheduledTime = time.Now().Add(9 * time.Hour)
+				scheduledTime = time.Now().Add(time.Duration(offset) * time.Hour)
 				scheduledTime = scheduledTime.Add(-time.Duration(*user.SecondsFromUTC) * time.Second)
 			} else {
 				// For local testing, schedule the message in 10 seconds
