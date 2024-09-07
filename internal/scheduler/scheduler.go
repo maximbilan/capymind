@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/capymind/internal/firestore"
@@ -39,6 +40,11 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	tasksClient := createTasksClient(ctx)
 	defer tasksClient.Close()
 
+	var isCloud = false
+	if os.Getenv("CLOUD") == "true" {
+		isCloud = true
+	}
+
 	firestore.ForEachUser(ctx, dbClient, func(users []firestore.User) error {
 		for _, user := range users {
 			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
@@ -48,8 +54,14 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 			userLocale := translator.Locale(*user.Locale)
 			localizedMessage := translator.Translate(userLocale, message)
-			scheduledTime := time.Now().Add(9 * time.Hour)
-			scheduledTime = scheduledTime.Add(-time.Duration(*user.SecondsFromUTC) * time.Second)
+
+			var scheduledTime time.Time
+			if isCloud {
+				scheduledTime = time.Now().Add(9 * time.Hour)
+				scheduledTime = scheduledTime.Add(-time.Duration(*user.SecondsFromUTC) * time.Second)
+			} else {
+				scheduledTime = time.Now().Add(10 * time.Second)
+			}
 
 			scheduledMessage := ScheduledMessage{
 				ChatId: *user.LastChatId,
