@@ -91,8 +91,6 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		handleLocale(message, locale)
 	case Timezone:
 		handleTimezone(message, locale)
-	case Info:
-		handleInfo(message, locale)
 	case Help:
 		handleHelp(message, locale)
 	default:

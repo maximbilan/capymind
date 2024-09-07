@@ -9,6 +9,5 @@ const (
 	Analysis Command = "/analysis"
 	Locale   Command = "/locale"
 	Timezone Command = "/timezone"
-	Info     Command = "/info"
 	Help     Command = "/help"
 )
