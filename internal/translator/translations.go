@@ -15,12 +15,13 @@ const translationsJSON = `{
         "how_are_you_morning": "Good morning! How are you feeling today? Any dreams during the night or thoughts on your mind to share?",
         "how_are_you_evening": "Good evening! How was your day? Any reflections or thoughts you'd like to share before you rest?",
         "make_record_to_journal": "Make a record to your journal 💭",
+        "make_record_to_journal_short": "Make a record 💭",
         "no_analysis": "Not enough entries have been made to generate an analysis. Begin by sharing your thoughts and feelings with CapyMind.",
         "analysis_waiting": "Your analysis is being generated. Please hold on for a moment 😴",
         "ai_analysis_prompt": "You're a professional therapist at Capymind. A patient comes to you with the following notes. What would you say to them? (Shortly summary) Notes: ",
-        "how_to_use": "Getting Started with CapyMind 🙋‍♂️",
-        "configure_language": "Configure Language 🌍",
-        "configure_timezone": "Configure Timezone ⏰",
+        "how_to_use": "Getting started 🙋‍♂️",
+        "configure_language": "Language 🌍",
+        "configure_timezone": "Timezone ⏰",
         "configure_settings": "CapyMind supports various languages and time zones to enhance your experience. Select your preferred language and time zone below to receive personalized reminders."
     },
     "uk": {
@@ -37,12 +38,13 @@ const translationsJSON = `{
         "how_are_you_morning": "Доброго ранку! Як ви себе почуваєте сьогодні? Чи були у вас сни протягом ночі або думки на ранок, якими ви хочете поділитися?",
         "how_are_you_evening": "Доброго вечора! Як пройшов ваш день? Чи є відгуки або думки, якими ви хочете поділитися перед відпочинком?",
         "make_record_to_journal": "Зробити запис у свій журнал 💭",
+        "make_record_to_journal_short": "Зробити запис 💭",
         "no_analysis": "Недостатньо записів для генерації аналізу. Почніть ділитись своїми думками та почуттями з CapyMind.",
         "analysis_waiting": "Ваш аналіз генерується. Будь ласка, зачекайте 😴",
         "ai_analysis_prompt": "Ви професійний терапевт в Capymind. Пацієнт приходить до вас з наступними записами. (Короткий зміст) Що б ви сказали їм? Записи: ",
-        "how_to_use": "Початок роботи з CapyMind 🙋‍♂️",
-        "configure_language": "Налаштування мови 🌍",
-        "configure_timezone": "Налаштування часового поясу ⏰",
+        "how_to_use": "Допомога 🙋‍♂️",
+        "configure_language": "Мова 🌍",
+        "configure_timezone": "Часовий пояс ⏰",
         "configure_settings": "CapyMind підтримує різні мови та часові пояси для покращення вашого досвіду. Виберіть свою мову та часовий пояс нижче, щоб отримувати персоналізовані нагадування."
     }
 }`
