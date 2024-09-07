@@ -1,4 +1,4 @@
-name: Deploy Function
+name: Deploy Functions
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   setup-telegram-bot:
-    name: Deploy Google Cloud Function
+    name: Deploy Google Cloud Functions
     runs-on: ubuntu-latest
     environment: production
     permissions:

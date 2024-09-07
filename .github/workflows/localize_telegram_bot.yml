@@ -1,0 +1,22 @@
+name: Localize Telegram Bot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-telegram-bot:
+    name: Localize Telegram Bot
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run script file
+      run: |
+         chmod +x ./scripts/localize_telegram_bot.sh
+         ./scripts/localize_telegram_bot.sh
+      env:
+        CAPY_TELEGRAM_BOT_TOKEN: ${{ secrets.CAPY_TELEGRAM_BOT_TOKEN }}
+      shell: bash
