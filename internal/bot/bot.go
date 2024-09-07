@@ -24,17 +24,24 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 
 	callbackQuery := update.CallbackQuery
 	if callbackQuery != nil && callbackQuery.Data != "" {
-		if callbackQuery.Data == "note_make" {
-			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			userLocale := getUserLocaleByUserId(userId)
-			locale := translator.EN
-			if userLocale != nil {
-				locale = translator.Locale(*userLocale)
-			}
+		userId := fmt.Sprintf("%d", callbackQuery.From.ID)
+		userLocale := getUserLocaleByUserId(userId)
+		locale := translator.EN
+		if userLocale != nil {
+			locale = translator.Locale(*userLocale)
+		}
 
+		if callbackQuery.Data == "note_make" {
 			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "start_note")
 			userIds.Append(callbackQuery.From.ID)
 			return
+		} else if callbackQuery.Data == "help" {
+			sendHelpMessage(callbackQuery.Message.Chat.Id, userId, locale)
+			return
+		} else if callbackQuery.Data == "locale_setup" {
+			sendLocaleSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
+		} else if callbackQuery.Data == "timezone_setup" {
+			sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
 		}
 
 		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
@@ -48,14 +55,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 
 		secondsFromUTC, ok := utils.ParseTimezone(callbackQuery.Data)
 		if ok && secondsFromUTC != nil {
-			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
 			setupTimezone(userId, *secondsFromUTC)
-
-			userLocale := getUserLocaleByUserId(userId)
-			locale := translator.EN
-			if userLocale != nil {
-				locale = translator.Locale(*userLocale)
-			}
 			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "timezone_set")
 			return
 		}

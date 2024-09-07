@@ -27,13 +27,24 @@ func createOrUpdateUser(message telegram.Message) {
 
 	var user = firestore.User{
 		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: message.From.Username,
+		Name: &message.From.Username,
 	}
 
 	err := firestore.NewUser(ctx, client, user)
 	if err != nil {
 		log.Printf("[Database] Error creating user in firestore, %s", err.Error())
 	}
+}
+
+func userExists(userId string) bool {
+	client, ctx := createClient()
+	defer client.Close()
+
+	exists, err := firestore.UserExists(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error checking if user exists in firestore, %s", err.Error())
+	}
+	return exists
 }
 
 func setupLocale(userId string, locale string) {
@@ -75,7 +86,7 @@ func saveNote(message telegram.Message) {
 
 	var user = firestore.User{
 		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: message.From.Username,
+		Name: &message.From.Username,
 	}
 
 	timestamp := time.Now()
