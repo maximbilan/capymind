@@ -18,7 +18,15 @@ func handleUser(message telegram.Message) {
 
 func handleStart(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
-	localizeAndSendMessage(message.Chat.Id, userId, locale, "welcome")
+	replyMarkup := telegram.InlineKeyboardMarkup{
+		InlineKeyboard: [][]telegram.InlineKeyboardButton{
+			{
+				{Text: translator.Translate(locale, "make_record_to_journal"), CallbackData: "note_make"},
+				{Text: translator.Translate(locale, "how_to_use"), CallbackData: "help"},
+			},
+		},
+	}
+	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "welcome", &replyMarkup)
 	handleUser(message)
 }
 
@@ -121,5 +129,9 @@ func handleUnknownState(message telegram.Message, locale translator.Locale) {
 
 func handleHelp(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
-	localizeAndSendMessage(message.Chat.Id, userId, locale, "commands_hint")
+	sendHelpMessage(message.Chat.Id, userId, locale)
+}
+
+func sendHelpMessage(chatId int, userId string, locale translator.Locale) {
+	localizeAndSendMessage(chatId, userId, locale, "commands_hint")
 }
