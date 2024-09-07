@@ -36,6 +36,17 @@ func createOrUpdateUser(message telegram.Message) {
 	}
 }
 
+func userExists(userId string) bool {
+	client, ctx := createClient()
+	defer client.Close()
+
+	exists, err := firestore.UserExists(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error checking if user exists in firestore, %s", err.Error())
+	}
+	return exists
+}
+
 func setupLocale(userId string, locale string) {
 	client, ctx := createClient()
 	defer client.Close()

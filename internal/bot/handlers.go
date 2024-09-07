@@ -27,6 +27,10 @@ func handleStart(message telegram.Message, locale translator.Locale) {
 		},
 	}
 	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "welcome", &replyMarkup)
+
+	if !userExists(userId) {
+		handleNoUser(message.Chat.Id, userId, locale)
+	}
 	handleUser(message)
 }
 
@@ -86,6 +90,10 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 
 func handleLocale(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
+	sendLocaleSetMessage(message.Chat.Id, userId, locale)
+}
+
+func sendLocaleSetMessage(chatId int, userId string, locale translator.Locale) {
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
@@ -94,11 +102,15 @@ func handleLocale(message telegram.Message, locale translator.Locale) {
 			},
 		},
 	}
-	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "language_select", &replyMarkup)
+	localizeAndSendMessageWithReply(chatId, userId, locale, "language_select", &replyMarkup)
 }
 
 func handleTimezone(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
+	sendTimezoneSetMessage(message.Chat.Id, userId, locale)
+}
+
+func sendTimezoneSetMessage(chatId int, userId string, locale translator.Locale) {
 	timeZones := utils.GetTimeZones()
 
 	var inlineKeyboard [][]telegram.InlineKeyboardButton
@@ -112,7 +124,7 @@ func handleTimezone(message telegram.Message, locale translator.Locale) {
 		InlineKeyboard: inlineKeyboard,
 	}
 
-	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "timezone_select", &replyMarkup)
+	localizeAndSendMessageWithReply(chatId, userId, locale, "timezone_select", &replyMarkup)
 }
 
 func handleUnknownState(message telegram.Message, locale translator.Locale) {
@@ -134,4 +146,16 @@ func handleHelp(message telegram.Message, locale translator.Locale) {
 
 func sendHelpMessage(chatId int, userId string, locale translator.Locale) {
 	localizeAndSendMessage(chatId, userId, locale, "commands_hint")
+}
+
+func handleNoUser(chatId int, userId string, locale translator.Locale) {
+	replyMarkup := telegram.InlineKeyboardMarkup{
+		InlineKeyboard: [][]telegram.InlineKeyboardButton{
+			{
+				{Text: translator.Translate(locale, "configure_language"), CallbackData: "locale_setup"},
+				{Text: translator.Translate(locale, "configure_timezone"), CallbackData: "timezone_setup"},
+			},
+		},
+	}
+	localizeAndSendMessageWithReply(chatId, userId, locale, "configure_settings", &replyMarkup)
 }

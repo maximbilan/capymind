@@ -21,6 +21,14 @@ func NewUser(ctx context.Context, client *firestore.Client, user User) error {
 	return err
 }
 
+func UserExists(ctx context.Context, client *firestore.Client, userId string) (bool, error) {
+	doc, err := client.Collection(users.String()).Doc(userId).Get(ctx)
+	if err != nil {
+		return false, err
+	}
+	return doc.Exists(), nil
+}
+
 func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
 	doc, err := client.Collection(users.String()).Doc(userId).Get(ctx)
 	if err != nil {

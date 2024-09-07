@@ -38,6 +38,10 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		} else if callbackQuery.Data == "help" {
 			sendHelpMessage(callbackQuery.Message.Chat.Id, userId, locale)
 			return
+		} else if callbackQuery.Data == "locale_setup" {
+			sendLocaleSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
+		} else if callbackQuery.Data == "timezone_setup" {
+			sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
 		}
 
 		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
