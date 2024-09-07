@@ -26,7 +26,13 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	if callbackQuery != nil && callbackQuery.Data != "" {
 		if callbackQuery.Data == "note_make" {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, translator.Locale(EN), "start_note")
+			userLocale := getUserLocaleByUserId(userId)
+			locale := translator.EN
+			if userLocale != nil {
+				locale = translator.Locale(*userLocale)
+			}
+
+			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "start_note")
 			userIds.Append(callbackQuery.From.ID)
 			return
 		}
