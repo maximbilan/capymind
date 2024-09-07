@@ -27,7 +27,7 @@ func createOrUpdateUser(message telegram.Message) {
 
 	var user = firestore.User{
 		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: message.From.Username,
+		Name: &message.From.Username,
 	}
 
 	err := firestore.NewUser(ctx, client, user)
@@ -86,7 +86,7 @@ func saveNote(message telegram.Message) {
 
 	var user = firestore.User{
 		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: message.From.Username,
+		Name: &message.From.Username,
 	}
 
 	timestamp := time.Now()

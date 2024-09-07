@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	ID             string  `firestore:"id"`
-	Name           string  `firestore:"name"`
+	Name           *string `firestore:"name"`
 	Locale         *string `firestore:"locale"`
 	LastChatId     *int    `firestore:"lastChatId"`
 	SecondsFromUTC *int64  `firestore:"secondsFromUTC"`
@@ -22,11 +22,11 @@ func NewUser(ctx context.Context, client *firestore.Client, user User) error {
 }
 
 func UserExists(ctx context.Context, client *firestore.Client, userId string) (bool, error) {
-	doc, err := client.Collection(users.String()).Doc(userId).Get(ctx)
-	if err != nil {
-		return false, err
+	user, _ := getUser(ctx, client, userId)
+	if user != nil {
+		return user.Name != nil, nil
 	}
-	return doc.Exists(), nil
+	return false, nil
 }
 
 func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
