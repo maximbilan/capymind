@@ -1,40 +1,16 @@
-package ai
+package analysis
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/capymind/internal/translator"
-	"github.com/invopop/jsonschema"
 	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/option"
 )
 
-type Analysis struct {
-	Text string `json:"text"`
-}
-
-func createClient(ctx context.Context) *openai.Client {
-	client := openai.NewClient(
-		option.WithAPIKey(os.Getenv("CAPY_AI_KEY")),
-	)
-	return client
-}
-
-func generateSchema[T any]() interface{} {
-	reflector := jsonschema.Reflector{
-		AllowAdditionalProperties: false,
-		DoNotReference:            true,
-	}
-	var v T
-	schema := reflector.Reflect(v)
-	return schema
-}
-
-func GetAnalysis(notes []string, locale translator.Locale) *string {
+func Request(notes []string, locale translator.Locale) *string {
 	ctx := context.Background()
 	client := createClient(ctx)
 
@@ -43,7 +19,7 @@ func GetAnalysis(notes []string, locale translator.Locale) *string {
 		prompt += fmt.Sprintf("%d. %s ", index+1, note)
 	}
 
-	var responseSchema = generateSchema[Analysis]()
+	var responseSchema = generateSchema[Response]()
 
 	schemaParam := openai.ResponseFormatJSONSchemaJSONSchemaParam{
 		Name:        openai.F("therapy-analysis"),
@@ -66,16 +42,16 @@ func GetAnalysis(notes []string, locale translator.Locale) *string {
 		Model: openai.F(openai.ChatModelGPT4o2024_08_06),
 	})
 
-	analysis := Analysis{}
+	response := Response{}
 	if err != nil {
 		log.Printf("[AI] Error parsing analysis: %s", err.Error())
 		return nil
 	}
 
-	err = json.Unmarshal([]byte(chat.Choices[0].Message.Content), &analysis)
+	err = json.Unmarshal([]byte(chat.Choices[0].Message.Content), &response)
 	if err != nil {
 		log.Printf("[AI] Error parsing analysis: %s", err.Error())
 		return nil
 	}
-	return &analysis.Text
+	return &response.Text
 }

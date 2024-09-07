@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/capymind/internal/ai"
+	"github.com/capymind/internal/analysis"
 	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 	"github.com/capymind/internal/utils"
@@ -131,7 +131,7 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 		}
 
 		localizeAndSendMessage(message.Chat.Id, userId, locale, "analysis_waiting")
-		analysis := ai.GetAnalysis(strings, locale)
+		analysis := analysis.Request(strings, locale)
 		if analysis != nil {
 			sendMessage(message.Chat.Id, userId, *analysis)
 		} else {
