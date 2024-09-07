@@ -13,7 +13,9 @@ const translationsJSON = `{
         "language_select": "Choose your language:",
         "timezone_select": "Choose your timezone:",
         "timezone_set": "Timezone has been updated successfully",
-        "how_are_you": "How are you feeling today?",
+        "how_are_you_morning": "Good morning! How are you feeling today? Any dreams during the night or thoughts on your mind to share?",
+        "how_are_you_evening": "Good evening! How was your day? Any reflections or thoughts you'd like to share before you rest?",
+        "make_record_to_journal": "Make a record to your journal 💭",
         "no_analysis": "You have not made enough entries to generate an analysis. Start by sharing your thoughts and feelings with CapyMind.",
         "analysis_waiting": "Your analysis is being prepared. Please wait a moment.",
         "ai_analysis_prompt": "You're a professional therapist at Capymind. A patient comes to you with the following notes. What would you say to them? (Shortly summary) Notes: "
@@ -30,7 +32,9 @@ const translationsJSON = `{
         "language_select": "Оберіть вашу мову:",
         "timezone_select": "Оберіть ваш часовий пояс:",
         "timezone_set": "Часовий пояс успішно оновлено",
-        "how_are_you": "Як ви себе почуваєте сьогодні?",
+        "how_are_you_morning": "Доброго ранку! Як ви себе почуваєте сьогодні? Чи були у вас сни протягом ночі або думки на ранок, якими ви хочете поділитися?",
+        "how_are_you_evening": "Доброго вечора! Як пройшов ваш день? Чи є відгуки або думки, якими ви хочете поділитися перед відпочинком?",
+        "make_record_to_journal": "Зробити запис у свій журнал 💭",
         "no_analysis": "Ви ще не зробили достатньо записів для створення аналізу. Почніть ділитися своїми думками та почуттями з CapyMind.",
         "analysis_waiting": "Ваш аналіз готується. Будь ласка, зачекайте.",
         "ai_analysis_prompt": "Ви професійний терапевт в Capymind. Пацієнт приходить до вас з наступними записами. (Короткий зміст) Що б ви сказали їм? Записи: "

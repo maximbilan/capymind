@@ -15,6 +15,20 @@ import (
 func Schedule(w http.ResponseWriter, r *http.Request) {
 	log.Println("Schedule capymind...")
 
+	typeStr := r.URL.Query().Get("type")
+	messageType := MessageType(typeStr)
+
+	var message string
+	switch messageType {
+	case Morning:
+		message = "how_are_you_morning"
+	case Evening:
+		message = "how_are_you_evening"
+	default:
+		log.Println("Missing message type parameter")
+		return
+	}
+
 	ctx := context.Background()
 
 	// Firestore
@@ -33,11 +47,18 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 			}
 
 			userLocale := translator.Locale(*user.Locale)
-			localizedMessage := translator.Translate(userLocale, "how_are_you")
+			localizedMessage := translator.Translate(userLocale, message)
 			scheduledTime := time.Now().Add(9 * time.Hour)
 			scheduledTime = scheduledTime.Add(-time.Duration(*user.SecondsFromUTC) * time.Second)
 
-			scheduleTask(ctx, tasksClient, *user.LastChatId, localizedMessage, scheduledTime)
+			scheduledMessage := ScheduledMessage{
+				ChatId: *user.LastChatId,
+				Text:   localizedMessage,
+				Type:   messageType,
+				Locale: userLocale,
+			}
+
+			scheduleTask(ctx, tasksClient, scheduledMessage, scheduledTime)
 		}
 		return nil
 	})
@@ -49,5 +70,20 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[Scheduler] Could not parse message %s", err.Error())
 		return
 	}
-	telegram.SendMessage(msg.ChatId, msg.Text, nil)
+
+	var reply *telegram.InlineKeyboardMarkup
+	switch msg.Type {
+	case Morning, Evening:
+		reply = &telegram.InlineKeyboardMarkup{
+			InlineKeyboard: [][]telegram.InlineKeyboardButton{
+				{
+					{Text: translator.Translate(msg.Locale, "make_record_to_journal"), CallbackData: "note_make"},
+				},
+			},
+		}
+	default:
+		reply = nil
+	}
+
+	telegram.SendMessage(msg.ChatId, msg.Text, reply)
 }
