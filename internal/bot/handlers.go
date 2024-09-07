@@ -36,7 +36,14 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 		var response string = translator.Translate(locale, "your_last_note") + note.Text
 		sendMessage(message.Chat.Id, userId, response)
 	} else {
-		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_notes")
+		replyMarkup := telegram.InlineKeyboardMarkup{
+			InlineKeyboard: [][]telegram.InlineKeyboardButton{
+				{
+					{Text: translator.Translate(locale, "make_record_to_journal"), CallbackData: "note_make"},
+				},
+			},
+		}
+		localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "no_notes", &replyMarkup)
 	}
 }
 
