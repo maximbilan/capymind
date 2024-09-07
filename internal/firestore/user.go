@@ -14,6 +14,13 @@ type User struct {
 	SecondsFromUTC *int64  `firestore:"secondsFromUTC"`
 }
 
+func NewUser(ctx context.Context, client *firestore.Client, user User) error {
+	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, map[string]interface{}{
+		"name": user.Name,
+	}, firestore.MergeAll)
+	return err
+}
+
 func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
 	doc, err := client.Collection(users.String()).Doc(userId).Get(ctx)
 	if err != nil {
