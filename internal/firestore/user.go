@@ -12,6 +12,7 @@ type User struct {
 	Locale         *string `firestore:"locale"`
 	LastChatId     *int    `firestore:"lastChatId"`
 	SecondsFromUTC *int64  `firestore:"secondsFromUTC"`
+	IsWriting      bool    `firestore:"isWriting"`
 }
 
 func NewUser(ctx context.Context, client *firestore.Client, user User) error {
@@ -108,4 +109,27 @@ func UserTimezone(ctx context.Context, client *firestore.Client, userId string) 
 		return nil, err
 	}
 	return user.SecondsFromUTC, nil
+}
+
+func updateWritingMode(ctx context.Context, client *firestore.Client, userId string, state bool) error {
+	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
+		"isWriting": state,
+	}, firestore.MergeAll)
+	return err
+}
+
+func StartWriting(ctx context.Context, client *firestore.Client, userId string) error {
+	return updateWritingMode(ctx, client, userId, true)
+}
+
+func StopWriting(ctx context.Context, client *firestore.Client, userId string) error {
+	return updateWritingMode(ctx, client, userId, false)
+}
+
+func UserWritingStatus(ctx context.Context, client *firestore.Client, userId string) (bool, error) {
+	user, err := getUser(ctx, client, userId)
+	if err != nil {
+		return false, err
+	}
+	return user.IsWriting, nil
 }

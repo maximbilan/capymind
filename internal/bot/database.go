@@ -156,3 +156,34 @@ func saveLastChatId(chatId int, userId string) {
 		log.Printf("[Database] Error saving last chat id to firestore, %s", err.Error())
 	}
 }
+
+func startWritingMode(userId string) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.StartWriting(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error starting writing mode in firestore, %s", err.Error())
+	}
+}
+
+func stopWritingMode(userId string) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.StopWriting(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error stopping writing mode in firestore, %s", err.Error())
+	}
+}
+
+func isWriting(userId string) bool {
+	client, ctx := createClient()
+	defer client.Close()
+
+	isWriting, err := firestore.UserWritingStatus(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error getting writing mode from firestore, %s", err.Error())
+	}
+	return isWriting
+}

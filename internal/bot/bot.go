@@ -10,12 +10,6 @@ import (
 	"github.com/capymind/internal/utils"
 )
 
-var userIds *utils.ThreadSafeArray[int64]
-
-func init() {
-	userIds = utils.NewThreadSafeArray[int64]()
-}
-
 func Parse(w http.ResponseWriter, r *http.Request) {
 	update := telegram.Parse(r)
 	if update == nil {
@@ -33,7 +27,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 
 		if callbackQuery.Data == "note_make" {
 			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "start_note")
-			userIds.Append(callbackQuery.From.ID)
+			startWritingMode(userId)
 			return
 		} else if callbackQuery.Data == "help" {
 			sendHelpMessage(callbackQuery.Message.Chat.Id, userId, locale)

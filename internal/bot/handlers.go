@@ -41,7 +41,7 @@ func handleNote(message telegram.Message, locale translator.Locale) {
 	userId := message.From.ID
 	userIdStr := fmt.Sprintf("%d", userId)
 	localizeAndSendMessage(message.Chat.Id, userIdStr, locale, "start_note")
-	userIds.Append(userId)
+	startWritingMode(userIdStr)
 }
 
 func handleLast(message telegram.Message, locale translator.Locale) {
@@ -133,10 +133,10 @@ func sendTimezoneSetMessage(chatId int, userId string, locale translator.Locale)
 func handleUnknownState(message telegram.Message, locale translator.Locale) {
 	userId := message.From.ID
 	userIdStr := fmt.Sprintf("%d", userId)
-	if userIds.Contains(userId) {
+	if isWriting(userIdStr) {
 		saveNote(message)
 		localizeAndSendMessage(message.Chat.Id, userIdStr, locale, "finish_note")
-		userIds.Remove(userId)
+		stopWritingMode(userIdStr)
 	} else {
 		handleHelp(message, locale)
 	}
