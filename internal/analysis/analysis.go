@@ -39,7 +39,8 @@ func Request(notes []string, locale translator.Locale) *string {
 			},
 		),
 		// only certain models can perform structured outputs
-		Model: openai.F(openai.ChatModelGPT4o2024_08_06),
+		// Model: openai.F(openai.ChatModelGPT4o2024_08_06),
+		Model: openai.F(openai.ChatModelGPT4oMini),
 	})
 
 	response := Response{}
