@@ -150,15 +150,3 @@ func handleHelp(message telegram.Message, locale translator.Locale) {
 func sendHelpMessage(chatId int, userId string, locale translator.Locale) {
 	localizeAndSendMessage(chatId, userId, locale, "commands_hint")
 }
-
-func handleNoUser(chatId int, userId string, locale translator.Locale) {
-	replyMarkup := telegram.InlineKeyboardMarkup{
-		InlineKeyboard: [][]telegram.InlineKeyboardButton{
-			{
-				{Text: translator.Translate(locale, "configure_language"), CallbackData: "locale_setup"},
-				{Text: translator.Translate(locale, "configure_timezone"), CallbackData: "timezone_setup"},
-			},
-		},
-	}
-	localizeAndSendMessageWithReply(chatId, userId, locale, "configure_settings", &replyMarkup)
-}
