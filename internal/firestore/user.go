@@ -101,3 +101,11 @@ func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]
 	}
 	return nil
 }
+
+func UserTimezone(ctx context.Context, client *firestore.Client, userId string) (*int64, error) {
+	user, err := getUser(ctx, client, userId)
+	if err != nil {
+		return nil, err
+	}
+	return user.SecondsFromUTC, nil
+}

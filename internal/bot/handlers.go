@@ -9,15 +9,22 @@ import (
 	"github.com/capymind/internal/utils"
 )
 
-func handleUser(message telegram.Message) {
-	if message.Text == "" {
-		return
-	}
-	createOrUpdateUser(message)
+func handleUser(chatId int, userId string, name *string) {
+	createOrUpdateUser(chatId, userId, name)
 }
 
 func handleStart(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
+
+	userLocale := getUserLocaleByUserId(userId)
+	if userLocale == nil {
+		handleLanguage(message, locale)
+	} else {
+		sendStartMessage(message.Chat.Id, userId, message.From.Username, *userLocale)
+	}
+}
+
+func sendStartMessage(chatId int, userId string, name *string, locale translator.Locale) {
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
@@ -26,12 +33,8 @@ func handleStart(message telegram.Message, locale translator.Locale) {
 			},
 		},
 	}
-	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "welcome", &replyMarkup)
-
-	if !userExists(userId) {
-		handleNoUser(message.Chat.Id, userId, locale)
-	}
-	handleUser(message)
+	localizeAndSendMessageWithReply(chatId, userId, locale, "welcome", &replyMarkup)
+	handleUser(chatId, userId, name)
 }
 
 func handleNote(message telegram.Message, locale translator.Locale) {
