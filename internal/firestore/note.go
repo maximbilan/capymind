@@ -43,7 +43,7 @@ func LastNote(ctx context.Context, client *firestore.Client, userId string) (*No
 
 func GetNotes(ctx context.Context, client *firestore.Client, userId string) ([]Note, error) {
 	userRef := client.Collection(users.String()).Doc(userId)
-	query := client.Collection(notes.String()).Where("user", "==", userRef).Limit(100)
+	query := client.Collection(notes.String()).OrderBy("timestamp", firestore.Desc).Where("user", "==", userRef).Limit(35) // Suppose that the user posts 5 notes per day max by 7 days
 
 	docs, err := query.Documents(ctx).GetAll()
 	if err != nil {
