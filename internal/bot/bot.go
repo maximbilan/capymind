@@ -10,12 +10,6 @@ import (
 	"github.com/capymind/internal/utils"
 )
 
-var userIds *utils.ThreadSafeArray[int64]
-
-func init() {
-	userIds = utils.NewThreadSafeArray[int64]()
-}
-
 func Parse(w http.ResponseWriter, r *http.Request) {
 	update := telegram.Parse(r)
 	if update == nil {
@@ -33,13 +27,13 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 
 		if callbackQuery.Data == "note_make" {
 			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "start_note")
-			userIds.Append(callbackQuery.From.ID)
+			startWritingMode(userId)
 			return
 		} else if callbackQuery.Data == "help" {
 			sendHelpMessage(callbackQuery.Message.Chat.Id, userId, locale)
 			return
 		} else if callbackQuery.Data == "locale_setup" {
-			sendLocaleSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
+			sendLanguageSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
 		} else if callbackQuery.Data == "timezone_setup" {
 			sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
 		}
@@ -49,7 +43,13 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		if ok && updatedLocale != nil {
 			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
 			setupLocale(userId, *updatedLocale)
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, translator.Locale(*updatedLocale), "locale_set")
+			newLocale := translator.Locale(*updatedLocale)
+			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, newLocale, "locale_set")
+
+			// If the user is setting the locale for the first time, also set the timezone
+			if getTimeZone(userId) == nil {
+				sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, newLocale)
+			}
 			return
 		}
 
@@ -57,6 +57,9 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		if ok && secondsFromUTC != nil {
 			setupTimezone(userId, *secondsFromUTC)
 			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "timezone_set")
+			if !userExists(userId) {
+				sendStartMessage(callbackQuery.Message.Chat.Id, userId, callbackQuery.From.Username, locale)
+			}
 			return
 		}
 
@@ -88,7 +91,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	case Analysis:
 		handleAnalysis(message, locale)
 	case Language:
-		handleLocale(message, locale)
+		handleLanguage(message, locale)
 	case Timezone:
 		handleTimezone(message, locale)
 	case Help:

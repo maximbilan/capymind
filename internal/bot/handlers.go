@@ -9,15 +9,22 @@ import (
 	"github.com/capymind/internal/utils"
 )
 
-func handleUser(message telegram.Message) {
-	if message.Text == "" {
-		return
-	}
-	createOrUpdateUser(message)
+func handleUser(chatId int, userId string, name *string) {
+	createOrUpdateUser(chatId, userId, name)
 }
 
 func handleStart(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
+
+	userLocale := getUserLocaleByUserId(userId)
+	if userLocale == nil {
+		handleLanguage(message, locale)
+	} else {
+		sendStartMessage(message.Chat.Id, userId, message.From.Username, *userLocale)
+	}
+}
+
+func sendStartMessage(chatId int, userId string, name *string, locale translator.Locale) {
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
@@ -26,19 +33,15 @@ func handleStart(message telegram.Message, locale translator.Locale) {
 			},
 		},
 	}
-	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "welcome", &replyMarkup)
-
-	if !userExists(userId) {
-		handleNoUser(message.Chat.Id, userId, locale)
-	}
-	handleUser(message)
+	localizeAndSendMessageWithReply(chatId, userId, locale, "welcome", &replyMarkup)
+	handleUser(chatId, userId, name)
 }
 
 func handleNote(message telegram.Message, locale translator.Locale) {
 	userId := message.From.ID
 	userIdStr := fmt.Sprintf("%d", userId)
 	localizeAndSendMessage(message.Chat.Id, userIdStr, locale, "start_note")
-	userIds.Append(userId)
+	startWritingMode(userIdStr)
 }
 
 func handleLast(message telegram.Message, locale translator.Locale) {
@@ -88,12 +91,12 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "no_analysis", &replyMarkup)
 }
 
-func handleLocale(message telegram.Message, locale translator.Locale) {
+func handleLanguage(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
-	sendLocaleSetMessage(message.Chat.Id, userId, locale)
+	sendLanguageSetMessage(message.Chat.Id, userId, locale)
 }
 
-func sendLocaleSetMessage(chatId int, userId string, locale translator.Locale) {
+func sendLanguageSetMessage(chatId int, userId string, locale translator.Locale) {
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
@@ -130,10 +133,10 @@ func sendTimezoneSetMessage(chatId int, userId string, locale translator.Locale)
 func handleUnknownState(message telegram.Message, locale translator.Locale) {
 	userId := message.From.ID
 	userIdStr := fmt.Sprintf("%d", userId)
-	if userIds.Contains(userId) {
+	if isWriting(userIdStr) {
 		saveNote(message)
 		localizeAndSendMessage(message.Chat.Id, userIdStr, locale, "finish_note")
-		userIds.Remove(userId)
+		stopWritingMode(userIdStr)
 	} else {
 		handleHelp(message, locale)
 	}

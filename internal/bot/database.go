@@ -21,13 +21,13 @@ func createClient() (*google.Client, context.Context) {
 	return client, ctx
 }
 
-func createOrUpdateUser(message telegram.Message) {
+func createOrUpdateUser(chatId int, userId string, name *string) {
 	client, ctx := createClient()
 	defer client.Close()
 
 	var user = firestore.User{
-		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: &message.From.Username,
+		ID:   fmt.Sprintf("%d", chatId),
+		Name: name,
 	}
 
 	err := firestore.NewUser(ctx, client, user)
@@ -86,7 +86,7 @@ func saveNote(message telegram.Message) {
 
 	var user = firestore.User{
 		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: &message.From.Username,
+		Name: message.From.Username,
 	}
 
 	timestamp := time.Now()
@@ -136,6 +136,17 @@ func setupTimezone(userId string, secondsFromUTC int) {
 	}
 }
 
+func getTimeZone(userId string) *int64 {
+	client, ctx := createClient()
+	defer client.Close()
+
+	secondsFromUTC, err := firestore.UserTimezone(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error getting user timezone from firestore, %s", err.Error())
+	}
+	return secondsFromUTC
+}
+
 func saveLastChatId(chatId int, userId string) {
 	client, ctx := createClient()
 	defer client.Close()
@@ -144,4 +155,35 @@ func saveLastChatId(chatId int, userId string) {
 	if err != nil {
 		log.Printf("[Database] Error saving last chat id to firestore, %s", err.Error())
 	}
+}
+
+func startWritingMode(userId string) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.StartWriting(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error starting writing mode in firestore, %s", err.Error())
+	}
+}
+
+func stopWritingMode(userId string) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.StopWriting(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error stopping writing mode in firestore, %s", err.Error())
+	}
+}
+
+func isWriting(userId string) bool {
+	client, ctx := createClient()
+	defer client.Close()
+
+	isWriting, err := firestore.UserWritingStatus(ctx, client, userId)
+	if err != nil {
+		log.Printf("[Database] Error getting writing mode from firestore, %s", err.Error())
+	}
+	return isWriting
 }
