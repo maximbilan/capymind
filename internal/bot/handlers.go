@@ -106,11 +106,6 @@ func handleUnknownState(message telegram.Message, locale translator.Locale) {
 	}
 }
 
-func handleInfo(message telegram.Message, locale translator.Locale) {
-	userId := fmt.Sprintf("%d", message.From.ID)
-	localizeAndSendMessage(message.Chat.Id, userId, locale, "info")
-}
-
 func handleHelp(message telegram.Message, locale translator.Locale) {
 	userId := fmt.Sprintf("%d", message.From.ID)
 	localizeAndSendMessage(message.Chat.Id, userId, locale, "commands_hint")

@@ -3,7 +3,6 @@ package translator
 const translationsJSON = `{
     "en": {
         "welcome": "Welcome to CapyMind 👋 Your personal journal for mental health notes is here to help you on your journey. Reflect on your thoughts and emotions, use reminders to stay on track, and explore therapy insights to deepen your self-awareness.",
-        "info": "Remove this text",
         "start_note" : "Share your thoughts and feelings by entering them in the text field and sending them my way. Your personal reflections will be securely saved in your journal 👇",
         "finish_note" : "Your thoughts have been successfully saved. Thank you for trusting CapyMind. Remember, each note is a step forward on your journey to better mental well-being 🙂",
         "your_last_note": "Here’s your most recent note 👇\n\n",
@@ -22,7 +21,6 @@ const translationsJSON = `{
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
-        "info": "Remove this text",
         "start_note": "Поділіться своїми думками та почуттями, введіть їх у текстове поле та надішліть мені. Ваші особисті роздуми будуть безпечно збережені у вашому журналі 👇",
         "finish_note": "Ваші думки успішно збережені. Дякуємо вам за довіру CapyMind. Пам'ятайте, кожен запис - це крок вперед на вашому шляху до кращого психічного самопочуття 🙂",
         "your_last_note": "Ось ваш останній запис 👇\n\n",
