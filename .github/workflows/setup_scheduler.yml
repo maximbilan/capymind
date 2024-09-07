@@ -1,4 +1,4 @@
-name: Setup Scheduler
+name: Setup Scheduler for messages
 
 on:
   workflow_dispatch:
