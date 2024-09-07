@@ -17,7 +17,11 @@ const translationsJSON = `{
         "make_record_to_journal": "Make a record to your journal 💭",
         "no_analysis": "Not enough entries have been made to generate an analysis. Begin by sharing your thoughts and feelings with CapyMind.",
         "analysis_waiting": "Your analysis is being generated. Please hold on for a moment 😴",
-        "ai_analysis_prompt": "You're a professional therapist at Capymind. A patient comes to you with the following notes. What would you say to them? (Shortly summary) Notes: "
+        "ai_analysis_prompt": "You're a professional therapist at Capymind. A patient comes to you with the following notes. What would you say to them? (Shortly summary) Notes: ",
+        "how_to_use": "Getting Started with CapyMind 🙋‍♂️",
+        "configure_language": "Configure Language 🌍",
+        "configure_timezone": "Configure Timezone ⏰",
+        "configure_settings": "CapyMind supports various languages and time zones to enhance your experience. Select your preferred language and time zone below to receive personalized reminders."
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -35,6 +39,10 @@ const translationsJSON = `{
         "make_record_to_journal": "Зробити запис у свій журнал 💭",
         "no_analysis": "Недостатньо записів для генерації аналізу. Почніть ділитись своїми думками та почуттями з CapyMind.",
         "analysis_waiting": "Ваш аналіз генерується. Будь ласка, зачекайте 😴",
-        "ai_analysis_prompt": "Ви професійний терапевт в Capymind. Пацієнт приходить до вас з наступними записами. (Короткий зміст) Що б ви сказали їм? Записи: "
+        "ai_analysis_prompt": "Ви професійний терапевт в Capymind. Пацієнт приходить до вас з наступними записами. (Короткий зміст) Що б ви сказали їм? Записи: ",
+        "how_to_use": "Початок роботи з CapyMind 🙋‍♂️",
+        "configure_language": "Налаштування мови 🌍",
+        "configure_timezone": "Налаштування часового поясу ⏰",
+        "configure_settings": "CapyMind підтримує різні мови та часові пояси для покращення вашого досвіду. Виберіть свою мову та часовий пояс нижче, щоб отримувати персоналізовані нагадування."
     }
 }`
