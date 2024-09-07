@@ -62,12 +62,18 @@ func handleAnalysis(message telegram.Message, locale translator.Locale) {
 		analysis := analysis.Request(strings, locale)
 		if analysis != nil {
 			sendMessage(message.Chat.Id, userId, *analysis)
-		} else {
-			localizeAndSendMessage(message.Chat.Id, userId, locale, "no_analysis")
+			return
 		}
-	} else {
-		localizeAndSendMessage(message.Chat.Id, userId, locale, "no_analysis")
 	}
+
+	replyMarkup := telegram.InlineKeyboardMarkup{
+		InlineKeyboard: [][]telegram.InlineKeyboardButton{
+			{
+				{Text: translator.Translate(locale, "make_record_to_journal"), CallbackData: "note_make"},
+			},
+		},
+	}
+	localizeAndSendMessageWithReply(message.Chat.Id, userId, locale, "no_analysis", &replyMarkup)
 }
 
 func handleLocale(message telegram.Message, locale translator.Locale) {
