@@ -25,11 +25,13 @@ func handleStart(message telegram.Message, locale translator.Locale) {
 }
 
 func sendStartMessage(chatId int, userId string, name *string, locale translator.Locale) {
+	noteCallbackData := "note_make"
+	helpCallbackData := "help"
 	replyMarkup := telegram.InlineKeyboardMarkup{
 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
 			{
-				{Text: translator.Translate(locale, "make_record_to_journal_short"), CallbackData: "note_make"},
-				{Text: translator.Translate(locale, "how_to_use"), CallbackData: "help"},
+				{Text: translator.Translate(locale, "make_record_to_journal_short"), CallbackData: &noteCallbackData},
+				{Text: translator.Translate(locale, "how_to_use"), CallbackData: &helpCallbackData},
 			},
 		},
 	}
