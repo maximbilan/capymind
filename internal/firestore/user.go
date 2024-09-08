@@ -17,6 +17,7 @@ type User struct {
 
 func NewUser(ctx context.Context, client *firestore.Client, user User) error {
 	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, map[string]interface{}{
+		"id":   user.ID,
 		"name": user.Name,
 	}, firestore.MergeAll)
 	return err
@@ -65,6 +66,7 @@ func UpdateUserTimezone(ctx context.Context, client *firestore.Client, userId st
 
 func SaveLastChatId(ctx context.Context, client *firestore.Client, userId string, chatId int) error {
 	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
+		"id":         userId,
 		"lastChatId": chatId,
 	}, firestore.MergeAll)
 	return err
