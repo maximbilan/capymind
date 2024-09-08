@@ -1,6 +1,8 @@
 package utils
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestTimezoneParameter(t *testing.T) {
 	want := "timezone_3600"
@@ -41,5 +43,24 @@ func TestParseTimezone(t *testing.T) {
 	want, ok = ParseTimezone("timezone_0")
 	if !ok || *want != 0 {
 		t.Fatalf("Incorrect timezone. %v doesn't equal %v", want, 0)
+	}
+}
+
+func TestGetTimeZones(t *testing.T) {
+	list := GetTimeZones()
+	if len(list) != 25 {
+		t.Fatalf("Expected 25, got %d", len(list))
+	}
+
+	if list[0].Offset != -12 {
+		t.Fatalf("Expected -12, got %d", list[0].Offset)
+	}
+
+	if list[15].Description != "Kyiv, Istanbul, Helsinki" {
+		t.Fatalf("Expected Kyiv, Istanbul, Helsinki, got %s", list[15].Description)
+	}
+
+	if list[24].SecondsFromUTC != 43200 {
+		t.Fatalf("Expected 43200, got %d", list[24].SecondsFromUTC)
 	}
 }
