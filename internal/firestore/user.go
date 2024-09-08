@@ -8,9 +8,13 @@ import (
 
 type User struct {
 	ID             string  `firestore:"id"`
-	Name           *string `firestore:"name"`
+	Name           *string `firestore:"name"` // Deprecated
+	UserName       *string `json:"username"`
+	FirstName      *string `json:"firstName"`
+	LastName       *string `json:"lastName"`
 	Locale         *string `firestore:"locale"`
-	LastChatId     *int    `firestore:"lastChatId"`
+	ChatID         *int64  `firestore:"chatID"`
+	LastChatID     *int64  `firestore:"lastChatId"` // Deprecated
 	SecondsFromUTC *int64  `firestore:"secondsFromUTC"`
 	IsWriting      bool    `firestore:"isWriting"`
 }
