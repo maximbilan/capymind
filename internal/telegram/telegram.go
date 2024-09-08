@@ -24,7 +24,7 @@ func Parse(r *http.Request) *Update {
 	return &update
 }
 
-func SendMessage(chatID int, text string, replyMarkup *InlineKeyboardMarkup) {
+func SendMessage(chatID int64, text string, replyMarkup *InlineKeyboardMarkup) {
 	var url string = baseURL + "/sendMessage"
 
 	message := SendMessageRequest{
