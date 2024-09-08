@@ -1,7 +1,7 @@
 package telegram
 
 type Update struct {
-	UpdateId      int            `json:"update_id"`
-	Message       Message        `json:"message"`
+	UpdateID      int            `json:"update_id"`
+	Message       *Message       `json:"message,omitempty"`
 	CallbackQuery *CallbackQuery `json:"callback_query,omitempty"`
 }

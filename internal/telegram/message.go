@@ -1,10 +1,11 @@
 package telegram
 
 type Message struct {
-	Text string `json:"text"`
-	Chat Chat   `json:"chat"`
-	From User   `json:"from"`
-	Date int    `json:"date"`
+	MessageID int    `json:"message_id"`
+	Text      string `json:"text,omitempty"`
+	Chat      *Chat  `json:"chat"`
+	From      *User  `json:"from,omitempty"`
+	Date      int    `json:"date"`
 }
 
 type SendMessageRequest struct {
