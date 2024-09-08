@@ -31,7 +31,7 @@ func GetTimeZones() []TimeZoneInfo {
 		1:   "Berlin, Paris, Rome",
 		2:   "Athens, Cairo, Jerusalem",
 		3:   "Kyiv, Istanbul, Helsinki",
-		4:   "Dubai, Baku, Samara",
+		4:   "Dubai, Baku",
 		5:   "Karachi, Tashkent",
 		6:   "Almaty, Dhaka",
 		7:   "Bangkok, Jakarta",
