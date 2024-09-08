@@ -122,10 +122,11 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	var reply *telegram.InlineKeyboardMarkup
 	switch msg.Type {
 	case Morning, Evening:
+		callbackData := "note_make"
 		reply = &telegram.InlineKeyboardMarkup{
 			InlineKeyboard: [][]telegram.InlineKeyboardButton{
 				{
-					{Text: translator.Translate(msg.Locale, "make_record_to_journal"), CallbackData: "note_make"},
+					{Text: translator.Translate(msg.Locale, "make_record_to_journal"), CallbackData: &callbackData},
 				},
 			},
 		}
