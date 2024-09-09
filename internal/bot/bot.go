@@ -1,7 +1,6 @@
 package bot
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -18,47 +17,51 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 
 	callbackQuery := update.CallbackQuery
 	if callbackQuery != nil && callbackQuery.Data != "" {
-		userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-		userLocale := getUserLocaleByUserId(userId)
+		userID := callbackQuery.UserID()
+		chatID := callbackQuery.ChatID()
+		if userID == nil || chatID == nil {
+			return
+		}
+
+		userLocale := getUserLocaleByUserID(*userID)
 		locale := translator.EN
 		if userLocale != nil {
 			locale = translator.Locale(*userLocale)
 		}
 
 		if callbackQuery.Data == "note_make" {
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "start_note")
-			startWritingMode(userId)
+			localizeAndSendMessage(*chatID, *userID, locale, "start_note")
+			startWritingMode(*userID)
 			return
 		} else if callbackQuery.Data == "help" {
-			sendHelpMessage(callbackQuery.Message.Chat.Id, userId, locale)
+			sendHelpMessage(*chatID, *userID, locale)
 			return
 		} else if callbackQuery.Data == "locale_setup" {
-			sendLanguageSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
+			sendLanguageSetMessage(*chatID, *userID, locale)
 		} else if callbackQuery.Data == "timezone_setup" {
-			sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
+			sendTimezoneSetMessage(*chatID, *userID, locale)
 		}
 
 		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
 		updatedLocale, ok := translator.ParseLocale(callbackQuery.Data)
 		if ok && updatedLocale != nil {
-			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			setupLocale(userId, *updatedLocale)
+			setupLocale(*userID, *updatedLocale)
 			newLocale := translator.Locale(*updatedLocale)
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, newLocale, "locale_set")
+			localizeAndSendMessage(*chatID, *userID, newLocale, "locale_set")
 
 			// If the user is setting the locale for the first time, also set the timezone
-			if getTimeZone(userId) == nil {
-				sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, newLocale)
+			if getTimeZone(*userID) == nil {
+				sendTimezoneSetMessage(*chatID, *userID, newLocale)
 			}
 			return
 		}
 
 		secondsFromUTC, ok := utils.ParseTimezone(callbackQuery.Data)
 		if ok && secondsFromUTC != nil {
-			setupTimezone(userId, *secondsFromUTC)
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "timezone_set")
-			if !userExists(userId) {
-				sendStartMessage(callbackQuery.Message.Chat.Id, userId, callbackQuery.From.Username, locale)
+			setupTimezone(*userID, *secondsFromUTC)
+			localizeAndSendMessage(*chatID, *userID, locale, "timezone_set")
+			if !userExists(*userID) {
+				sendStartMessage(*chatID, *userID, &callbackQuery.From.UserName, locale)
 			}
 			return
 		}
@@ -66,7 +69,10 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	message := update.Message
+	if update.Message == nil {
+		return
+	}
+	message := *update.Message
 
 	var locale translator.Locale
 	userLocale := getUserLocale(message)

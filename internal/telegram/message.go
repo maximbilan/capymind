@@ -1,15 +1,19 @@
 package telegram
 
+import "fmt"
+
 type Message struct {
-	MessageID int    `json:"message_id"`
+	MessageID int64  `json:"message_id"`
 	Text      string `json:"text,omitempty"`
 	Chat      *Chat  `json:"chat"`
 	From      *User  `json:"from,omitempty"`
 	Date      int    `json:"date"`
 }
 
-type SendMessageRequest struct {
-	ChatID      int64                 `json:"chat_id"`
-	Text        string                `json:"text"`
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+func (message *Message) UserID() string {
+	return fmt.Sprintf("%d", message.From.ID)
+}
+
+func (message *Message) ChatID() int64 {
+	return message.Chat.ID
 }

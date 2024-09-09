@@ -2,7 +2,6 @@ package bot
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -21,12 +20,12 @@ func createClient() (*google.Client, context.Context) {
 	return client, ctx
 }
 
-func createOrUpdateUser(chatId int, userId string, name *string) {
+func createOrUpdateUser(chatID int64, userID string, name *string) {
 	client, ctx := createClient()
 	defer client.Close()
 
 	var user = firestore.User{
-		ID:   fmt.Sprintf("%d", chatId),
+		ID:   userID,
 		Name: name,
 	}
 
@@ -36,37 +35,37 @@ func createOrUpdateUser(chatId int, userId string, name *string) {
 	}
 }
 
-func userExists(userId string) bool {
+func userExists(userID string) bool {
 	client, ctx := createClient()
 	defer client.Close()
 
-	exists, err := firestore.UserExists(ctx, client, userId)
+	exists, err := firestore.UserExists(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error checking if user exists in firestore, %s", err.Error())
 	}
 	return exists
 }
 
-func setupLocale(userId string, locale string) {
+func setupLocale(userID string, locale string) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	err := firestore.UpdateUserLocale(ctx, client, userId, locale)
+	err := firestore.UpdateUserLocale(ctx, client, userID, locale)
 	if err != nil {
 		log.Printf("[Database] Error updating user locale in firestore, %s", err.Error())
 	}
 }
 
 func getUserLocale(message telegram.Message) *translator.Locale {
-	var userId = fmt.Sprintf("%d", message.From.ID)
-	return getUserLocaleByUserId(userId)
+	userID := message.UserID()
+	return getUserLocaleByUserID(userID)
 }
 
-func getUserLocaleByUserId(userId string) *translator.Locale {
+func getUserLocaleByUserID(userID string) *translator.Locale {
 	client, ctx := createClient()
 	defer client.Close()
 
-	localeStr, err := firestore.UserLocale(ctx, client, userId)
+	localeStr, err := firestore.UserLocale(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error getting user locale from firestore, %s", err.Error())
 		return nil
@@ -84,14 +83,16 @@ func saveNote(message telegram.Message) {
 	client, ctx := createClient()
 	defer client.Close()
 
+	userID := message.UserID()
+
 	var user = firestore.User{
-		ID:   fmt.Sprintf("%d", message.From.ID),
+		ID:   userID,
 		Name: &message.From.UserName,
 	}
 
 	timestamp := time.Now()
 	var note = firestore.Note{
-		ID:        fmt.Sprintf("%d", message.Chat.ID),
+		ID:        userID,
 		Text:      message.Text,
 		Timestamp: timestamp,
 	}
@@ -106,8 +107,8 @@ func getLastNote(message telegram.Message) *firestore.Note {
 	client, ctx := createClient()
 	defer client.Close()
 
-	var userId = fmt.Sprintf("%d", message.From.ID)
-	note, err := firestore.LastNote(ctx, client, userId)
+	userID := message.UserID()
+	note, err := firestore.LastNote(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error getting last note from firestore, %s", err.Error())
 	}
@@ -118,29 +119,29 @@ func getNotes(message telegram.Message) []firestore.Note {
 	client, ctx := createClient()
 	defer client.Close()
 
-	var userId = fmt.Sprintf("%d", message.From.ID)
-	notes, err := firestore.GetNotes(ctx, client, userId)
+	userID := message.UserID()
+	notes, err := firestore.GetNotes(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error getting notes from firestore, %s", err.Error())
 	}
 	return notes
 }
 
-func setupTimezone(userId string, secondsFromUTC int) {
+func setupTimezone(userID string, secondsFromUTC int) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	err := firestore.UpdateUserTimezone(ctx, client, userId, secondsFromUTC)
+	err := firestore.UpdateUserTimezone(ctx, client, userID, secondsFromUTC)
 	if err != nil {
 		log.Printf("[Database] Error updating user timezone in firestore, %s", err.Error())
 	}
 }
 
-func getTimeZone(userId string) *int64 {
+func getTimeZone(userID string) *int {
 	client, ctx := createClient()
 	defer client.Close()
 
-	secondsFromUTC, err := firestore.UserTimezone(ctx, client, userId)
+	secondsFromUTC, err := firestore.UserTimezone(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error getting user timezone from firestore, %s", err.Error())
 	}
@@ -157,31 +158,31 @@ func saveLastChatID(chatID int64, userID string) {
 	}
 }
 
-func startWritingMode(userId string) {
+func startWritingMode(userID string) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	err := firestore.StartWriting(ctx, client, userId)
+	err := firestore.StartWriting(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error starting writing mode in firestore, %s", err.Error())
 	}
 }
 
-func stopWritingMode(userId string) {
+func stopWritingMode(userID string) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	err := firestore.StopWriting(ctx, client, userId)
+	err := firestore.StopWriting(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error stopping writing mode in firestore, %s", err.Error())
 	}
 }
 
-func isWriting(userId string) bool {
+func isWriting(userID string) bool {
 	client, ctx := createClient()
 	defer client.Close()
 
-	isWriting, err := firestore.UserWritingStatus(ctx, client, userId)
+	isWriting, err := firestore.UserWritingStatus(ctx, client, userID)
 	if err != nil {
 		log.Printf("[Database] Error getting writing mode from firestore, %s", err.Error())
 	}
