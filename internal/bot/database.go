@@ -11,6 +11,21 @@ import (
 	"github.com/capymind/internal/translator"
 )
 
+func convertTelegramUser(message *telegram.Message) *firestore.User {
+	if message == nil {
+		return nil
+	}
+
+	user := firestore.User{
+		ID:        message.UserID(),
+		ChatID:    message.ChatID(),
+		UserName:  &message.From.UserName,
+		FirstName: &message.From.FirstName,
+		LastName:  &message.From.LastName,
+	}
+	return &user
+}
+
 func createClient() (*google.Client, context.Context) {
 	ctx := context.Background()
 	var client, err = firestore.NewClient(ctx)
@@ -20,14 +35,9 @@ func createClient() (*google.Client, context.Context) {
 	return client, ctx
 }
 
-func createOrUpdateUser(chatID int64, userID string, name *string) {
+func createOrUpdateUser(user firestore.User) {
 	client, ctx := createClient()
 	defer client.Close()
-
-	var user = firestore.User{
-		ID:   userID,
-		Name: name,
-	}
 
 	err := firestore.NewUser(ctx, client, user)
 	if err != nil {
@@ -83,16 +93,11 @@ func saveNote(message telegram.Message) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	userID := message.UserID()
-
-	var user = firestore.User{
-		ID:   userID,
-		Name: &message.From.UserName,
-	}
+	var user = *convertTelegramUser(&message)
 
 	timestamp := time.Now()
 	var note = firestore.Note{
-		ID:        userID,
+		ID:        user.ID,
 		Text:      message.Text,
 		Timestamp: timestamp,
 	}

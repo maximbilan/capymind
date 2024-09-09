@@ -7,10 +7,6 @@ import (
 	"github.com/capymind/internal/utils"
 )
 
-func handleUser(chatID int64, userID string, name *string) {
-	createOrUpdateUser(chatID, userID, name)
-}
-
 func handleStart(message telegram.Message, locale translator.Locale) {
 	userID := message.UserID()
 	chatID := message.ChatID()
@@ -35,7 +31,7 @@ func sendStartMessage(chatID int64, userID string, name *string, locale translat
 		},
 	}
 	localizeAndSendMessageWithReply(chatID, userID, locale, "welcome", &replyMarkup)
-	handleUser(chatID, userID, name)
+	createOrUpdateUser(chatID, userID, name)
 }
 
 func handleNote(message telegram.Message, locale translator.Locale) {

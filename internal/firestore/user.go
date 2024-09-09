@@ -8,12 +8,12 @@ import (
 
 type User struct {
 	ID             string  `firestore:"id"`
+	ChatID         int64   `firestore:"chatID"`
 	Name           *string `firestore:"name"` // Deprecated
 	UserName       *string `json:"username"`
 	FirstName      *string `json:"firstName"`
 	LastName       *string `json:"lastName"`
 	Locale         *string `firestore:"locale"`
-	ChatID         *int64  `firestore:"chatID"`
 	LastChatID     *int64  `firestore:"lastChatId"` // Deprecated
 	SecondsFromUTC *int    `firestore:"secondsFromUTC"`
 	IsWriting      bool    `firestore:"isWriting"`
@@ -21,8 +21,10 @@ type User struct {
 
 func NewUser(ctx context.Context, client *firestore.Client, user User) error {
 	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, map[string]interface{}{
-		"id":   user.ID,
-		"name": user.Name,
+		"id":        user.ID,
+		"username":  user.UserName,
+		"firstName": user.FirstName,
+		"lastName":  user.LastName,
 	}, firestore.MergeAll)
 	return err
 }
