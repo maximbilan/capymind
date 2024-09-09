@@ -12,7 +12,7 @@ const (
 	Language Command = "/language"
 	Timezone Command = "/timezone"
 	Help     Command = "/help"
-	Plain    Command = "" // No command, just plain text
+	None     Command = "" // No command, just plain text
 )
 
 var commandsWithParams = []Command{Language, Timezone}
@@ -28,7 +28,7 @@ func (c Command) HasParam() bool {
 
 func ParseCommand(input string) (Command, *string) {
 	if len(input) == 0 || input[0] != '/' {
-		return Plain, nil
+		return None, nil
 	}
 
 	parts := strings.Split(input, " ")
