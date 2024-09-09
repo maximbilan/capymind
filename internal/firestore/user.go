@@ -16,7 +16,9 @@ type User struct {
 	Locale         *string `firestore:"locale"`
 	LastChatID     *int64  `firestore:"lastChatId"` // Deprecated
 	SecondsFromUTC *int    `firestore:"secondsFromUTC"`
-	IsWriting      bool    `firestore:"isWriting"`
+	IsWriting      bool    `firestore:"isWriting"` // Deprecated
+	LastCommand    string  `firestore:"lastCommand"`
+	IsTyping       bool    `firestore:"isTyping"`
 }
 
 func NewUser(ctx context.Context, client *firestore.Client, user User) error {
