@@ -12,8 +12,19 @@ import (
 func Parse(w http.ResponseWriter, r *http.Request) {
 	update := telegram.Parse(r)
 	if update == nil {
+		// No update to process
 		return
 	}
+
+	// Create a job for the user
+
+	// Fetch the user's data from the database
+
+	// Update the user's data in the database if necessary
+
+	// Create a session
+
+	// Process the job
 
 	callbackQuery := update.CallbackQuery
 	if callbackQuery != nil && callbackQuery.Data != "" {

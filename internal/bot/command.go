@@ -35,6 +35,7 @@ func ParseCommand(input string) (Command, *string) {
 	if len(parts) == 1 {
 		return Command(parts[0]), nil
 	} else {
+		// To do: multiple parameters
 		return Command(parts[0]), &parts[1]
 	}
 }
