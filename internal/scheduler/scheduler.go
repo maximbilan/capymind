@@ -61,7 +61,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	firestore.ForEachUser(ctx, dbClient, func(users []firestore.User) error {
 		for _, user := range users {
 			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
-			if user.LastChatId == nil || user.Locale == nil || user.SecondsFromUTC == nil {
+			if user.ChatID == nil || user.Locale == nil || user.SecondsFromUTC == nil {
 				continue
 			}
 
@@ -100,7 +100,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 			}
 
 			scheduledMessage := ScheduledMessage{
-				ChatId: *user.LastChatId,
+				ChatID: *user.ChatID,
 				Text:   localizedMessage,
 				Type:   messageType,
 				Locale: userLocale,
@@ -134,5 +134,5 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		reply = nil
 	}
 
-	telegram.SendMessage(msg.ChatId, msg.Text, reply)
+	telegram.SendMessage(msg.ChatID, msg.Text, reply)
 }

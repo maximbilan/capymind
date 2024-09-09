@@ -68,10 +68,10 @@ func UpdateUserTimezone(ctx context.Context, client *firestore.Client, userId st
 	return err
 }
 
-func SaveLastChatId(ctx context.Context, client *firestore.Client, userId string, chatId int) error {
-	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
-		"id":         userId,
-		"lastChatId": chatId,
+func SaveLastChatID(ctx context.Context, client *firestore.Client, userID string, chatID int64) error {
+	_, err := client.Collection(users.String()).Doc(userID).Set(ctx, map[string]interface{}{
+		"id":     userID,
+		"chatId": userID,
 	}, firestore.MergeAll)
 	return err
 }

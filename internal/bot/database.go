@@ -85,13 +85,13 @@ func saveNote(message telegram.Message) {
 	defer client.Close()
 
 	var user = firestore.User{
-		ID:   fmt.Sprintf("%d", message.Chat.Id),
-		Name: message.From.Username,
+		ID:   fmt.Sprintf("%d", message.From.ID),
+		Name: &message.From.UserName,
 	}
 
 	timestamp := time.Now()
 	var note = firestore.Note{
-		ID:        fmt.Sprintf("%d", message.Chat.Id),
+		ID:        fmt.Sprintf("%d", message.Chat.ID),
 		Text:      message.Text,
 		Timestamp: timestamp,
 	}
@@ -147,11 +147,11 @@ func getTimeZone(userId string) *int64 {
 	return secondsFromUTC
 }
 
-func saveLastChatId(chatId int, userId string) {
+func saveLastChatID(chatID int64, userID string) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	err := firestore.SaveLastChatId(ctx, client, userId, chatId)
+	err := firestore.SaveLastChatID(ctx, client, userID, chatID)
 	if err != nil {
 		log.Printf("[Database] Error saving last chat id to firestore, %s", err.Error())
 	}
