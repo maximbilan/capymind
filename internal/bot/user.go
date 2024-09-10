@@ -54,12 +54,10 @@ func updateUser(user *firestore.User) *firestore.User {
 	fetchedUser, err := firestore.GetUser(ctx, client, user.ID)
 	if err != nil {
 		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
-	} else if fetchedUser == nil {
-		fetchedUser.ID = user.ID
-		// Save the first user data to firestore
-		err := firestore.SaveUser(ctx, client, *user)
-		if err != nil {
-			log.Printf("[User] Error saving the frist user data to firestore, %s", err.Error())
+
+		// If the user doesn't exist, create a new user
+		fetchedUser = &firestore.User{
+			ID: user.ID,
 		}
 	}
 
