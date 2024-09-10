@@ -46,9 +46,19 @@ func updateUser(user *firestore.User) {
 		return
 	}
 
+	// Setup the database connection
+	client, ctx := createClient()
+	defer client.Close()
+
 	// Check if the user exists
-	fetchedUser := fetchUserFromDB(user.ID)
-	if fetchedUser == nil {
+	fetchedUser, err := firestore.GetUser(ctx, client, user.ID)
+	if err != nil {
+		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
+	} else if fetchedUser == nil {
+		err := firestore.SaveUser(ctx, client, *user)
+		if err != nil {
+			log.Printf("[User] Error saving user to firestore for the first time, %s", err.Error())
+		}
 		return
 	}
 
@@ -73,30 +83,21 @@ func updateUser(user *firestore.User) {
 
 	// Save the user to the database if there are changes
 	if hasChanges {
-		saveUserToDB(fetchedUser)
+		err := firestore.SaveUser(ctx, client, *user)
+		if err != nil {
+			log.Printf("[User] Error saving user to firestore during the bot initialization, %s", err.Error())
+		}
 	}
 
 	user = fetchedUser
 }
 
-// Fetch a user from the database
-func fetchUserFromDB(userID string) *firestore.User {
-	client, ctx := createClient()
-	defer client.Close()
-
-	user, err := firestore.GetUser(ctx, client, userID)
-	if err != nil {
-		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
-	}
-	return user
-}
-
 // Save a user to the database
-func saveUserToDB(user *firestore.User) {
+func saveUser(user firestore.User) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	err := firestore.SaveUser(ctx, client, *user)
+	err := firestore.SaveUser(ctx, client, user)
 	if err != nil {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())
 	}
