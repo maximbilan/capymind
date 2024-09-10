@@ -23,9 +23,16 @@ func setupTimezone(session *Session) {
 		log.Printf("[Bot] Error parsing timezone: %v", err)
 		return
 	}
-
 	session.User.SecondsFromUTC = &secondsFromUTC
-	setOutputText("timezone_set", session)
+
+	if !session.User.IsOnboarded {
+		session.User.IsOnboarded = true
+
+		sendMessage("timezone_set", session)
+		sendWelcome(session)
+	} else {
+		setOutputText("timezone_set", session)
+	}
 }
 
 // Set the timezone

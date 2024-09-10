@@ -19,6 +19,7 @@ type User struct {
 	IsWriting      bool    `firestore:"isWriting"` // Deprecated
 	LastCommand    string  `firestore:"lastCommand"`
 	IsTyping       bool    `firestore:"isTyping"`
+	IsOnboarded    bool    `firestore:"isOnboarded"`
 }
 
 func NewUser(ctx context.Context, client *firestore.Client, user User) error {
