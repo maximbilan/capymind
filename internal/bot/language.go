@@ -3,7 +3,7 @@ package bot
 import "github.com/capymind/internal/translator"
 
 func handleLanguage(session *Session) {
-	if session.Job.Input == nil {
+	if len(session.Job.Parameters) == 0 {
 		requestLanguage(session)
 	} else {
 		setupLanguage(session)
@@ -23,6 +23,6 @@ func requestLanguage(session *Session) {
 }
 
 func setupLanguage(session *Session) {
-	session.User.Locale = session.Job.Input
+	session.User.Locale = &session.Job.Parameters[0]
 	setOutputText("language_set", session)
 }

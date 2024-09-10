@@ -9,7 +9,7 @@ import (
 
 // Handle the timezone command
 func handleTimezone(session *Session) {
-	if session.Job.Input == nil {
+	if len(session.Job.Parameters) == 0 {
 		requestTimezone(session)
 	} else {
 		setupTimezone(session)
@@ -18,7 +18,7 @@ func handleTimezone(session *Session) {
 
 // Set the timezone
 func setupTimezone(session *Session) {
-	secondsFromUTC, err := strconv.Atoi(*session.Job.Input)
+	secondsFromUTC, err := strconv.Atoi(session.Job.Parameters[0])
 	if err != nil {
 		log.Printf("[Bot] Error parsing timezone: %v", err)
 		return

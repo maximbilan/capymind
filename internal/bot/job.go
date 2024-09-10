@@ -17,7 +17,7 @@ type JobResult struct {
 type Job struct {
 	Command    Command
 	Parameters []string
-	Input      *string
+	Input      *string // Raw input
 	Output     *JobResult
 }
 
