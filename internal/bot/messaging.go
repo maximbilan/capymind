@@ -26,21 +26,22 @@ import (
 // }
 
 // Set the text of the output
-func setText(session Session, textID string) {
+func setOutputText(textID string, session Session) {
 	session.Job.Output = &JobResult{
 		TextID: textID,
 	}
 }
 
 // Set the text of the output with buttons
-func setTextWithButtons(session Session, textID string, buttons []JobResultTextButton) {
+func setOutputTextWithButtons(textID string, buttons []JobResultTextButton, session Session) {
 	session.Job.Output = &JobResult{
 		TextID:  textID,
 		Buttons: buttons,
 	}
 }
 
-func sendMessage(session Session) {
+// Send the output message
+func sendOutputMessage(session Session) {
 	locale := session.Locale()
 	chatID := session.User.ChatID
 
@@ -65,4 +66,15 @@ func sendMessage(session Session) {
 	text := translator.Translate(locale, session.Job.Output.TextID)
 	// Send the message
 	telegram.SendMessage(chatID, text, replyMarkup)
+}
+
+// Send a message to the user
+func sendMessage(textID string, session Session) {
+	locale := session.Locale()
+	chatID := session.User.ChatID
+
+	// Localize the message
+	text := translator.Translate(locale, textID)
+	// Send the message
+	telegram.SendMessage(chatID, text, nil)
 }

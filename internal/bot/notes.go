@@ -26,3 +26,14 @@ func saveNote(text string, session Session) {
 		log.Printf("[Note] Error saving note in firestore, %s", err.Error())
 	}
 }
+
+func getNotes(session Session) []firestore.Note {
+	client, ctx := createClient()
+	defer client.Close()
+
+	notes, err := firestore.GetNotes(ctx, client, session.User.ID)
+	if err != nil {
+		log.Printf("[Database] Error getting notes from firestore, %s", err.Error())
+	}
+	return notes
+}

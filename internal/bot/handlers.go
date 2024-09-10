@@ -1,7 +1,6 @@
 package bot
 
 import (
-	"github.com/capymind/internal/analysis"
 	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 	"github.com/capymind/internal/utils"
@@ -61,36 +60,36 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 	}
 }
 
-func handleAnalysis(message telegram.Message, locale translator.Locale) {
-	userID := message.UserID()
-	chatID := message.ChatID()
-	notes := getNotes(message)
-	if len(notes) > 0 {
-		var strings []string
-		for _, note := range notes {
-			if note.Text != "" {
-				strings = append(strings, note.Text)
-			}
-		}
+// func handleAnalysis(message telegram.Message, locale translator.Locale) {
+// 	userID := message.UserID()
+// 	chatID := message.ChatID()
+// 	notes := getNotes(message)
+// 	if len(notes) > 0 {
+// 		var strings []string
+// 		for _, note := range notes {
+// 			if note.Text != "" {
+// 				strings = append(strings, note.Text)
+// 			}
+// 		}
 
-		localizeAndSendMessage(message.Chat.ID, userID, locale, "analysis_waiting")
-		analysis := analysis.Request(strings, locale)
-		if analysis != nil {
-			sendMessage(chatID, userID, *analysis)
-			return
-		}
-	}
+// 		localizeAndSendMessage(message.Chat.ID, userID, locale, "analysis_waiting")
+// 		analysis := analysis.Request(strings, locale)
+// 		if analysis != nil {
+// 			sendMessage(chatID, userID, *analysis)
+// 			return
+// 		}
+// 	}
 
-	noteCallbackData := "note_make"
-	replyMarkup := telegram.InlineKeyboardMarkup{
-		InlineKeyboard: [][]telegram.InlineKeyboardButton{
-			{
-				{Text: translator.Translate(locale, "make_record_to_journal"), CallbackData: &noteCallbackData},
-			},
-		},
-	}
-	localizeAndSendMessageWithReply(message.Chat.ID, userID, locale, "no_analysis", &replyMarkup)
-}
+// 	noteCallbackData := "note_make"
+// 	replyMarkup := telegram.InlineKeyboardMarkup{
+// 		InlineKeyboard: [][]telegram.InlineKeyboardButton{
+// 			{
+// 				{Text: translator.Translate(locale, "make_record_to_journal"), CallbackData: &noteCallbackData},
+// 			},
+// 		},
+// 	}
+// 	localizeAndSendMessageWithReply(message.Chat.ID, userID, locale, "no_analysis", &replyMarkup)
+// }
 
 func handleLanguage(message telegram.Message, locale translator.Locale) {
 	userID := message.UserID()
@@ -112,11 +111,11 @@ func sendLanguageSetMessage(chatID int64, userID string, locale translator.Local
 	localizeAndSendMessageWithReply(chatID, userID, locale, "language_select", &replyMarkup)
 }
 
-func handleTimezone(message telegram.Message, locale translator.Locale) {
-	userID := message.UserID()
-	chatID := message.ChatID()
-	sendTimezoneSetMessage(chatID, userID, locale)
-}
+// func handleTimezone(message telegram.Message, locale translator.Locale) {
+// 	userID := message.UserID()
+// 	chatID := message.ChatID()
+// 	sendTimezoneSetMessage(chatID, userID, locale)
+// }
 
 func sendTimezoneSetMessage(chatID int64, userID string, locale translator.Locale) {
 	timeZones := utils.GetTimeZones()

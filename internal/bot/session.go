@@ -35,7 +35,6 @@ func createSession(job Job, user firestore.User) Session {
 // Handle the session
 func handleSession(session Session) {
 	command := session.Job.Command
-	parameters := session.Job.Parameters
 
 	session.User.LastCommand = string(command)
 
@@ -47,26 +46,32 @@ func handleSession(session Session) {
 	case Last:
 		// handleLast(message, locale)
 	case Analysis:
-		// handleAnalysis(message, locale)
+		handleAnalysis(session)
 	case Language:
-		// handleLanguage(message, locale)
+		var enButton JobResultTextButton = JobResultTextButton{
+			TextID:   translator.English.String(),
+			Callback: translator.GetLocaleParameter(translator.EN),
+		}
+		var ukButton JobResultTextButton = JobResultTextButton{
+			TextID:   translator.Ukrainian.String(),
+			Callback: translator.GetLocaleParameter(translator.UK),
+		}
+		setOutputTextWithButtons("language_set", []JobResultTextButton{enButton, ukButton}, session)
 	case Timezone:
-		// handleTimezone(message, locale)
+		handleTimezone(session)
 	case Help:
-		setText(session, "commands_hint")
+		setOutputText("commands_hint", session)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {
-			saveNote(*session.Job.Input, session)
-			setText(session, "finish_note")
-			session.User.IsTyping = false
+			finishNote(session)
 		} else {
 			// Otherwise show the help message
-			setText(session, "commands_hint")
+			setOutputText("commands_hint", session)
 		}
 	default:
 		// Unknown command
-		setText(session, "commands_hint")
+		setOutputText("commands_hint", session)
 	}
 }
 
@@ -75,5 +80,5 @@ func finishSession(session Session) {
 	// Save the user's data
 	session.SaveUser()
 	// Prepare the message, localize and send it
-	sendMessage(session)
+	sendOutputMessage(session)
 }

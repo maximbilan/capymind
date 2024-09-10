@@ -119,27 +119,15 @@ func getLastNote(message telegram.Message) *firestore.Note {
 	return note
 }
 
-func getNotes(message telegram.Message) []firestore.Note {
-	client, ctx := createClient()
-	defer client.Close()
+// func setupTimezone(userID string, secondsFromUTC int) {
+// 	client, ctx := createClient()
+// 	defer client.Close()
 
-	userID := message.UserID()
-	notes, err := firestore.GetNotes(ctx, client, userID)
-	if err != nil {
-		log.Printf("[Database] Error getting notes from firestore, %s", err.Error())
-	}
-	return notes
-}
-
-func setupTimezone(userID string, secondsFromUTC int) {
-	client, ctx := createClient()
-	defer client.Close()
-
-	err := firestore.UpdateUserTimezone(ctx, client, userID, secondsFromUTC)
-	if err != nil {
-		log.Printf("[Database] Error updating user timezone in firestore, %s", err.Error())
-	}
-}
+// 	err := firestore.UpdateUserTimezone(ctx, client, userID, secondsFromUTC)
+// 	if err != nil {
+// 		log.Printf("[Database] Error updating user timezone in firestore, %s", err.Error())
+// 	}
+// }
 
 func getTimeZone(userID string) *int {
 	client, ctx := createClient()
