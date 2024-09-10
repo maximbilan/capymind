@@ -67,7 +67,7 @@ func setText(session Session, textID string) {
 	}
 }
 
-func setTextWithButtons(session Session, textID string, buttons []TextButton) {
+func setTextWithButtons(session Session, textID string, buttons []JobResultTextButton) {
 	session.Job.Output = &JobResult{
 		TextID:  textID,
 		Buttons: buttons,

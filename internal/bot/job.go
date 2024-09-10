@@ -4,6 +4,16 @@ import (
 	"github.com/capymind/internal/telegram"
 )
 
+type JobResultTextButton struct {
+	TextID   string
+	Callback string
+}
+
+type JobResult struct {
+	TextID  string
+	Buttons []JobResultTextButton
+}
+
 type Job struct {
 	Command    Command
 	Parameters []string
