@@ -61,12 +61,14 @@ func handleSession(session Session) {
 	}
 }
 
+// Set the text of the output
 func setText(session Session, textID string) {
 	session.Job.Output = &JobResult{
 		TextID: textID,
 	}
 }
 
+// Set the text of the output with buttons
 func setTextWithButtons(session Session, textID string, buttons []JobResultTextButton) {
 	session.Job.Output = &JobResult{
 		TextID:  textID,
