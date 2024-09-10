@@ -1,6 +1,6 @@
 package bot
 
-func handleStart(session Session) {
+func handleStart(session *Session) {
 	var noteButton JobResultTextButton = JobResultTextButton{
 		TextID:   "make_record_to_journal",
 		Callback: string(Note),

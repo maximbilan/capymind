@@ -8,18 +8,18 @@ import (
 	"github.com/capymind/internal/translator"
 )
 
-func startNote(session Session) {
+func startNote(session *Session) {
 	setOutputText("start_note", session)
 	session.User.IsTyping = true
 }
 
-func finishNote(session Session) {
+func finishNote(session *Session) {
 	saveNote(*session.Job.Input, session)
 	setOutputText("finish_note", session)
 	session.User.IsTyping = false
 }
 
-func handleLastNote(session Session) {
+func handleLastNote(session *Session) {
 	client, ctx := createClient()
 	defer client.Close()
 
@@ -41,7 +41,7 @@ func handleLastNote(session Session) {
 	}
 }
 
-func saveNote(text string, session Session) {
+func saveNote(text string, session *Session) {
 	// Setup the database connection
 	client, ctx := createClient()
 	defer client.Close()
@@ -61,7 +61,7 @@ func saveNote(text string, session Session) {
 	}
 }
 
-func getNotes(session Session) []firestore.Note {
+func getNotes(session *Session) []firestore.Note {
 	client, ctx := createClient()
 	defer client.Close()
 

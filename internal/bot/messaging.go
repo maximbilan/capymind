@@ -5,35 +5,15 @@ import (
 	"github.com/capymind/internal/translator"
 )
 
-// func sendMessage(chatID int64, userID string, text string) {
-// 	saveLastChatID(chatID, userID)
-// 	telegram.SendMessage(chatID, text, nil)
-// }
-
-// func sendMessageWithReply(chatID int64, userID string, text string, replyMarkup *telegram.InlineKeyboardMarkup) {
-// 	saveLastChatID(chatID, userID)
-// 	telegram.SendMessage(chatID, text, replyMarkup)
-// }
-
-// func localizeAndSendMessage(chatID int64, userID string, locale translator.Locale, text string) {
-// 	localizedMessage := translator.Translate(locale, text)
-// 	sendMessage(chatID, userID, localizedMessage)
-// }
-
-// func localizeAndSendMessageWithReply(chatID int64, userID string, locale translator.Locale, text string, replyMarkup *telegram.InlineKeyboardMarkup) {
-// 	localizedMessage := translator.Translate(locale, text)
-// 	sendMessageWithReply(chatID, userID, localizedMessage, replyMarkup)
-// }
-
 // Set the text of the output
-func setOutputText(textID string, session Session) {
+func setOutputText(textID string, session *Session) {
 	session.Job.Output = &JobResult{
 		TextID: textID,
 	}
 }
 
 // Set the text of the output with buttons
-func setOutputTextWithButtons(textID string, buttons []JobResultTextButton, session Session) {
+func setOutputTextWithButtons(textID string, buttons []JobResultTextButton, session *Session) {
 	session.Job.Output = &JobResult{
 		TextID:  textID,
 		Buttons: buttons,
@@ -41,7 +21,7 @@ func setOutputTextWithButtons(textID string, buttons []JobResultTextButton, sess
 }
 
 // Send the output message
-func sendOutputMessage(session Session) {
+func sendOutputMessage(session *Session) {
 	locale := session.Locale()
 	chatID := session.User.ChatID
 
@@ -67,7 +47,7 @@ func sendOutputMessage(session Session) {
 }
 
 // Send a message to the user
-func sendMessage(textID string, session Session) {
+func sendMessage(textID string, session *Session) {
 	locale := session.Locale()
 	chatID := session.User.ChatID
 

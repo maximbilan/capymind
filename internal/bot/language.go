@@ -2,7 +2,7 @@ package bot
 
 import "github.com/capymind/internal/translator"
 
-func handleLanguage(session Session) {
+func handleLanguage(session *Session) {
 	if session.Job.Input == nil {
 		requestLanguage(session)
 	} else {
@@ -10,7 +10,7 @@ func handleLanguage(session Session) {
 	}
 }
 
-func requestLanguage(session Session) {
+func requestLanguage(session *Session) {
 	var enButton JobResultTextButton = JobResultTextButton{
 		TextID:   translator.English.String(),
 		Callback: string(Language) + " " + translator.EN.String(),
@@ -22,7 +22,7 @@ func requestLanguage(session Session) {
 	setOutputTextWithButtons("language_set", []JobResultTextButton{enButton, ukButton}, session)
 }
 
-func setupLanguage(session Session) {
+func setupLanguage(session *Session) {
 	session.User.Locale = session.Job.Input
 	setOutputText("language_set", session)
 }

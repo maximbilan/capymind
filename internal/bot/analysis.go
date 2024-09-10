@@ -4,7 +4,7 @@ import (
 	"github.com/capymind/internal/analysis"
 )
 
-func handleAnalysis(session Session) {
+func handleAnalysis(session *Session) {
 	// Get the user's notes
 	notes := getNotes(session)
 	if len(notes) > 0 {

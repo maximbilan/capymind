@@ -11,7 +11,7 @@ type Session struct {
 }
 
 // Return the locale of the current user
-func (session Session) Locale() translator.Locale {
+func (session *Session) Locale() translator.Locale {
 	if session.User.Locale != nil {
 		return translator.Locale(*session.User.Locale)
 	}
@@ -19,21 +19,21 @@ func (session Session) Locale() translator.Locale {
 }
 
 // Save the user's data
-func (session Session) SaveUser() {
+func (session *Session) SaveUser() {
 	saveUser(&session.User)
 }
 
 // Create a session
-func createSession(job Job, user firestore.User) Session {
+func createSession(job Job, user firestore.User) *Session {
 	session := Session{
 		Job:  job,
 		User: user,
 	}
-	return session
+	return &session
 }
 
 // Handle the session
-func handleSession(session Session) {
+func handleSession(session *Session) {
 	command := session.Job.Command
 	session.User.LastCommand = string(command)
 
@@ -67,7 +67,7 @@ func handleSession(session Session) {
 }
 
 // Finish the session. Send the output to the user
-func finishSession(session Session) {
+func finishSession(session *Session) {
 	// Save the user's data
 	session.SaveUser()
 	// Prepare the message, localize and send it
