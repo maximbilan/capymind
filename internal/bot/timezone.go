@@ -1,23 +1,11 @@
 package bot
 
-import "github.com/capymind/internal/utils"
+import (
+	"log"
+	"strconv"
 
-// Set the timezone
-func setupTimezone(session Session) {
-
-	// TO DO: Implement parsing and saving the timezone to the database
-
-	secondsFromUTC, ok := utils.ParseTimezone(*session.Job.Input)
-
-	if ok && secondsFromUTC != nil {
-		setupTimezone(*userID, *secondsFromUTC)
-		localizeAndSendMessage(*chatID, *userID, locale, "timezone_set")
-		if !userExists(*userID) {
-			sendStartMessage(*chatID, *userID, &callbackQuery.From.UserName, locale)
-		}
-		return
-	}
-}
+	"github.com/capymind/internal/utils"
+)
 
 // Handle the timezone command
 func handleTimezone(session Session) {
@@ -29,11 +17,23 @@ func handleTimezone(session Session) {
 }
 
 // Set the timezone
+func setupTimezone(session Session) {
+	secondsFromUTC, err := strconv.Atoi(*session.Job.Input)
+	if err != nil {
+		log.Printf("[Bot] Error parsing timezone: %v", err)
+		return
+	}
+
+	session.User.SecondsFromUTC = &secondsFromUTC
+	setOutputText("timezone_set", session)
+}
+
+// Set the timezone
 func requestTimezone(session Session) {
 	var buttons []JobResultTextButton
 	timeZones := utils.GetTimeZones()
 	for _, tz := range timeZones {
-		callback := utils.GetTimezoneParameter(tz)
+		callback := string(Timezone) + " " + tz.String()
 		button := JobResultTextButton{
 			TextID:   tz.String(),
 			Callback: callback,

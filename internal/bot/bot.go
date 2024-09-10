@@ -22,6 +22,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[Bot] No user to process: message_id=%d", update.Message.ID)
 		return
 	}
+
 	// Update the user's data in the database if necessary
 	updateUser(user)
 
@@ -38,8 +39,6 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	handleSession(session)
 	// Send the response
 	finishSession(session)
-
-	// Process the job
 
 	callbackQuery := update.CallbackQuery
 	if callbackQuery != nil && callbackQuery.Data != "" {

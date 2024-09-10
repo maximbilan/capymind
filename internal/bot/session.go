@@ -48,15 +48,7 @@ func handleSession(session Session) {
 	case Analysis:
 		handleAnalysis(session)
 	case Language:
-		var enButton JobResultTextButton = JobResultTextButton{
-			TextID:   translator.English.String(),
-			Callback: translator.GetLocaleParameter(translator.EN),
-		}
-		var ukButton JobResultTextButton = JobResultTextButton{
-			TextID:   translator.Ukrainian.String(),
-			Callback: translator.GetLocaleParameter(translator.UK),
-		}
-		setOutputTextWithButtons("language_set", []JobResultTextButton{enButton, ukButton}, session)
+		handleLanguage(session)
 	case Timezone:
 		handleTimezone(session)
 	case Help:

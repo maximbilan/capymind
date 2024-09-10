@@ -91,11 +91,11 @@ func handleLast(message telegram.Message, locale translator.Locale) {
 // 	localizeAndSendMessageWithReply(message.Chat.ID, userID, locale, "no_analysis", &replyMarkup)
 // }
 
-func handleLanguage(message telegram.Message, locale translator.Locale) {
-	userID := message.UserID()
-	chatID := message.ChatID()
-	sendLanguageSetMessage(chatID, userID, locale)
-}
+// func handleLanguage(message telegram.Message, locale translator.Locale) {
+// 	userID := message.UserID()
+// 	chatID := message.ChatID()
+// 	sendLanguageSetMessage(chatID, userID, locale)
+// }
 
 func sendLanguageSetMessage(chatID int64, userID string, locale translator.Locale) {
 	enCallbackData := translator.GetLocaleParameter(translator.EN)
