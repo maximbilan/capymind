@@ -145,6 +145,6 @@ func UserWritingStatus(ctx context.Context, client *firestore.Client, userID str
 }
 
 func SaveUser(ctx context.Context, client *firestore.Client, user User) error {
-	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user, firestore.MergeAll)
+	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user)
 	return err
 }

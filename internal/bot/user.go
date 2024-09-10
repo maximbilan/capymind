@@ -73,11 +73,11 @@ func updateUser(user *firestore.User) {
 }
 
 // Save a user to the database
-func saveUser(user firestore.User) {
+func saveUser(user *firestore.User) {
 	client, ctx := createClient()
 	defer client.Close()
 
-	err := firestore.SaveUser(ctx, client, user)
+	err := firestore.SaveUser(ctx, client, *user)
 	if err != nil {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())
 	}

@@ -20,7 +20,7 @@ func (session Session) Locale() translator.Locale {
 
 // Save the user's data
 func (session Session) SaveUser() {
-	saveUser(session.User)
+	saveUser(&session.User)
 }
 
 // Create a session

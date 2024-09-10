@@ -47,13 +47,11 @@ func sendOutputMessage(session Session) {
 
 	// Prepare the reply markup
 	var replyMarkup *telegram.InlineKeyboardMarkup
-	if len(session.Job.Output.Buttons) > 0 {
+	if session.Job.Output != nil && len(session.Job.Output.Buttons) > 0 {
 		var inlineKeyboard [][]telegram.InlineKeyboardButton
-
 		for _, button := range session.Job.Output.Buttons {
-			callbackData := button.Callback
 			inlineKeyboard = append(inlineKeyboard, []telegram.InlineKeyboardButton{
-				{Text: translator.Translate(locale, button.TextID), CallbackData: &callbackData},
+				{Text: translator.Translate(locale, button.TextID), CallbackData: &button.Callback},
 			})
 		}
 

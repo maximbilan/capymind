@@ -7,7 +7,7 @@ func handleStart(session Session) {
 	}
 	var helpButton JobResultTextButton = JobResultTextButton{
 		TextID:   "how_to_use",
-		Callback: string(Note),
+		Callback: string(Help),
 	}
 	setOutputTextWithButtons("welcome", []JobResultTextButton{noteButton, helpButton}, session)
 }
