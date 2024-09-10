@@ -35,12 +35,11 @@ func createSession(job Job, user firestore.User) Session {
 // Handle the session
 func handleSession(session Session) {
 	command := session.Job.Command
-
 	session.User.LastCommand = string(command)
 
 	switch command {
 	case Start:
-		// handleStart(message, locale)
+		handleStart(session)
 	case Note:
 		startNote(session)
 	case Last:
