@@ -33,12 +33,12 @@ func requestTimezone(session *Session) {
 	var buttons []JobResultTextButton
 	timeZones := utils.GetTimeZones()
 	for _, tz := range timeZones {
-		callback := string(Timezone) + " " + tz.String()
+		callback := string(Timezone) + " " + tz.Parameter()
 		button := JobResultTextButton{
 			TextID:   tz.String(),
 			Callback: callback,
 		}
 		buttons = append(buttons, button)
 	}
-	setOutputTextWithButtons("timezone_set", buttons, session)
+	setOutputTextWithButtons("timezone_select", buttons, session)
 }

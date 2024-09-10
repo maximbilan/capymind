@@ -19,10 +19,10 @@ func requestLanguage(session *Session) {
 		TextID:   translator.Ukrainian.String(),
 		Callback: string(Language) + " " + translator.UK.String(),
 	}
-	setOutputTextWithButtons("language_set", []JobResultTextButton{enButton, ukButton}, session)
+	setOutputTextWithButtons("language_select", []JobResultTextButton{enButton, ukButton}, session)
 }
 
 func setupLanguage(session *Session) {
 	session.User.Locale = &session.Job.Parameters[0]
-	setOutputText("language_set", session)
+	setOutputText("locale_set", session)
 }
