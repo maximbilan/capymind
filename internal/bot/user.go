@@ -69,6 +69,12 @@ func updateUser(user *firestore.User) *firestore.User {
 	fetchedUser.FirstName = user.FirstName
 	fetchedUser.LastName = user.LastName
 
+	// Temporary fix
+	if fetchedUser.IsWriting {
+		fetchedUser.IsTyping = true
+		fetchedUser.IsWriting = false
+	}
+
 	return fetchedUser
 }
 
