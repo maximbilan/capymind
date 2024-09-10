@@ -36,15 +36,3 @@ func NewClient(ctx context.Context) (*firestore.Client, error) {
 
 	return client, nil
 }
-
-func NewRecord(ctx context.Context, client *firestore.Client, user User, note Note) error {
-	err := NewUser(ctx, client, user)
-	if err != nil {
-		return err
-	}
-	err = NewNote(ctx, client, user, note)
-	if err != nil {
-		return err
-	}
-	return nil
-}

@@ -22,24 +22,6 @@ type User struct {
 	IsOnboarded    bool    `firestore:"isOnboarded"`
 }
 
-func NewUser(ctx context.Context, client *firestore.Client, user User) error {
-	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, map[string]interface{}{
-		"id":        user.ID,
-		"username":  user.UserName,
-		"firstName": user.FirstName,
-		"lastName":  user.LastName,
-	}, firestore.MergeAll)
-	return err
-}
-
-func UserExists(ctx context.Context, client *firestore.Client, userID string) (bool, error) {
-	user, _ := GetUser(ctx, client, userID)
-	if user != nil {
-		return user.Name != nil, nil
-	}
-	return false, nil
-}
-
 func GetUser(ctx context.Context, client *firestore.Client, userID string) (*User, error) {
 	doc, err := client.Collection(users.String()).Doc(userID).Get(ctx)
 	if err != nil {
@@ -51,33 +33,8 @@ func GetUser(ctx context.Context, client *firestore.Client, userID string) (*Use
 	return &user, nil
 }
 
-func UserLocale(ctx context.Context, client *firestore.Client, userID string) (*string, error) {
-	user, err := GetUser(ctx, client, userID)
-	if err != nil {
-		return nil, err
-	}
-	return user.Locale, nil
-}
-
-func UpdateUserLocale(ctx context.Context, client *firestore.Client, userID string, locale string) error {
-	_, err := client.Collection(users.String()).Doc(userID).Set(ctx, map[string]interface{}{
-		"locale": locale,
-	}, firestore.MergeAll)
-	return err
-}
-
-func UpdateUserTimezone(ctx context.Context, client *firestore.Client, userID string, secondsFromUTC int) error {
-	_, err := client.Collection(users.String()).Doc(userID).Set(ctx, map[string]interface{}{
-		"secondsFromUTC": secondsFromUTC,
-	}, firestore.MergeAll)
-	return err
-}
-
-func SaveLastChatID(ctx context.Context, client *firestore.Client, userID string, chatID int64) error {
-	_, err := client.Collection(users.String()).Doc(userID).Set(ctx, map[string]interface{}{
-		"id":     userID,
-		"chatId": userID,
-	}, firestore.MergeAll)
+func SaveUser(ctx context.Context, client *firestore.Client, user User) error {
+	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user)
 	return err
 }
 
@@ -112,40 +69,4 @@ func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]
 		lastDoc = docs[len(docs)-1]
 	}
 	return nil
-}
-
-func UserTimezone(ctx context.Context, client *firestore.Client, userID string) (*int, error) {
-	user, err := GetUser(ctx, client, userID)
-	if err != nil {
-		return nil, err
-	}
-	return user.SecondsFromUTC, nil
-}
-
-func updateWritingMode(ctx context.Context, client *firestore.Client, userID string, state bool) error {
-	_, err := client.Collection(users.String()).Doc(userID).Set(ctx, map[string]interface{}{
-		"isWriting": state,
-	}, firestore.MergeAll)
-	return err
-}
-
-func StartWriting(ctx context.Context, client *firestore.Client, userID string) error {
-	return updateWritingMode(ctx, client, userID, true)
-}
-
-func StopWriting(ctx context.Context, client *firestore.Client, userID string) error {
-	return updateWritingMode(ctx, client, userID, false)
-}
-
-func UserWritingStatus(ctx context.Context, client *firestore.Client, userID string) (bool, error) {
-	user, err := GetUser(ctx, client, userID)
-	if err != nil {
-		return false, err
-	}
-	return user.IsWriting, nil
-}
-
-func SaveUser(ctx context.Context, client *firestore.Client, user User) error {
-	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user)
-	return err
 }
