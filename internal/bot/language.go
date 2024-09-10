@@ -13,11 +13,11 @@ func handleLanguage(session Session) {
 func requestLanguage(session Session) {
 	var enButton JobResultTextButton = JobResultTextButton{
 		TextID:   translator.English.String(),
-		Callback: translator.GetLocaleParameter(translator.EN),
+		Callback: string(Language) + " " + translator.EN.String(),
 	}
 	var ukButton JobResultTextButton = JobResultTextButton{
 		TextID:   translator.Ukrainian.String(),
-		Callback: translator.GetLocaleParameter(translator.UK),
+		Callback: string(Language) + " " + translator.UK.String(),
 	}
 	setOutputTextWithButtons("language_set", []JobResultTextButton{enButton, ukButton}, session)
 }

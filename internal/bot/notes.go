@@ -35,7 +35,7 @@ func handleLastNote(session Session) {
 	} else {
 		var button JobResultTextButton = JobResultTextButton{
 			TextID:   "make_record_to_journal",
-			Callback: "note_make",
+			Callback: string(Note),
 		}
 		setOutputTextWithButtons("no_notes", []JobResultTextButton{button}, session)
 	}

@@ -31,7 +31,7 @@ func handleAnalysis(session Session) {
 	// If there are no notes, send a message to make a note
 	var button JobResultTextButton = JobResultTextButton{
 		TextID:   "make_record_to_journal",
-		Callback: "note_make",
+		Callback: string(Note),
 	}
 	setOutputTextWithButtons("no_analysis", []JobResultTextButton{button}, session)
 }
