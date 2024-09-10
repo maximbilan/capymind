@@ -5,7 +5,41 @@ import (
 	"time"
 
 	"github.com/capymind/internal/firestore"
+	"github.com/capymind/internal/translator"
 )
+
+func startNote(session Session) {
+	setOutputText("start_note", session)
+	session.User.IsTyping = true
+}
+
+func finishNote(session Session) {
+	saveNote(*session.Job.Input, session)
+	setOutputText("finish_note", session)
+	session.User.IsTyping = false
+}
+
+func handleLastNote(session Session) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	userID := session.User.ID
+	note, err := firestore.LastNote(ctx, client, userID)
+	if err != nil {
+		log.Printf("[Bot] Error getting last note from firestore, %s", err.Error())
+	}
+
+	if note != nil {
+		var response string = translator.Translate(session.Locale(), "your_last_note") + note.Text
+		setOutputText(response, session)
+	} else {
+		var button JobResultTextButton = JobResultTextButton{
+			TextID:   "make_record_to_journal",
+			Callback: "note_make",
+		}
+		setOutputTextWithButtons("no_notes", []JobResultTextButton{button}, session)
+	}
+}
 
 func saveNote(text string, session Session) {
 	// Setup the database connection
@@ -23,7 +57,7 @@ func saveNote(text string, session Session) {
 	// Save the note
 	err := firestore.NewNote(ctx, client, session.User, note)
 	if err != nil {
-		log.Printf("[Note] Error saving note in firestore, %s", err.Error())
+		log.Printf("[Bot] Error saving note in firestore, %s", err.Error())
 	}
 }
 
@@ -33,7 +67,7 @@ func getNotes(session Session) []firestore.Note {
 
 	notes, err := firestore.GetNotes(ctx, client, session.User.ID)
 	if err != nil {
-		log.Printf("[Database] Error getting notes from firestore, %s", err.Error())
+		log.Printf("[Bot] Error getting notes from firestore, %s", err.Error())
 	}
 	return notes
 }

@@ -107,17 +107,17 @@ func getUserLocaleByUserID(userID string) *translator.Locale {
 // 	}
 // }
 
-func getLastNote(message telegram.Message) *firestore.Note {
-	client, ctx := createClient()
-	defer client.Close()
+// func getLastNote(message telegram.Message) *firestore.Note {
+// 	client, ctx := createClient()
+// 	defer client.Close()
 
-	userID := message.UserID()
-	note, err := firestore.LastNote(ctx, client, userID)
-	if err != nil {
-		log.Printf("[Database] Error getting last note from firestore, %s", err.Error())
-	}
-	return note
-}
+// 	userID := message.UserID()
+// 	note, err := firestore.LastNote(ctx, client, userID)
+// 	if err != nil {
+// 		log.Printf("[Database] Error getting last note from firestore, %s", err.Error())
+// 	}
+// 	return note
+// }
 
 // func setupTimezone(userID string, secondsFromUTC int) {
 // 	client, ctx := createClient()

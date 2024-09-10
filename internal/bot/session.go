@@ -42,9 +42,9 @@ func handleSession(session Session) {
 	case Start:
 		// handleStart(message, locale)
 	case Note:
-		// handleNote(message, locale)
+		startNote(session)
 	case Last:
-		// handleLast(message, locale)
+		handleLastNote(session)
 	case Analysis:
 		handleAnalysis(session)
 	case Language:
