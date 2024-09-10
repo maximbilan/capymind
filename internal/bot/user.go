@@ -5,6 +5,7 @@ import (
 
 	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/telegram"
+	"github.com/capymind/internal/translator"
 )
 
 // Create a user from an update
@@ -35,6 +36,7 @@ func createUser(update telegram.Update) *firestore.User {
 		UserName:  &telegramUser.UserName,
 		FirstName: &telegramUser.FirstName,
 		LastName:  &telegramUser.LastName,
+		Locale:    &telegramUser.LanguageCode,
 	}
 
 	return &user
@@ -71,6 +73,14 @@ func updateUser(user *firestore.User) *firestore.User {
 	if fetchedUser.IsWriting {
 		fetchedUser.IsTyping = true
 		fetchedUser.IsWriting = false
+	}
+
+	// Update the user's locale from Telegram if it's valid
+	if fetchedUser.Locale == nil && user.Locale != nil {
+		userLocale := *user.Locale
+		if userLocale == translator.EN.String() || userLocale == translator.UK.String() {
+			fetchedUser.Locale = user.Locale
+		}
 	}
 
 	return fetchedUser

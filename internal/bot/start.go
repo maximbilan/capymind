@@ -4,6 +4,9 @@ func handleStart(session *Session) {
 	if session.User.Locale == nil {
 		// Go onboarding
 		handleLanguage(session)
+	} else if session.User.SecondsFromUTC == nil {
+		// Go onboarding
+		handleTimezone(session)
 	} else {
 		sendWelcome(session)
 	}
