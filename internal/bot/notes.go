@@ -55,7 +55,7 @@ func saveNote(text string, session *Session) {
 	}
 
 	// Save the note
-	err := firestore.NewNote(ctx, client, session.User, note)
+	err := firestore.NewNote(ctx, client, *session.User, note)
 	if err != nil {
 		log.Printf("[Bot] Error saving note in firestore, %s", err.Error())
 	}

@@ -6,8 +6,8 @@ import (
 )
 
 type Session struct {
-	Job  Job
-	User firestore.User
+	Job  *Job
+	User *firestore.User
 }
 
 // Return the locale of the current user
@@ -20,11 +20,11 @@ func (session *Session) Locale() translator.Locale {
 
 // Save the user's data
 func (session *Session) SaveUser() {
-	saveUser(&session.User)
+	saveUser(session.User)
 }
 
 // Create a session
-func createSession(job Job, user firestore.User) *Session {
+func createSession(job *Job, user *firestore.User) *Session {
 	session := Session{
 		Job:  job,
 		User: user,

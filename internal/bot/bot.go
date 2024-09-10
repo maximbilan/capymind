@@ -32,7 +32,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create and start a session
-	session := createSession(*job, *user)
+	session := createSession(job, user)
 	// Execute the job
 	handleSession(session)
 	// Send the response
