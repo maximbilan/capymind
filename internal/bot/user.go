@@ -7,7 +7,7 @@ import (
 	"github.com/capymind/internal/telegram"
 )
 
-// Create a local user from an update
+// Create a user from an update
 func createUser(update telegram.Update) *firestore.User {
 	var chatID int64
 	var telegramUser *telegram.User
@@ -40,21 +40,15 @@ func createUser(update telegram.Update) *firestore.User {
 	return &user
 }
 
-// Update the user's data in the database if necessary and fetch everything from the database
+// Update the user's data in the database if necessary
 func updateUser(user *firestore.User) {
 	if user == nil {
 		return
 	}
 
-	// Setup the firestore connection
-	client, ctx := createClient()
-	defer client.Close()
-
 	// Check if the user exists
-	fetchedUser, err := firestore.GetUser(ctx, client, user.ID)
-	if err != nil {
-		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
-	} else if fetchedUser == nil {
+	fetchedUser := fetchUserFromDB(user.ID)
+	if fetchedUser == nil {
 		return
 	}
 
@@ -77,14 +71,33 @@ func updateUser(user *firestore.User) {
 		hasChanges = true
 	}
 
-	// Save the user to the database if necessary
+	// Save the user to the database if there are changes
 	if hasChanges {
-		err := firestore.NewUser(ctx, client, *fetchedUser)
-		if err != nil {
-			log.Printf("[User] Error saving user to firestore, %s", err.Error())
-		}
+		saveUserToDB(fetchedUser)
 	}
 
-	// Replace the user with the fetched user
 	user = fetchedUser
+}
+
+// Fetch a user from the database
+func fetchUserFromDB(userID string) *firestore.User {
+	client, ctx := createClient()
+	defer client.Close()
+
+	user, err := firestore.GetUser(ctx, client, userID)
+	if err != nil {
+		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
+	}
+	return user
+}
+
+// Save a user to the database
+func saveUserToDB(user *firestore.User) {
+	client, ctx := createClient()
+	defer client.Close()
+
+	err := firestore.SaveUser(ctx, client, *user)
+	if err != nil {
+		log.Printf("[User] Error saving user to firestore, %s", err.Error())
+	}
 }

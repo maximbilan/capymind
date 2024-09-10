@@ -114,7 +114,7 @@ func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]
 }
 
 func UserTimezone(ctx context.Context, client *firestore.Client, userID string) (*int, error) {
-	user, err := getUser(ctx, client, userID)
+	user, err := GetUser(ctx, client, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func UserWritingStatus(ctx context.Context, client *firestore.Client, userID str
 	return user.IsWriting, nil
 }
 
-func saveUser(ctx context.Context, client *firestore.Client, user User) error {
+func SaveUser(ctx context.Context, client *firestore.Client, user User) error {
 	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user, firestore.MergeAll)
 	return err
 }
