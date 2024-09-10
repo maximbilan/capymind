@@ -1,5 +1,6 @@
 package bot
 
+// handleStart is the entry point for the bot. It checks if the user has a locale and timezone set and sends a welcome message
 func handleStart(session *Session) {
 	if session.User.Locale == nil {
 		// Go onboarding
@@ -12,6 +13,7 @@ func handleStart(session *Session) {
 	}
 }
 
+// Welcome message to the user
 func sendWelcome(session *Session) {
 	var noteButton JobResultTextButton = JobResultTextButton{
 		TextID:   "make_record_to_journal",

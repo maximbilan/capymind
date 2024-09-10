@@ -4,6 +4,7 @@ import (
 	"github.com/capymind/internal/analysis"
 )
 
+// Handle the analysis command
 func handleAnalysis(session *Session) {
 	// Get the user's notes
 	notes := getNotes(session)
