@@ -6,24 +6,23 @@ import (
 
 	google "cloud.google.com/go/firestore"
 	"github.com/capymind/internal/firestore"
-	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 )
 
-func convertTelegramUser(message *telegram.Message) *firestore.User {
-	if message == nil {
-		return nil
-	}
+// func convertTelegramUser(message *telegram.Message) *firestore.User {
+// 	if message == nil {
+// 		return nil
+// 	}
 
-	user := firestore.User{
-		ID:        message.UserID(),
-		ChatID:    message.ChatID(),
-		UserName:  &message.From.UserName,
-		FirstName: &message.From.FirstName,
-		LastName:  &message.From.LastName,
-	}
-	return &user
-}
+// 	user := firestore.User{
+// 		ID:        message.UserID(),
+// 		ChatID:    message.ChatID(),
+// 		UserName:  &message.From.UserName,
+// 		FirstName: &message.From.FirstName,
+// 		LastName:  &message.From.LastName,
+// 	}
+// 	return &user
+// }
 
 func createClient() (*google.Client, context.Context) {
 	ctx := context.Background()
@@ -63,11 +62,6 @@ func setupLocale(userID string, locale string) {
 	if err != nil {
 		log.Printf("[Database] Error updating user locale in firestore, %s", err.Error())
 	}
-}
-
-func getUserLocale(message telegram.Message) *translator.Locale {
-	userID := message.UserID()
-	return getUserLocaleByUserID(userID)
 }
 
 func getUserLocaleByUserID(userID string) *translator.Locale {
