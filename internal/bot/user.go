@@ -55,39 +55,19 @@ func updateUser(user *firestore.User) {
 	if err != nil {
 		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
 	} else if fetchedUser == nil {
+		fetchedUser.ID = user.ID
+		// Save the first user data to firestore
 		err := firestore.SaveUser(ctx, client, *user)
 		if err != nil {
-			log.Printf("[User] Error saving user to firestore for the first time, %s", err.Error())
-		}
-		return
-	}
-
-	// Update the user's data if necessary
-	var hasChanges bool = false
-	if fetchedUser.ChatID != user.ChatID {
-		fetchedUser.ChatID = user.ChatID
-		hasChanges = true
-	}
-	if fetchedUser.UserName != user.UserName {
-		fetchedUser.UserName = user.UserName
-		hasChanges = true
-	}
-	if fetchedUser.FirstName != user.FirstName {
-		fetchedUser.FirstName = user.FirstName
-		hasChanges = true
-	}
-	if fetchedUser.LastName != user.LastName {
-		fetchedUser.LastName = user.LastName
-		hasChanges = true
-	}
-
-	// Save the user to the database if there are changes
-	if hasChanges {
-		err := firestore.SaveUser(ctx, client, *user)
-		if err != nil {
-			log.Printf("[User] Error saving user to firestore during the bot initialization, %s", err.Error())
+			log.Printf("[User] Error saving the frist user data to firestore, %s", err.Error())
 		}
 	}
+
+	// Update the user's data
+	fetchedUser.ChatID = user.ChatID
+	fetchedUser.UserName = user.UserName
+	fetchedUser.FirstName = user.FirstName
+	fetchedUser.LastName = user.LastName
 
 	user = fetchedUser
 }

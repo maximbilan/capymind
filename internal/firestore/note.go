@@ -14,7 +14,7 @@ type Note struct {
 	User      *firestore.DocumentRef `firestore:"user"`
 }
 
-func newNote(ctx context.Context, client *firestore.Client, user User, note Note) error {
+func NewNote(ctx context.Context, client *firestore.Client, user User, note Note) error {
 	userRef := client.Collection(users.String()).Doc(user.ID)
 	_, _, err := client.Collection(notes.String()).Add(ctx, map[string]interface{}{
 		"text":      note.Text,

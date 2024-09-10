@@ -3,7 +3,6 @@ package bot
 import (
 	"context"
 	"log"
-	"time"
 
 	google "cloud.google.com/go/firestore"
 	"github.com/capymind/internal/firestore"
@@ -89,24 +88,24 @@ func getUserLocaleByUserID(userID string) *translator.Locale {
 	return &locale
 }
 
-func saveNote(message telegram.Message) {
-	client, ctx := createClient()
-	defer client.Close()
+// func saveNote(message telegram.Message) {
+// 	client, ctx := createClient()
+// 	defer client.Close()
 
-	var user = *convertTelegramUser(&message)
+// 	var user = *convertTelegramUser(&message)
 
-	timestamp := time.Now()
-	var note = firestore.Note{
-		ID:        user.ID,
-		Text:      message.Text,
-		Timestamp: timestamp,
-	}
+// 	timestamp := time.Now()
+// 	var note = firestore.Note{
+// 		ID:        user.ID,
+// 		Text:      message.Text,
+// 		Timestamp: timestamp,
+// 	}
 
-	err := firestore.NewRecord(ctx, client, user, note)
-	if err != nil {
-		log.Printf("[Database] Error saving note to firestore, %s", err.Error())
-	}
-}
+// 	err := firestore.NewRecord(ctx, client, user, note)
+// 	if err != nil {
+// 		log.Printf("[Database] Error saving note to firestore, %s", err.Error())
+// 	}
+// }
 
 func getLastNote(message telegram.Message) *firestore.Note {
 	client, ctx := createClient()

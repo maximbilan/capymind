@@ -2,7 +2,6 @@ package bot
 
 import (
 	"github.com/capymind/internal/firestore"
-	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 )
 
@@ -38,6 +37,8 @@ func handleSession(session Session) {
 	command := session.Job.Command
 	parameters := session.Job.Parameters
 
+	session.User.LastCommand = string(command)
+
 	switch command {
 	case Start:
 		// handleStart(message, locale)
@@ -55,48 +56,24 @@ func handleSession(session Session) {
 		setText(session, "commands_hint")
 	case None:
 		// Typing mode
+		if session.User.IsTyping && session.Job.Input != nil {
+			saveNote(*session.Job.Input, session)
+			setText(session, "finish_note")
+			session.User.IsTyping = false
+		} else {
+			// Otherwise show the help message
+			setText(session, "commands_hint")
+		}
 	default:
 		// Unknown command
-		// handleUnknownState(message, locale)
-	}
-}
-
-// Set the text of the output
-func setText(session Session, textID string) {
-	session.Job.Output = &JobResult{
-		TextID: textID,
-	}
-}
-
-// Set the text of the output with buttons
-func setTextWithButtons(session Session, textID string, buttons []JobResultTextButton) {
-	session.Job.Output = &JobResult{
-		TextID:  textID,
-		Buttons: buttons,
+		setText(session, "commands_hint")
 	}
 }
 
 // Finish the session. Send the output to the user
 func finishSession(session Session) {
-	locale := session.Locale()
-	chatID := session.User.ChatID
-
-	var replyMarkup *telegram.InlineKeyboardMarkup
-	if len(session.Job.Output.Buttons) > 0 {
-		var inlineKeyboard [][]telegram.InlineKeyboardButton
-
-		for _, button := range session.Job.Output.Buttons {
-			callbackData := button.Callback
-			inlineKeyboard = append(inlineKeyboard, []telegram.InlineKeyboardButton{
-				{Text: translator.Translate(locale, button.TextID), CallbackData: &callbackData},
-			})
-		}
-
-		replyMarkup = &telegram.InlineKeyboardMarkup{
-			InlineKeyboard: inlineKeyboard,
-		}
-	}
-
-	text := translator.Translate(locale, session.Job.Output.TextID)
-	telegram.SendMessage(chatID, text, replyMarkup)
+	// Save the user's data
+	session.SaveUser()
+	// Prepare the message, localize and send it
+	sendMessage(session)
 }

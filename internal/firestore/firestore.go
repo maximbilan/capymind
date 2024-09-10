@@ -42,7 +42,7 @@ func NewRecord(ctx context.Context, client *firestore.Client, user User, note No
 	if err != nil {
 		return err
 	}
-	err = newNote(ctx, client, user, note)
+	err = NewNote(ctx, client, user, note)
 	if err != nil {
 		return err
 	}
