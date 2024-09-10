@@ -12,17 +12,28 @@ import (
 func Parse(w http.ResponseWriter, r *http.Request) {
 	update := telegram.Parse(r)
 	if update == nil {
-		// No update to process
+		log.Printf("[Bot] No update to process")
 		return
 	}
 
-	// Create a job for the user
-
-	// Fetch the user's data from the database
-
+	// Create a user
+	user := createUser(*update)
+	if user == nil {
+		log.Printf("[Bot] No user to process: message_id=%d", update.Message.ID)
+		return
+	}
 	// Update the user's data in the database if necessary
+	updateUser(user)
+
+	// Create a job
+	job := createJob(*update)
+	if job == nil {
+		log.Printf("[Bot] No job to process: update_id=%d", update.ID)
+		return
+	}
 
 	// Create a session
+	session := createSession(*job, *user)
 
 	// Process the job
 

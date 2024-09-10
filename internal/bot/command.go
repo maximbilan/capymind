@@ -26,7 +26,7 @@ func (c Command) HasParam() bool {
 	return false
 }
 
-func ParseCommand(input string) (Command, *string) {
+func ParseCommand(input string) (Command, []string) {
 	if len(input) == 0 || input[0] != '/' {
 		return None, nil
 	}
@@ -35,7 +35,7 @@ func ParseCommand(input string) (Command, *string) {
 	if len(parts) == 1 {
 		return Command(parts[0]), nil
 	} else {
-		// To do: multiple parameters
-		return Command(parts[0]), &parts[1]
+		// Return the command and the rest of the input as parameters
+		return Command(parts[0]), parts[1:]
 	}
 }

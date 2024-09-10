@@ -32,14 +32,14 @@ func NewUser(ctx context.Context, client *firestore.Client, user User) error {
 }
 
 func UserExists(ctx context.Context, client *firestore.Client, userID string) (bool, error) {
-	user, _ := getUser(ctx, client, userID)
+	user, _ := GetUser(ctx, client, userID)
 	if user != nil {
 		return user.Name != nil, nil
 	}
 	return false, nil
 }
 
-func getUser(ctx context.Context, client *firestore.Client, userID string) (*User, error) {
+func GetUser(ctx context.Context, client *firestore.Client, userID string) (*User, error) {
 	doc, err := client.Collection(users.String()).Doc(userID).Get(ctx)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func getUser(ctx context.Context, client *firestore.Client, userID string) (*Use
 }
 
 func UserLocale(ctx context.Context, client *firestore.Client, userID string) (*string, error) {
-	user, err := getUser(ctx, client, userID)
+	user, err := GetUser(ctx, client, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -137,9 +137,14 @@ func StopWriting(ctx context.Context, client *firestore.Client, userID string) e
 }
 
 func UserWritingStatus(ctx context.Context, client *firestore.Client, userID string) (bool, error) {
-	user, err := getUser(ctx, client, userID)
+	user, err := GetUser(ctx, client, userID)
 	if err != nil {
 		return false, err
 	}
 	return user.IsWriting, nil
+}
+
+func saveUser(ctx context.Context, client *firestore.Client, user User) error {
+	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user, firestore.MergeAll)
+	return err
 }
