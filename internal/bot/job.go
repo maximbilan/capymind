@@ -8,6 +8,7 @@ type Job struct {
 	Command    Command
 	Parameters []string
 	Input      *string
+	Output     *JobResult
 }
 
 // Creates a job from an update
@@ -39,31 +40,4 @@ func createJob(update telegram.Update) *Job {
 	}
 
 	return &job
-}
-
-func (job Job) execute() {
-	command := job.Command
-	parameters := job.Parameters
-
-	switch command {
-	case Start:
-		// handleStart(message, locale)
-	case Note:
-		// handleNote(message, locale)
-	case Last:
-		// handleLast(message, locale)
-	case Analysis:
-		// handleAnalysis(message, locale)
-	case Language:
-		// handleLanguage(message, locale)
-	case Timezone:
-		// handleTimezone(message, locale)
-	case Help:
-		// handleHelp(message, locale)
-	case None:
-		// Typing mode
-	default:
-		// Unknown command
-		// handleUnknownState(message, locale)
-	}
 }
