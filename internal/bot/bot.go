@@ -22,7 +22,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update the user's data in the database if necessary
-	updateUser(user)
+	updatedUser := updateUser(user)
 
 	// Create a job
 	job := createJob(*update)
@@ -32,7 +32,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create and start a session
-	session := createSession(job, user)
+	session := createSession(job, updatedUser)
 	// Execute the job
 	handleSession(session)
 	// Send the response

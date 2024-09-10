@@ -41,9 +41,9 @@ func createUser(update telegram.Update) *firestore.User {
 }
 
 // Update the user's data in the database if necessary
-func updateUser(user *firestore.User) {
+func updateUser(user *firestore.User) *firestore.User {
 	if user == nil {
-		return
+		return nil
 	}
 
 	// Setup the database connection
@@ -69,7 +69,7 @@ func updateUser(user *firestore.User) {
 	fetchedUser.FirstName = user.FirstName
 	fetchedUser.LastName = user.LastName
 
-	user = fetchedUser
+	return fetchedUser
 }
 
 // Save a user to the database
