@@ -11,6 +11,7 @@ type TimeZoneInfo struct {
 	SecondsFromUTC int    // Seconds from UTC
 }
 
+// Return a list of time zones
 func GetTimeZones() []TimeZoneInfo {
 	timezoneMap := map[int]string{
 		-12: "Baker Island",
@@ -56,10 +57,12 @@ func GetTimeZones() []TimeZoneInfo {
 	return timeZones
 }
 
+// Return the time zone info as a string. Example: "UTC -9 - Alaska"
 func (info TimeZoneInfo) String() string {
 	return fmt.Sprintf("UTC %+d - %s", info.Offset, info.Description)
 }
 
+// Return the time zone info as a parameter. Example: "-25200"
 func (info TimeZoneInfo) Parameter() string {
 	return fmt.Sprintf("%d", info.SecondsFromUTC)
 }

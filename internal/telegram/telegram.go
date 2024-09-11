@@ -15,6 +15,7 @@ func init() {
 	baseURL = "https://api.telegram.org/bot" + os.Getenv("CAPY_TELEGRAM_BOT_TOKEN")
 }
 
+// Parse an incoming update
 func Parse(r *http.Request) *Update {
 	var update Update
 	if err := json.NewDecoder(r.Body).Decode(&update); err != nil {
@@ -24,6 +25,7 @@ func Parse(r *http.Request) *Update {
 	return &update
 }
 
+// Send a message to a chat
 func SendMessage(chatID int64, text string, replyMarkup *InlineKeyboardMarkup) {
 	var url string = baseURL + "/sendMessage"
 
