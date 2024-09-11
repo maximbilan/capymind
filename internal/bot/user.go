@@ -69,12 +69,6 @@ func updateUser(user *firestore.User) *firestore.User {
 	fetchedUser.FirstName = user.FirstName
 	fetchedUser.LastName = user.LastName
 
-	// Temporary fix
-	if fetchedUser.IsWriting {
-		fetchedUser.IsTyping = true
-		fetchedUser.IsWriting = false
-	}
-
 	// Update the user's locale from Telegram if it's valid
 	if fetchedUser.Locale == nil && user.Locale != nil {
 		userLocale := *user.Locale

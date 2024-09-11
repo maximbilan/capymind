@@ -2,8 +2,9 @@ package bot
 
 // handleStart is the entry point for the bot. It checks if the user has a locale and timezone set and sends a welcome message
 func handleStart(session *Session) {
-	if session.User.Locale == nil {
+	if !session.User.IsOnboarded {
 		// Go onboarding
+		sendMessage("welcome_onboarding", session)
 		handleLanguage(session)
 	} else if session.User.SecondsFromUTC == nil {
 		// Go onboarding
