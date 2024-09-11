@@ -3,8 +3,6 @@ package utils
 import (
 	"fmt"
 	"sort"
-	"strconv"
-	"strings"
 )
 
 type TimeZoneInfo struct {
@@ -13,6 +11,7 @@ type TimeZoneInfo struct {
 	SecondsFromUTC int    // Seconds from UTC
 }
 
+// Return a list of time zones
 func GetTimeZones() []TimeZoneInfo {
 	timezoneMap := map[int]string{
 		-12: "Baker Island",
@@ -58,22 +57,12 @@ func GetTimeZones() []TimeZoneInfo {
 	return timeZones
 }
 
+// Return the time zone info as a string. Example: "UTC -9 - Alaska"
 func (info TimeZoneInfo) String() string {
 	return fmt.Sprintf("UTC %+d - %s", info.Offset, info.Description)
 }
 
-func GetTimezoneParameter(info TimeZoneInfo) string {
-	return "timezone_" + fmt.Sprintf("%d", info.SecondsFromUTC)
-}
-
-func ParseTimezone(input string) (*int, bool) {
-	parts := strings.Split(input, "_")
-	if len(parts) == 2 && parts[0] == "timezone" {
-		secondsFromUTC, err := strconv.Atoi(parts[1])
-		if err != nil {
-			return nil, false
-		}
-		return &secondsFromUTC, true
-	}
-	return nil, false
+// Return the time zone info as a parameter. Example: "-25200"
+func (info TimeZoneInfo) Parameter() string {
+	return fmt.Sprintf("%d", info.SecondsFromUTC)
 }

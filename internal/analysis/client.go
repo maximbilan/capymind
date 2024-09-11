@@ -9,6 +9,7 @@ import (
 	"github.com/openai/openai-go/option"
 )
 
+// Create a client for the OpenAI API
 func createClient(ctx context.Context) *openai.Client {
 	client := openai.NewClient(
 		option.WithAPIKey(os.Getenv("CAPY_AI_KEY")),
@@ -16,6 +17,7 @@ func createClient(ctx context.Context) *openai.Client {
 	return client
 }
 
+// Generate a JSON schema for a given type
 func generateSchema[T any]() interface{} {
 	reflector := jsonschema.Reflector{
 		AllowAdditionalProperties: false,

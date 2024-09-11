@@ -8,31 +8,23 @@ import (
 
 type User struct {
 	ID             string  `firestore:"id"`
-	Name           *string `firestore:"name"`
+	ChatID         int64   `firestore:"chatID"`
+	Name           *string `firestore:"name"` // Deprecated
+	UserName       *string `json:"username"`
+	FirstName      *string `json:"firstName"`
+	LastName       *string `json:"lastName"`
 	Locale         *string `firestore:"locale"`
-	LastChatId     *int    `firestore:"lastChatId"`
-	SecondsFromUTC *int64  `firestore:"secondsFromUTC"`
-	IsWriting      bool    `firestore:"isWriting"`
+	LastChatID     *int64  `firestore:"lastChatId"` // Deprecated
+	SecondsFromUTC *int    `firestore:"secondsFromUTC"`
+	IsWriting      bool    `firestore:"isWriting"` // Deprecated
+	LastCommand    string  `firestore:"lastCommand"`
+	IsTyping       bool    `firestore:"isTyping"`
+	IsOnboarded    bool    `firestore:"isOnboarded"`
 }
 
-func NewUser(ctx context.Context, client *firestore.Client, user User) error {
-	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, map[string]interface{}{
-		"id":   user.ID,
-		"name": user.Name,
-	}, firestore.MergeAll)
-	return err
-}
-
-func UserExists(ctx context.Context, client *firestore.Client, userId string) (bool, error) {
-	user, _ := getUser(ctx, client, userId)
-	if user != nil {
-		return user.Name != nil, nil
-	}
-	return false, nil
-}
-
-func getUser(ctx context.Context, client *firestore.Client, userId string) (*User, error) {
-	doc, err := client.Collection(users.String()).Doc(userId).Get(ctx)
+// Get a user from the database
+func GetUser(ctx context.Context, client *firestore.Client, userID string) (*User, error) {
+	doc, err := client.Collection(users.String()).Doc(userID).Get(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -42,36 +34,13 @@ func getUser(ctx context.Context, client *firestore.Client, userId string) (*Use
 	return &user, nil
 }
 
-func UserLocale(ctx context.Context, client *firestore.Client, userId string) (*string, error) {
-	user, err := getUser(ctx, client, userId)
-	if err != nil {
-		return nil, err
-	}
-	return user.Locale, nil
-}
-
-func UpdateUserLocale(ctx context.Context, client *firestore.Client, userId string, locale string) error {
-	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
-		"locale": locale,
-	}, firestore.MergeAll)
+// Save a user to the database
+func SaveUser(ctx context.Context, client *firestore.Client, user User) error {
+	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user)
 	return err
 }
 
-func UpdateUserTimezone(ctx context.Context, client *firestore.Client, userId string, secondsFromUTC int) error {
-	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
-		"secondsFromUTC": secondsFromUTC,
-	}, firestore.MergeAll)
-	return err
-}
-
-func SaveLastChatId(ctx context.Context, client *firestore.Client, userId string, chatId int) error {
-	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
-		"id":         userId,
-		"lastChatId": chatId,
-	}, firestore.MergeAll)
-	return err
-}
-
+// Iterate over all users
 func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]User) error) error {
 	var lastDoc *firestore.DocumentSnapshot
 	for {
@@ -103,35 +72,4 @@ func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]
 		lastDoc = docs[len(docs)-1]
 	}
 	return nil
-}
-
-func UserTimezone(ctx context.Context, client *firestore.Client, userId string) (*int64, error) {
-	user, err := getUser(ctx, client, userId)
-	if err != nil {
-		return nil, err
-	}
-	return user.SecondsFromUTC, nil
-}
-
-func updateWritingMode(ctx context.Context, client *firestore.Client, userId string, state bool) error {
-	_, err := client.Collection(users.String()).Doc(userId).Set(ctx, map[string]interface{}{
-		"isWriting": state,
-	}, firestore.MergeAll)
-	return err
-}
-
-func StartWriting(ctx context.Context, client *firestore.Client, userId string) error {
-	return updateWritingMode(ctx, client, userId, true)
-}
-
-func StopWriting(ctx context.Context, client *firestore.Client, userId string) error {
-	return updateWritingMode(ctx, client, userId, false)
-}
-
-func UserWritingStatus(ctx context.Context, client *firestore.Client, userId string) (bool, error) {
-	user, err := getUser(ctx, client, userId)
-	if err != nil {
-		return false, err
-	}
-	return user.IsWriting, nil
 }

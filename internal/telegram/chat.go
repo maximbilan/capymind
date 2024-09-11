@@ -1,5 +1,5 @@
 package telegram
 
 type Chat struct {
-	Id int `json:"id"`
+	ID int64 `json:"id"`
 }

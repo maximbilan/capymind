@@ -15,6 +15,7 @@ import (
 	"github.com/capymind/internal/translator"
 )
 
+// Schedule a message for all users
 func Schedule(w http.ResponseWriter, r *http.Request) {
 	log.Println("Schedule capymind...")
 
@@ -61,7 +62,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	firestore.ForEachUser(ctx, dbClient, func(users []firestore.User) error {
 		for _, user := range users {
 			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
-			if user.LastChatId == nil || user.Locale == nil || user.SecondsFromUTC == nil {
+			if user.Locale == nil || user.SecondsFromUTC == nil {
 				continue
 			}
 
@@ -100,7 +101,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 			}
 
 			scheduledMessage := ScheduledMessage{
-				ChatId: *user.LastChatId,
+				ChatID: user.ChatID,
 				Text:   localizedMessage,
 				Type:   messageType,
 				Locale: userLocale,
@@ -112,6 +113,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Send a message to a user
 func SendMessage(w http.ResponseWriter, r *http.Request) {
 	var msg ScheduledMessage
 	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {
@@ -122,10 +124,11 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	var reply *telegram.InlineKeyboardMarkup
 	switch msg.Type {
 	case Morning, Evening:
+		callbackData := "note_make"
 		reply = &telegram.InlineKeyboardMarkup{
 			InlineKeyboard: [][]telegram.InlineKeyboardButton{
 				{
-					{Text: translator.Translate(msg.Locale, "make_record_to_journal"), CallbackData: "note_make"},
+					{Text: translator.Translate(msg.Locale, "make_record_to_journal"), CallbackData: &callbackData},
 				},
 			},
 		}
@@ -133,5 +136,5 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		reply = nil
 	}
 
-	telegram.SendMessage(msg.ChatId, msg.Text, reply)
+	telegram.SendMessage(msg.ChatID, msg.Text, reply)
 }

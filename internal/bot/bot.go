@@ -1,102 +1,41 @@
 package bot
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/capymind/internal/telegram"
-	"github.com/capymind/internal/translator"
-	"github.com/capymind/internal/utils"
 )
 
+// Entry point
 func Parse(w http.ResponseWriter, r *http.Request) {
 	update := telegram.Parse(r)
 	if update == nil {
+		log.Printf("[Bot] No update to process")
 		return
 	}
 
-	callbackQuery := update.CallbackQuery
-	if callbackQuery != nil && callbackQuery.Data != "" {
-		userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-		userLocale := getUserLocaleByUserId(userId)
-		locale := translator.EN
-		if userLocale != nil {
-			locale = translator.Locale(*userLocale)
-		}
-
-		if callbackQuery.Data == "note_make" {
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "start_note")
-			startWritingMode(userId)
-			return
-		} else if callbackQuery.Data == "help" {
-			sendHelpMessage(callbackQuery.Message.Chat.Id, userId, locale)
-			return
-		} else if callbackQuery.Data == "locale_setup" {
-			sendLanguageSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
-		} else if callbackQuery.Data == "timezone_setup" {
-			sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, locale)
-		}
-
-		log.Printf("[Bot] Received callback data: %s", callbackQuery.Data)
-		updatedLocale, ok := translator.ParseLocale(callbackQuery.Data)
-		if ok && updatedLocale != nil {
-			userId := fmt.Sprintf("%d", callbackQuery.From.ID)
-			setupLocale(userId, *updatedLocale)
-			newLocale := translator.Locale(*updatedLocale)
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, newLocale, "locale_set")
-
-			// If the user is setting the locale for the first time, also set the timezone
-			if getTimeZone(userId) == nil {
-				sendTimezoneSetMessage(callbackQuery.Message.Chat.Id, userId, newLocale)
-			}
-			return
-		}
-
-		secondsFromUTC, ok := utils.ParseTimezone(callbackQuery.Data)
-		if ok && secondsFromUTC != nil {
-			setupTimezone(userId, *secondsFromUTC)
-			localizeAndSendMessage(callbackQuery.Message.Chat.Id, userId, locale, "timezone_set")
-			if !userExists(userId) {
-				sendStartMessage(callbackQuery.Message.Chat.Id, userId, callbackQuery.From.Username, locale)
-			}
-			return
-		}
-
+	// Create a user
+	user := createUser(*update)
+	if user == nil {
+		log.Printf("[Bot] No user to process: message_id=%d", update.Message.ID)
 		return
 	}
 
-	message := update.Message
+	// Update the user's data in the database if necessary
+	updatedUser := updateUser(user)
 
-	var locale translator.Locale
-	userLocale := getUserLocale(message)
-	if userLocale != nil {
-		locale = *userLocale
-	} else {
-		locale = translator.EN
+	// Create a job
+	job := createJob(*update)
+	if job == nil {
+		log.Printf("[Bot] No job to process: update_id=%d", update.ID)
+		return
 	}
 
-	text := message.Text
-	command := Command(text)
-
-	log.Printf("[Bot] Received message text: %s", text)
-
-	switch command {
-	case Start:
-		handleStart(message, locale)
-	case Note:
-		handleNote(message, locale)
-	case Last:
-		handleLast(message, locale)
-	case Analysis:
-		handleAnalysis(message, locale)
-	case Language:
-		handleLanguage(message, locale)
-	case Timezone:
-		handleTimezone(message, locale)
-	case Help:
-		handleHelp(message, locale)
-	default:
-		handleUnknownState(message, locale)
-	}
+	// Create and start a session
+	session := createSession(job, updatedUser)
+	// Execute the job
+	handleSession(session)
+	// Send the response
+	finishSession(session)
 }

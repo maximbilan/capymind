@@ -8,6 +8,7 @@ import (
 	"google.golang.org/api/option"
 )
 
+// Path to the credentials file
 func credentialsPath() string {
 	var path = "credentials.json"
 	if os.Getenv("DEBUG_MODE") == "true" {
@@ -18,6 +19,7 @@ func credentialsPath() string {
 	return path
 }
 
+// Client for Firestore
 func NewClient(ctx context.Context) (*firestore.Client, error) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
 	var client *firestore.Client
@@ -35,16 +37,4 @@ func NewClient(ctx context.Context) (*firestore.Client, error) {
 	}
 
 	return client, nil
-}
-
-func NewRecord(ctx context.Context, client *firestore.Client, user User, note Note) error {
-	err := NewUser(ctx, client, user)
-	if err != nil {
-		return err
-	}
-	err = newNote(ctx, client, user, note)
-	if err != nil {
-		return err
-	}
-	return nil
 }

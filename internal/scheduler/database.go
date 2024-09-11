@@ -8,6 +8,7 @@ import (
 	"github.com/capymind/internal/firestore"
 )
 
+// Create a Firestore client
 func createDBClient(ctx context.Context) *firestoreDB.Client {
 	var client, err = firestore.NewClient(ctx)
 	if err != nil {

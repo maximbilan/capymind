@@ -10,6 +10,7 @@ import (
 	"github.com/openai/openai-go"
 )
 
+// Reqeust an analysis of the user's journal entries
 func Request(notes []string, locale translator.Locale) *string {
 	ctx := context.Background()
 	client := createClient(ctx)
