@@ -29,13 +29,13 @@ func createJob(update telegram.Update) *Job {
 	callbackQuery := update.CallbackQuery
 	if callbackQuery != nil && callbackQuery.Data != "" {
 		input = &callbackQuery.Data
-	} else {
+	} else if update.Message != nil {
 		message := update.Message
 		input = &message.Text
 	}
 
 	// Check if the input is valid
-	if input == nil {
+	if input == nil || *input == "" {
 		return nil
 	}
 

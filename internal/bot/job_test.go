@@ -82,3 +82,26 @@ func TestJobFromCallbackQuery(t *testing.T) {
 		t.Fatalf("Input is not /timezone 25200")
 	}
 }
+
+func TestJobNil(t *testing.T) {
+	update := telegram.Update{
+		ID: 789,
+	}
+
+	job := createJob(update)
+	if job != nil {
+		t.Fatalf("Job is not nil")
+	}
+
+	update = telegram.Update{
+		ID: 789,
+		Message: &telegram.Message{
+			ID: 101,
+		},
+	}
+
+	job = createJob(update)
+	if job != nil {
+		t.Fatalf("Job is not nil")
+	}
+}
