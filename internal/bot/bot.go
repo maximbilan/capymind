@@ -7,6 +7,7 @@ import (
 	"github.com/capymind/internal/telegram"
 )
 
+// Entry point
 func Parse(w http.ResponseWriter, r *http.Request) {
 	update := telegram.Parse(r)
 	if update == nil {

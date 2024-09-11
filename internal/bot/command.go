@@ -15,6 +15,7 @@ const (
 	None     Command = "" // No command, just plain text
 )
 
+// Parse the command from the input
 func ParseCommand(input string) (Command, []string) {
 	if len(input) == 0 || input[0] != '/' {
 		return None, nil
