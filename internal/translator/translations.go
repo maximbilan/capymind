@@ -3,7 +3,7 @@ package translator
 const translationsJSON = `{
     "en": {
         "welcome": "Welcome to CapyMind 👋 Your personal journal for mental health notes is here to help you on your journey. Reflect on your thoughts and emotions, use reminders to stay on track, and explore therapy insights to deepen your self-awareness.",
-        "welcome_onboarding: "Welcome to CapyMind 👋 Before we begin, let’s adjust your settings for a personalized experience 🙂",
+        "welcome_onboarding": "Welcome to CapyMind 👋 Before we begin, let’s adjust your settings for a personalized experience 🙂",
         "start_note" : "Share your thoughts and feelings by entering them in the text field and sending them my way. Your personal reflections will be securely saved in your journal 👇",
         "finish_note" : "Your thoughts have been successfully saved. Thank you for trusting CapyMind. Remember, each note is a step forward on your journey to better mental well-being 🙂",
         "your_last_note": "Here’s your most recent note 👇\n\n",
