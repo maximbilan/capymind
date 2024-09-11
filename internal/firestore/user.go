@@ -22,6 +22,7 @@ type User struct {
 	IsOnboarded    bool    `firestore:"isOnboarded"`
 }
 
+// Get a user from the database
 func GetUser(ctx context.Context, client *firestore.Client, userID string) (*User, error) {
 	doc, err := client.Collection(users.String()).Doc(userID).Get(ctx)
 	if err != nil {
@@ -33,11 +34,13 @@ func GetUser(ctx context.Context, client *firestore.Client, userID string) (*Use
 	return &user, nil
 }
 
+// Save a user to the database
 func SaveUser(ctx context.Context, client *firestore.Client, user User) error {
 	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user)
 	return err
 }
 
+// Iterate over all users
 func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]User) error) error {
 	var lastDoc *firestore.DocumentSnapshot
 	for {

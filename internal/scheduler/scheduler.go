@@ -15,6 +15,7 @@ import (
 	"github.com/capymind/internal/translator"
 )
 
+// Schedule a message for all users
 func Schedule(w http.ResponseWriter, r *http.Request) {
 	log.Println("Schedule capymind...")
 
@@ -112,6 +113,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// Send a message to a user
 func SendMessage(w http.ResponseWriter, r *http.Request) {
 	var msg ScheduledMessage
 	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {

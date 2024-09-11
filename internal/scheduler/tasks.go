@@ -13,6 +13,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Create cloud tasks client
 func createTasksClient(ctx context.Context) *cloudtasks.Client {
 	var client, err = cloudtasks.NewClient(ctx)
 	if err != nil {
@@ -21,6 +22,7 @@ func createTasksClient(ctx context.Context) *cloudtasks.Client {
 	return client
 }
 
+// Schedule a cloud task
 func scheduleTask(ctx context.Context, client *cloudtasks.Client, scheduledMessage ScheduledMessage, timeOffset time.Time) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
 	locationID := os.Getenv("CAPY_SERVER_REGION")

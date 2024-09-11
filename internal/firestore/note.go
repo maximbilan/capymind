@@ -14,6 +14,7 @@ type Note struct {
 	User      *firestore.DocumentRef `firestore:"user"`
 }
 
+// Create a new note
 func NewNote(ctx context.Context, client *firestore.Client, user User, note Note) error {
 	userRef := client.Collection(users.String()).Doc(user.ID)
 	_, _, err := client.Collection(notes.String()).Add(ctx, map[string]interface{}{
@@ -24,6 +25,7 @@ func NewNote(ctx context.Context, client *firestore.Client, user User, note Note
 	return err
 }
 
+// Get the last note
 func LastNote(ctx context.Context, client *firestore.Client, userID string) (*Note, error) {
 	userRef := client.Collection(users.String()).Doc(userID)
 	query := client.Collection(notes.String()).OrderBy("timestamp", firestore.Desc).Where("user", "==", userRef).Limit(1)
@@ -41,6 +43,7 @@ func LastNote(ctx context.Context, client *firestore.Client, userID string) (*No
 	return nil, nil
 }
 
+// Get all notes
 func GetNotes(ctx context.Context, client *firestore.Client, userID string) ([]Note, error) {
 	userRef := client.Collection(users.String()).Doc(userID)
 	query := client.Collection(notes.String()).OrderBy("timestamp", firestore.Desc).Where("user", "==", userRef).Limit(35) // Suppose that the user posts 5 notes per day max by 7 days
