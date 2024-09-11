@@ -2,6 +2,7 @@ package bot
 
 import "github.com/capymind/internal/translator"
 
+// Handle the language command
 func handleLanguage(session *Session) {
 	if len(session.Job.Parameters) == 0 {
 		requestLanguage(session)
@@ -10,6 +11,7 @@ func handleLanguage(session *Session) {
 	}
 }
 
+// Request the language select
 func requestLanguage(session *Session) {
 	var enButton JobResultTextButton = JobResultTextButton{
 		TextID:   translator.English.String(),
@@ -22,6 +24,7 @@ func requestLanguage(session *Session) {
 	setOutputTextWithButtons("language_select", []JobResultTextButton{enButton, ukButton}, session)
 }
 
+// Set the language
 func setupLanguage(session *Session) {
 	session.User.Locale = &session.Job.Parameters[0]
 
