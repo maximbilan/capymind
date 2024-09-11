@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	ID             string  `firestore:"id"`
-	ChatID         int64   `firestore:"chatID"`
+	ChatID         int64   `firestore:"chatId"`
 	Name           *string `firestore:"name"` // Deprecated
 	UserName       *string `json:"username"`
 	FirstName      *string `json:"firstName"`
