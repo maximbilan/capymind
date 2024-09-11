@@ -16,6 +16,12 @@ func TestTranslator(t *testing.T) {
 	if got := Translate(locale2, "weekly_analysis"); got != want {
 		t.Errorf("Translate() = %v, want %v", got, want)
 	}
+
+	// Test for missing translation
+	want = "no_existing_id"
+	if got := Translate(locale1, "no_existing_id"); got != want {
+		t.Errorf("Translate() = %v, want %v", got, want)
+	}
 }
 
 func TestTranslatorJSON(t *testing.T) {
