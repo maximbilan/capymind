@@ -11,7 +11,7 @@ import (
 )
 
 // Reqeust an analysis of the user's journal entries
-func Request(notes []string, locale translator.Locale) *string {
+func Request(notes []string, locale translator.Locale, header *string) *string {
 	ctx := context.Background()
 	client := createClient(ctx)
 
@@ -58,7 +58,11 @@ func Request(notes []string, locale translator.Locale) *string {
 
 	var analysis string
 	if response.Text != "" {
-		analysis = fmt.Sprintf("%s%s", translator.Translate(locale, "weekly_analysis"), response.Text)
+		if header != nil {
+			analysis = fmt.Sprintf("%s%s", translator.Translate(locale, *header), response.Text)
+		} else {
+			analysis = response.Text
+		}
 		return &analysis
 	} else {
 		return nil
