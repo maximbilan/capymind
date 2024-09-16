@@ -6,13 +6,13 @@ func TestTranslator(t *testing.T) {
 	locale1 := Locale("en")
 	locale2 := Locale("uk")
 
-	want := "Latest analysis 🧑‍⚕️\n\n"
+	want := "Weekly analysis 🧑‍⚕️\n\n"
 
 	if got := Translate(locale1, "weekly_analysis"); got != want {
 		t.Errorf("Translate() = %v, want %v", got, want)
 	}
 
-	want = "Аналіз за останній час 🧑‍⚕️\n\n"
+	want = "Аналіз за останній тиждень 🧑‍⚕️\n\n"
 	if got := Translate(locale2, "weekly_analysis"); got != want {
 		t.Errorf("Translate() = %v, want %v", got, want)
 	}
