@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"context"
 	"log"
 	"net/http"
 
@@ -15,15 +16,18 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Create a context
+	ctx := context.Background()
+
 	// Create a user
-	user := createUser(*update)
+	user := createUser(*update, ctx)
 	if user == nil {
 		log.Printf("[Bot] No user to process: message_id=%d", update.Message.ID)
 		return
 	}
 
 	// Update the user's data in the database if necessary
-	updatedUser := updateUser(user)
+	updatedUser := updateUser(user, ctx)
 
 	// Create a job
 	job := createJob(*update)

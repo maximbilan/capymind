@@ -45,21 +45,17 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-
-	// Firestore
-	dbClient := createDBClient(ctx)
-	defer dbClient.Close()
+	firestore.CreateClient(ctx)
 
 	// Cloud Tasks
-	tasksClient := createTasksClient(ctx)
-	defer tasksClient.Close()
+	CreateTasks(ctx)
 
 	var isCloud = false
 	if os.Getenv("CLOUD") == "true" {
 		isCloud = true
 	}
 
-	firestore.ForEachUser(ctx, dbClient, func(users []firestore.User) error {
+	firestore.ForEachUser(ctx, func(users []firestore.User) error {
 		for _, user := range users {
 			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
 			if user.Locale == nil || user.SecondsFromUTC == nil {
@@ -70,7 +66,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 			var localizedMessage string
 			if messageType == WeeklyAnalysis {
-				notes, err := firestore.GetNotes(ctx, dbClient, user.ID)
+				notes, err := firestore.GetNotes(ctx, user.ID)
 				if err != nil {
 					log.Printf("[Scheduler] Error getting notes from firestore, %s", err.Error())
 					continue
@@ -108,10 +104,15 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 				Locale: userLocale,
 			}
 
-			scheduleTask(ctx, tasksClient, scheduledMessage, scheduledTime)
+			scheduleTask(ctx, scheduledMessage, scheduledTime)
 		}
 		return nil
 	})
+
+	// Close Firestore client
+	CloseTasks()
+	// Close Tasks client
+	firestore.CloseClient()
 }
 
 // Send a message to a user

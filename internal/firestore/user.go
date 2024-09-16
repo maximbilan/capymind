@@ -20,7 +20,7 @@ type User struct {
 }
 
 // Get a user from the database
-func GetUser(ctx context.Context, client *firestore.Client, userID string) (*User, error) {
+func GetUser(ctx context.Context, userID string) (*User, error) {
 	doc, err := client.Collection(users.String()).Doc(userID).Get(ctx)
 	if err != nil {
 		return nil, err
@@ -32,13 +32,13 @@ func GetUser(ctx context.Context, client *firestore.Client, userID string) (*Use
 }
 
 // Save a user to the database
-func SaveUser(ctx context.Context, client *firestore.Client, user User) error {
+func SaveUser(ctx context.Context, user User) error {
 	_, err := client.Collection(users.String()).Doc(user.ID).Set(ctx, user)
 	return err
 }
 
 // Iterate over all users
-func ForEachUser(ctx context.Context, client *firestore.Client, callback func([]User) error) error {
+func ForEachUser(ctx context.Context, callback func([]User) error) error {
 	var lastDoc *firestore.DocumentSnapshot
 	for {
 		query := client.Collection(users.String()).OrderBy(firestore.DocumentID, firestore.Asc).Limit(100)

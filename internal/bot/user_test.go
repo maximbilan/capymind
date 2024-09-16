@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"context"
 	"testing"
 
 	"github.com/capymind/internal/telegram"
@@ -25,7 +26,8 @@ func TestCreateUserFromMessage(t *testing.T) {
 		},
 	}
 
-	user := createUser(update)
+	ctx := context.Background()
+	user := createUser(update, ctx)
 	if user == nil {
 		t.Fatalf("User is nil")
 	}
@@ -71,7 +73,8 @@ func TestUserFromCallback(t *testing.T) {
 		},
 	}
 
-	user := createUser(update)
+	ctx := context.Background()
+	user := createUser(update, ctx)
 	if user == nil {
 		t.Fatalf("User is nil")
 	}
