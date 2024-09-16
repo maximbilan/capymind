@@ -20,7 +20,7 @@ const translationsJSON = `{
         "no_analysis": "Not enough entries have been made to generate an analysis. Begin by sharing your thoughts and feelings with CapyMind.",
         "analysis_waiting": "Your analysis is being generated. Please hold on for a moment 😴",
         "how_to_use": "Getting started 🙋‍♂️",
-        "weekly_analysis": "Latest overview 🧑‍⚕️\n\n"
+        "weekly_analysis": "Latest analysis 🧑‍⚕️\n\n"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
