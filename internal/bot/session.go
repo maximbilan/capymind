@@ -1,13 +1,16 @@
 package bot
 
 import (
+	"context"
+
 	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/translator"
 )
 
 type Session struct {
-	Job  *Job
-	User *firestore.User
+	Job     *Job
+	User    *firestore.User
+	Context *context.Context
 }
 
 // Return the locale of the current user
@@ -20,14 +23,15 @@ func (session *Session) Locale() translator.Locale {
 
 // Save the user's data
 func (session *Session) SaveUser() {
-	saveUser(session.User)
+	saveUser(session.User, session.Context)
 }
 
 // Create a session
-func createSession(job *Job, user *firestore.User) *Session {
+func createSession(job *Job, user *firestore.User, context *context.Context) *Session {
 	session := Session{
-		Job:  job,
-		User: user,
+		Job:     job,
+		User:    user,
+		Context: context,
 	}
 	return &session
 }

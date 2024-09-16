@@ -11,13 +11,13 @@ import (
 )
 
 // Reqeust an analysis of the user's journal entries
-func Request(notes []string, locale translator.Locale) *string {
-	ctx := context.Background()
-	client := createClient(ctx)
+func Request(notes []string, locale translator.Locale, ctx *context.Context, header *string) *string {
+	ai := createAI()
 
-	prompt := translator.Translate(locale, "ai_analysis_prompt")
+	systemPrompt := translator.Prompt(locale, "ai_analysis_system_message")
+	userPrompt := translator.Prompt(locale, "ai_analysis_user_message")
 	for index, note := range notes {
-		prompt += fmt.Sprintf("%d. %s ", index+1, note)
+		userPrompt += fmt.Sprintf("%d. %s ", index+1, note)
 	}
 
 	var responseSchema = generateSchema[Response]()
@@ -29,9 +29,10 @@ func Request(notes []string, locale translator.Locale) *string {
 		Strict:      openai.Bool(true),
 	}
 
-	chat, err := client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
+	chat, err := ai.Chat.Completions.New(*ctx, openai.ChatCompletionNewParams{
 		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.UserMessage(prompt),
+			openai.SystemMessage(systemPrompt),
+			openai.UserMessage(userPrompt),
 		}),
 		ResponseFormat: openai.F[openai.ChatCompletionNewParamsResponseFormatUnion](
 			openai.ResponseFormatJSONSchemaParam{
@@ -39,8 +40,6 @@ func Request(notes []string, locale translator.Locale) *string {
 				JSONSchema: openai.F(schemaParam),
 			},
 		),
-		// only certain models can perform structured outputs
-		// Model: openai.F(openai.ChatModelGPT4o2024_08_06),
 		Model: openai.F(openai.ChatModelGPT4oMini),
 	})
 
@@ -58,7 +57,11 @@ func Request(notes []string, locale translator.Locale) *string {
 
 	var analysis string
 	if response.Text != "" {
-		analysis = fmt.Sprintf("%s%s", translator.Translate(locale, "weekly_analysis"), response.Text)
+		if header != nil {
+			analysis = fmt.Sprintf("%s%s", translator.Translate(locale, *header), response.Text)
+		} else {
+			analysis = response.Text
+		}
 		return &analysis
 	} else {
 		return nil

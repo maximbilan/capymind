@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"context"
 	"log"
 
 	"github.com/capymind/internal/firestore"
@@ -9,7 +10,7 @@ import (
 )
 
 // Create a user from an update
-func createUser(update telegram.Update) *firestore.User {
+func createUser(update telegram.Update, ctx *context.Context) *firestore.User {
 	var chatID int64
 	var telegramUser *telegram.User
 
@@ -43,17 +44,13 @@ func createUser(update telegram.Update) *firestore.User {
 }
 
 // Update the user's data in the database if necessary
-func updateUser(user *firestore.User) *firestore.User {
+func updateUser(user *firestore.User, ctx *context.Context) *firestore.User {
 	if user == nil {
 		return nil
 	}
 
-	// Setup the database connection
-	client, ctx := createClient()
-	defer client.Close()
-
 	// Check if the user exists
-	fetchedUser, err := firestore.GetUser(ctx, client, user.ID)
+	fetchedUser, err := firestore.GetUser(ctx, user.ID)
 	if err != nil {
 		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
 
@@ -81,11 +78,8 @@ func updateUser(user *firestore.User) *firestore.User {
 }
 
 // Save a user to the database
-func saveUser(user *firestore.User) {
-	client, ctx := createClient()
-	defer client.Close()
-
-	err := firestore.SaveUser(ctx, client, *user)
+func saveUser(user *firestore.User, ctx *context.Context) {
+	err := firestore.SaveUser(ctx, *user)
 	if err != nil {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())
 	}
