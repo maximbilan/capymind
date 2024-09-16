@@ -11,9 +11,8 @@ import (
 )
 
 // Reqeust an analysis of the user's journal entries
-func Request(notes []string, locale translator.Locale, header *string) *string {
-	ctx := context.Background()
-	client := createClient(ctx)
+func Request(notes []string, locale translator.Locale, ctx *context.Context, header *string) *string {
+	ai := createAI()
 
 	systemPrompt := translator.Prompt(locale, "ai_analysis_system_message")
 	userPrompt := translator.Prompt(locale, "ai_analysis_user_message")
@@ -30,7 +29,7 @@ func Request(notes []string, locale translator.Locale, header *string) *string {
 		Strict:      openai.Bool(true),
 	}
 
-	chat, err := client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
+	chat, err := ai.Chat.Completions.New(*ctx, openai.ChatCompletionNewParams{
 		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
 			openai.SystemMessage(systemPrompt),
 			openai.UserMessage(userPrompt),

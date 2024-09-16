@@ -10,7 +10,7 @@ import (
 )
 
 // Create a user from an update
-func createUser(update telegram.Update, ctx context.Context) *firestore.User {
+func createUser(update telegram.Update, ctx *context.Context) *firestore.User {
 	var chatID int64
 	var telegramUser *telegram.User
 
@@ -44,7 +44,7 @@ func createUser(update telegram.Update, ctx context.Context) *firestore.User {
 }
 
 // Update the user's data in the database if necessary
-func updateUser(user *firestore.User, ctx context.Context) *firestore.User {
+func updateUser(user *firestore.User, ctx *context.Context) *firestore.User {
 	if user == nil {
 		return nil
 	}
@@ -78,7 +78,7 @@ func updateUser(user *firestore.User, ctx context.Context) *firestore.User {
 }
 
 // Save a user to the database
-func saveUser(user *firestore.User, ctx context.Context) {
+func saveUser(user *firestore.User, ctx *context.Context) {
 	err := firestore.SaveUser(ctx, *user)
 	if err != nil {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())

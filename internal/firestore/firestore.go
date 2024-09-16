@@ -23,16 +23,16 @@ func credentialsPath() string {
 }
 
 // Client for Firestore
-func newClient(ctx context.Context) (*firestore.Client, error) {
+func newClient(ctx *context.Context) (*firestore.Client, error) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
 	var client *firestore.Client
 	var err error
 
 	if os.Getenv("CLOUD") == "true" {
-		client, err = firestore.NewClient(ctx, projectID)
+		client, err = firestore.NewClient(*ctx, projectID)
 	} else {
 		path := credentialsPath()
-		client, err = firestore.NewClient(ctx, projectID, option.WithCredentialsFile(path))
+		client, err = firestore.NewClient(*ctx, projectID, option.WithCredentialsFile(path))
 	}
 
 	if err != nil {
@@ -43,7 +43,7 @@ func newClient(ctx context.Context) (*firestore.Client, error) {
 }
 
 // Create a new Firestore database connection
-func CreateClient(ctx context.Context) {
+func CreateClient(ctx *context.Context) {
 	newClient, err := newClient(ctx)
 	if err != nil {
 		log.Printf("[Firestore] Error creating firestore client, %s", err.Error())

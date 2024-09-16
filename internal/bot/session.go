@@ -23,18 +23,16 @@ func (session *Session) Locale() translator.Locale {
 
 // Save the user's data
 func (session *Session) SaveUser() {
-	saveUser(session.User, *session.Context)
+	saveUser(session.User, session.Context)
 }
 
 // Create a session
-func createSession(job *Job, user *firestore.User) *Session {
-	context := context.Background()
+func createSession(job *Job, user *firestore.User, context *context.Context) *Session {
 	session := Session{
 		Job:     job,
 		User:    user,
-		Context: &context,
+		Context: context,
 	}
-	firestore.CreateClient(context) // Create a database connection
 	return &session
 }
 
@@ -78,6 +76,4 @@ func finishSession(session *Session) {
 	session.SaveUser()
 	// Prepare the message, localize and send it
 	sendOutputMessage(session)
-	// Close the database connection
-	firestore.CloseClient()
 }

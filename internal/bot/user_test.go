@@ -27,7 +27,7 @@ func TestCreateUserFromMessage(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	user := createUser(update, ctx)
+	user := createUser(update, &ctx)
 	if user == nil {
 		t.Fatalf("User is nil")
 	}
@@ -74,7 +74,7 @@ func TestUserFromCallback(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	user := createUser(update, ctx)
+	user := createUser(update, &ctx)
 	if user == nil {
 		t.Fatalf("User is nil")
 	}

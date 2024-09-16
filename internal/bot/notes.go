@@ -24,7 +24,7 @@ func finishNote(session *Session) {
 // Handle the note command
 func handleLastNote(session *Session) {
 	userID := session.User.ID
-	note, err := firestore.LastNote(*session.Context, userID)
+	note, err := firestore.LastNote(session.Context, userID)
 	if err != nil {
 		log.Printf("[Bot] Error getting last note from firestore, %s", err.Error())
 	}
@@ -52,7 +52,7 @@ func saveNote(text string, session *Session) {
 	}
 
 	// Save the note
-	err := firestore.NewNote(*session.Context, *session.User, note)
+	err := firestore.NewNote(session.Context, *session.User, note)
 	if err != nil {
 		log.Printf("[Bot] Error saving note in firestore, %s", err.Error())
 	}
@@ -60,7 +60,7 @@ func saveNote(text string, session *Session) {
 
 // Get the user's notes
 func getNotes(session *Session) []firestore.Note {
-	notes, err := firestore.GetNotes(*session.Context, session.User.ID)
+	notes, err := firestore.GetNotes(session.Context, session.User.ID)
 	if err != nil {
 		log.Printf("[Bot] Error getting notes from firestore, %s", err.Error())
 	}

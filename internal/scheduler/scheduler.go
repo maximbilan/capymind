@@ -45,7 +45,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	firestore.CreateClient(ctx)
+	firestore.CreateClient(&ctx)
 
 	// Cloud Tasks
 	CreateTasks(ctx)
@@ -55,7 +55,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		isCloud = true
 	}
 
-	firestore.ForEachUser(ctx, func(users []firestore.User) error {
+	firestore.ForEachUser(&ctx, func(users []firestore.User) error {
 		for _, user := range users {
 			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
 			if user.Locale == nil || user.SecondsFromUTC == nil {
@@ -66,7 +66,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 			var localizedMessage string
 			if messageType == WeeklyAnalysis {
-				notes, err := firestore.GetNotes(ctx, user.ID)
+				notes, err := firestore.GetNotes(&ctx, user.ID)
 				if err != nil {
 					log.Printf("[Scheduler] Error getting notes from firestore, %s", err.Error())
 					continue
@@ -80,7 +80,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 					header := "weekly_analysis"
-					localizedMessage = *analysis.Request(strings, userLocale, &header)
+					localizedMessage = *analysis.Request(strings, userLocale, &ctx, &header)
 				} else {
 					continue
 				}

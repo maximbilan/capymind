@@ -1,7 +1,6 @@
 package analysis
 
 import (
-	"context"
 	"os"
 
 	"github.com/invopop/jsonschema"
@@ -10,7 +9,7 @@ import (
 )
 
 // Create a client for the OpenAI API
-func createClient(ctx context.Context) *openai.Client {
+func createAI() *openai.Client {
 	client := openai.NewClient(
 		option.WithAPIKey(os.Getenv("CAPY_AI_KEY")),
 	)
