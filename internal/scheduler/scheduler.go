@@ -48,7 +48,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	firestore.CreateClient(&ctx)
 
 	// Cloud Tasks
-	CreateTasks(ctx)
+	CreateTasks(&ctx)
 
 	var isCloud = false
 	if os.Getenv("CLOUD") == "true" {
@@ -104,7 +104,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 				Locale: userLocale,
 			}
 
-			scheduleTask(ctx, scheduledMessage, scheduledTime)
+			scheduleTask(&ctx, scheduledMessage, scheduledTime)
 		}
 		return nil
 	})
