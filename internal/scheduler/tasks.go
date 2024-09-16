@@ -16,8 +16,8 @@ import (
 var client *cloudtasks.Client
 
 // Create cloud tasks client
-func CreateTasks(ctx context.Context) {
-	var newClient, err = cloudtasks.NewClient(ctx)
+func CreateTasks(ctx *context.Context) {
+	var newClient, err = cloudtasks.NewClient(*ctx)
 	if err != nil {
 		log.Printf("[Scheduler] Error creating cloud tasks client, %s", err.Error())
 	}
@@ -30,7 +30,7 @@ func CloseTasks() {
 }
 
 // Schedule a cloud task
-func scheduleTask(ctx context.Context, scheduledMessage ScheduledMessage, timeOffset time.Time) {
+func scheduleTask(ctx *context.Context, scheduledMessage ScheduledMessage, timeOffset time.Time) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
 	locationID := os.Getenv("CAPY_SERVER_REGION")
 	queueID := "messages"
@@ -62,7 +62,7 @@ func scheduleTask(ctx context.Context, scheduledMessage ScheduledMessage, timeOf
 	}
 	req.Task.GetHttpRequest().Body = payload
 
-	createdTask, err := client.CreateTask(ctx, req)
+	createdTask, err := client.CreateTask(*ctx, req)
 	if err != nil {
 		log.Printf("[Scheduler] Error scheduling a task, %s", err.Error())
 		return
