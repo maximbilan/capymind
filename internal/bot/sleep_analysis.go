@@ -43,7 +43,7 @@ func askForSleepAnalysis(session *Session) {
 func checkIfNoteADream(text string, locale translator.Locale) bool {
 	keywords := translator.SearchKeywords(locale, "dreams")
 	for _, keyword := range keywords {
-		if strings.Contains(text, keyword) {
+		if strings.Contains(strings.ToLower(text), keyword) {
 			return true
 		}
 	}
