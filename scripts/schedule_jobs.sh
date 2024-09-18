@@ -32,17 +32,19 @@ gcloud scheduler jobs create http $JOB2 \
   --http-method=GET \
   --location=$REGION
 
+# Every Sunday
 gcloud scheduler jobs create http $JOB3 \
   --project $PROJECT_ID \
   --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME?type=weekly_analysis&offset=5" \
-  --schedule="0 12 * * 0" \ # Every Sunday
+  --schedule="0 12 * * 0" \
   --http-method=GET \
   --location=$REGION
 
+# Every Thursday
 gcloud scheduler jobs create http $JOB4 \
   --project $PROJECT_ID \
   --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME?type=user_stats&offset=10" \
-  --schedule="0 0 * * 4" \ # Every Thursday
+  --schedule="0 0 * * 4" \
   --http-method=GET \
   --location=$REGION
 
