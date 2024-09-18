@@ -35,8 +35,8 @@ func AnalyzeJournal(notes []string, locale translator.Locale, ctx *context.Conte
 
 // Request an analysis of the user's sleep
 func AnalyzeSleep(text string, locale translator.Locale, ctx *context.Context) *string {
-	systemPrompt := translator.Prompt(locale, "ai_analysis_system_message")
-	userPrompt := translator.Prompt(locale, "ai_analysis_user_message")
+	systemPrompt := translator.Prompt(locale, "ai_sleep_analysis_system_message")
+	userPrompt := translator.Prompt(locale, "ai_sleep_analysis_user_message")
 	userPrompt += text
 
 	response := request("sleep_analysis", "Analysis of the user's sleep", systemPrompt, userPrompt, ctx)

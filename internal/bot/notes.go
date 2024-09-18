@@ -18,13 +18,11 @@ func startNote(session *Session) {
 func finishNote(session *Session) {
 	text := *session.Job.Input
 	saveNote(text, session)
+	setOutputText("finish_note", session)
 
 	isDream := checkIfNoteADream(text, session.Locale())
-
 	if isDream {
 		askForSleepAnalysis(session)
-	} else {
-		setOutputText("finish_note", session)
 	}
 
 	session.User.IsTyping = false
