@@ -36,7 +36,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		message = "how_are_you_morning"
 	case Evening:
 		message = "how_are_you_evening"
-	case WeeklyAnalysis:
+	case WeeklyAnalysis, UserStats:
 		// Personalized for each user
 		message = ""
 	default:
@@ -81,6 +81,18 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 					}
 					header := "weekly_analysis"
 					localizedMessage = *analysis.AnalyzeJournal(strings, userLocale, &ctx, &header)
+				} else {
+					continue
+				}
+			} else if messageType == UserStats {
+				count, err := firestore.NotesCount(&ctx, user.ID)
+				if err != nil {
+					log.Printf("[Scheduler] Error getting notes count from firestore, %s", err.Error())
+					continue
+				}
+				// Send only if the user has more than one note in the journal
+				if count > 1 {
+					localizedMessage = fmt.Sprintf(translator.Translate(userLocale, "user_progress_message"), count)
 				} else {
 					continue
 				}
