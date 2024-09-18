@@ -55,3 +55,12 @@ const promptsJSON = `{
         "ai_analysis_user_message": "Нижче наведено список моїх нещодавніх записів у журналі. Будь ласка, надайте відгук. Записи: "
     }
 }`
+
+const searchKeywordsJSON = `{
+    "en": {
+        "dreams": ["dreams", "night", "sleep", "dreaming", "nightmares", "nightmare"]
+    },
+    "uk": {
+        "dreams": ["сни", "сон", "сновидіння", "кошмари", "кошмар", "cні", "приснилось", "приснилося", "наснилось", "наснилося"]
+    }
+}`
