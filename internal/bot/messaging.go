@@ -63,14 +63,3 @@ func sendJobResult(jobResult JobResult, session *Session) {
 	// Send the message
 	telegram.SendMessage(chatID, text, replyMarkup)
 }
-
-// Send a message to the user
-func sendMessage(textID string, session *Session) {
-	locale := session.Locale()
-	chatID := session.User.ChatID
-
-	// Localize the message
-	text := translator.Translate(locale, textID)
-	// Send the message
-	telegram.SendMessage(chatID, text, nil)
-}
