@@ -13,7 +13,7 @@ const (
 	Timezone      Command = "/timezone"
 	Help          Command = "/help"
 	SleepAnalysis Command = "/sleep_analysis" // Sleep analysis of last note
-	NotesCount    Command = "/notes_count"    // Count of notes
+	NoteCount     Command = "/note_count"     // Count of notes
 	None          Command = ""                // No command, just plain text
 )
 

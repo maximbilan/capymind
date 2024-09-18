@@ -86,7 +86,7 @@ func sendNoNotes(session *Session) {
 }
 
 // Handles the note count request
-func handleNotesCount(session *Session) {
+func handleNoteCount(session *Session) {
 	count, err := firestore.NotesCount(session.Context, session.User.ID)
 	if err != nil {
 		log.Printf("[Bot] Error getting notes count from firestore, %s", err.Error())
