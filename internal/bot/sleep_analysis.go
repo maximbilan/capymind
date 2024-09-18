@@ -11,6 +11,8 @@ import (
 
 // Handle the sleep analysis command
 func handleSleepAnalysis(session *Session) {
+	setOutputText("analysis_waiting", session)
+
 	userID := session.User.ID
 	note, err := firestore.LastNote(session.Context, userID)
 	if err != nil {
