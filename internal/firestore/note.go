@@ -2,9 +2,11 @@ package firestore
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/firestore/apiv1/firestorepb"
 )
 
 type Note struct {
@@ -60,4 +62,24 @@ func GetNotes(ctx *context.Context, userID string) ([]Note, error) {
 		notes = append(notes, note)
 	}
 	return notes, nil
+}
+
+// Get notes count (aggregation query)
+func NotesCount(ctx *context.Context, userID string) (int64, error) {
+	userRef := client.Collection(users.String()).Doc(userID)
+	query := client.Collection(notes.String()).Where("user", "==", userRef)
+	aggregationQuery := query.NewAggregationQuery().WithCount("all")
+
+	results, err := aggregationQuery.Get(*ctx)
+	if err != nil {
+		return 0, err
+	}
+
+	count, ok := results["all"]
+	if !ok {
+		return 0, errors.New("[Firestore]: couldn't get alias for COUNT from results")
+	}
+
+	countValue := count.(*firestorepb.Value)
+	return countValue.GetIntegerValue(), nil
 }

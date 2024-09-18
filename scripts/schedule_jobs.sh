@@ -7,21 +7,16 @@ REGION=$CAPY_SERVER_REGION
 JOB1="schedule-morning-messages"
 JOB2="schedule-evening-messages"
 JOB3="schedule-weekly-analysis"
+JOB4="schedule-motivational-messages"
 
-gcloud scheduler jobs delete $JOB1 \
-  --project $PROJECT_ID \
-  --location=$REGION \
-  --quiet
+JOBS=($JOB1 $JOB2 $JOB3 $JOB4)
 
-gcloud scheduler jobs delete $JOB2 \
-  --project $PROJECT_ID \
-  --location=$REGION \
-  --quiet
-
-gcloud scheduler jobs delete $JOB3 \
-  --project $PROJECT_ID \
-  --location=$REGION \
-  --quiet
+for JOB in "${JOBS[@]}"; do
+  gcloud scheduler jobs delete "$JOB" \
+    --project "$PROJECT_ID" \
+    --location "$REGION" \
+    --quiet
+done
 
 gcloud scheduler jobs create http $JOB1 \
   --project $PROJECT_ID \
@@ -40,7 +35,14 @@ gcloud scheduler jobs create http $JOB2 \
 gcloud scheduler jobs create http $JOB3 \
   --project $PROJECT_ID \
   --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME?type=weekly_analysis&offset=5" \
-  --schedule="0 12 * * 0" \
+  --schedule="0 12 * * 0" \ # Every Sunday
+  --http-method=GET \
+  --location=$REGION
+
+gcloud scheduler jobs create http $JOB4 \
+  --project $PROJECT_ID \
+  --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME?type=user_stats&offset=10" \
+  --schedule="0 0 * * 4" \ # Every Thursday
   --http-method=GET \
   --location=$REGION
 
