@@ -2,7 +2,6 @@ package bot
 
 import (
 	"log"
-	"strings"
 	"time"
 
 	"github.com/capymind/internal/firestore"
@@ -18,24 +17,12 @@ func startNote(session *Session) {
 // Finish typing a note
 func finishNote(session *Session) {
 	text := *session.Job.Input
-	var isDream bool = false
-
 	saveNote(text, session)
 
-	keywords := translator.SearchKeywords(session.Locale(), "dreams")
-	for _, keyword := range keywords {
-		if strings.Contains(text, keyword) {
-			isDream = true
-			break
-		}
-	}
+	isDream := checkIfNoteADream(text, session.Locale())
 
 	if isDream {
-		var button JobResultTextButton = JobResultTextButton{
-			TextID:   "sleep_analysis",
-			Callback: string(SleepAnalysis),
-		}
-		setOutputTextWithButtons("do_you_want_sleep_analysis", []JobResultTextButton{button}, session)
+		askForSleepAnalysis(session)
 	} else {
 		setOutputText("finish_note", session)
 	}
@@ -54,12 +41,13 @@ func handleLastNote(session *Session) {
 	if note != nil {
 		var response string = translator.Translate(session.Locale(), "your_last_note") + note.Text
 		setOutputText(response, session)
-	} else {
-		var button JobResultTextButton = JobResultTextButton{
-			TextID:   "make_record_to_journal",
-			Callback: string(Note),
+
+		isDream := checkIfNoteADream(note.Text, session.Locale())
+		if isDream {
+			askForSleepAnalysis(session)
 		}
-		setOutputTextWithButtons("no_notes", []JobResultTextButton{button}, session)
+	} else {
+		sendNoNotes(session)
 	}
 }
 
@@ -87,4 +75,13 @@ func getNotes(session *Session) []firestore.Note {
 		log.Printf("[Bot] Error getting notes from firestore, %s", err.Error())
 	}
 	return notes
+}
+
+// Send a message that says there are no notes
+func sendNoNotes(session *Session) {
+	var button JobResultTextButton = JobResultTextButton{
+		TextID:   "make_record_to_journal",
+		Callback: string(Note),
+	}
+	setOutputTextWithButtons("no_notes", []JobResultTextButton{button}, session)
 }

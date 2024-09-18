@@ -56,6 +56,8 @@ func handleSession(session *Session) {
 		handleTimezone(session)
 	case Help:
 		setOutputText("commands_hint", session)
+	case SleepAnalysis:
+		handleSleepAnalysis(session)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {
