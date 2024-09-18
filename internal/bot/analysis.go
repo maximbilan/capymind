@@ -18,7 +18,7 @@ func handleAnalysis(session *Session) {
 		}
 
 		// Send a message to wait for the analysis
-		setOutputText("analysis_waiting", session)
+		sendMessage("analysis_waiting", session)
 
 		// Request the analysis
 		analysis := analysis.AnalyzeJournal(strings, session.Locale(), session.Context, nil)
