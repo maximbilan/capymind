@@ -28,7 +28,7 @@ func setupTimezone(session *Session) {
 	if !session.User.IsOnboarded {
 		session.User.IsOnboarded = true
 
-		sendMessage("timezone_set", session)
+		setOutputText("timezone_set", session)
 		sendWelcome(session)
 	} else {
 		setOutputText("timezone_set", session)

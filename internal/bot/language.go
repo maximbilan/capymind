@@ -29,7 +29,7 @@ func setupLanguage(session *Session) {
 	session.User.Locale = &session.Job.Parameters[0]
 
 	if session.User.SecondsFromUTC == nil {
-		sendMessage("locale_set", session)
+		setOutputText("locale_set", session)
 		requestTimezone(session)
 	} else {
 		setOutputText("locale_set", session)

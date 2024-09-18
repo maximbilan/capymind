@@ -4,7 +4,7 @@ package bot
 func handleStart(session *Session) {
 	if !session.User.IsOnboarded {
 		// Go onboarding
-		sendMessage("welcome_onboarding", session)
+		setOutputText("welcome_onboarding", session)
 		handleLanguage(session)
 	} else if session.User.SecondsFromUTC == nil {
 		// Go onboarding

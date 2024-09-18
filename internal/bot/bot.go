@@ -24,7 +24,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	firestore.CreateClient(&ctx)
 
 	// Create a user
-	user := createUser(*update, &ctx)
+	user := createUser(*update)
 	if user == nil {
 		log.Printf("[Bot] No user to process: message_id=%d", update.Message.ID)
 		return
