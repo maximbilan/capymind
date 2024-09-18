@@ -10,7 +10,7 @@ import (
 )
 
 // Create a user from an update
-func createUser(update telegram.Update, ctx *context.Context) *firestore.User {
+func createUser(update telegram.Update) *firestore.User {
 	var chatID int64
 	var telegramUser *telegram.User
 
