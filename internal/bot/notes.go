@@ -18,7 +18,7 @@ func startNote(session *Session) {
 func finishNote(session *Session) {
 	text := *session.Job.Input
 	saveNote(text, session)
-	setOutputText("finish_note", session)
+	sendMessage("finish_note", session)
 
 	isDream := checkIfNoteADream(text, session.Locale())
 	if isDream {
@@ -38,7 +38,7 @@ func handleLastNote(session *Session) {
 
 	if note != nil {
 		var response string = translator.Translate(session.Locale(), "your_last_note") + note.Text
-		setOutputText(response, session)
+		sendMessage(response, session)
 
 		isDream := checkIfNoteADream(note.Text, session.Locale())
 		if isDream {
