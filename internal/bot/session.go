@@ -58,6 +58,8 @@ func handleSession(session *Session) {
 		setOutputText("commands_hint", session)
 	case SleepAnalysis:
 		handleSleepAnalysis(session)
+	case NotesCount:
+		handleNotesCount(session)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {

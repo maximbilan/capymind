@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -82,4 +83,15 @@ func sendNoNotes(session *Session) {
 		Callback: string(Note),
 	}
 	setOutputTextWithButtons("no_notes", []JobResultTextButton{button}, session)
+}
+
+// Handles the note count request
+func handleNotesCount(session *Session) {
+	count, err := firestore.NotesCount(session.Context, session.User.ID)
+	if err != nil {
+		log.Printf("[Bot] Error getting notes count from firestore, %s", err.Error())
+	} else {
+		message := fmt.Sprintf(translator.Translate(session.Locale(), "user_progress_message"), count)
+		setOutputText(message, session)
+	}
 }
