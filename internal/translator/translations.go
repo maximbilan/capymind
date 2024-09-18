@@ -20,7 +20,9 @@ const translationsJSON = `{
         "no_analysis": "Not enough entries have been made to generate an analysis. Begin by sharing your thoughts and feelings with CapyMind.",
         "analysis_waiting": "Your analysis is being generated. Please hold on for a moment 😴",
         "how_to_use": "Getting started 🙋‍♂️",
-        "weekly_analysis": "Weekly analysis 🧑‍⚕️\n\n"
+        "weekly_analysis": "Weekly analysis 🧑‍⚕️\n\n",
+        "do_you_want_sleep_analysis": "Would you like to analyze your sleep patterns? 🌙",
+        "sleep_analysis": "Sleep analysis 🛌"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -41,7 +43,9 @@ const translationsJSON = `{
         "no_analysis": "Недостатньо записів для генерації аналізу. Почніть ділитись своїми думками та почуттями з CapyMind.",
         "analysis_waiting": "Ваш аналіз генерується. Будь ласка, зачекайте 😴",
         "how_to_use": "Допомога 🙋‍♂️",
-        "weekly_analysis": "Аналіз за останній тиждень 🧑‍⚕️\n\n"
+        "weekly_analysis": "Аналіз за останній тиждень 🧑‍⚕️\n\n",
+        "do_you_want_sleep_analysis": "Бажаєте проаналізувати ваші сновидіння? 🌙",
+        "sleep_analysis": "Аналіз сну 🛌"
     }
 }`
 

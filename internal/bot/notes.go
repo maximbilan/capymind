@@ -2,6 +2,7 @@ package bot
 
 import (
 	"log"
+	"strings"
 	"time"
 
 	"github.com/capymind/internal/firestore"
@@ -16,8 +17,29 @@ func startNote(session *Session) {
 
 // Finish typing a note
 func finishNote(session *Session) {
-	saveNote(*session.Job.Input, session)
-	setOutputText("finish_note", session)
+	text := *session.Job.Input
+	var isDream bool = false
+
+	saveNote(text, session)
+
+	keywords := translator.SearchKeywords(session.Locale(), "dreams")
+	for _, keyword := range keywords {
+		if strings.Contains(text, keyword) {
+			isDream = true
+			break
+		}
+	}
+
+	if isDream {
+		var button JobResultTextButton = JobResultTextButton{
+			TextID:   "sleep_analysis",
+			Callback: string(SleepAnalysis),
+		}
+		setOutputTextWithButtons("do_you_want_sleep_analysis", []JobResultTextButton{button}, session)
+	} else {
+		setOutputText("finish_note", session)
+	}
+
 	session.User.IsTyping = false
 }
 

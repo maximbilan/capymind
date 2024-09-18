@@ -5,14 +5,15 @@ import "strings"
 type Command string
 
 const (
-	Start    Command = "/start"
-	Note     Command = "/note"
-	Last     Command = "/last"
-	Analysis Command = "/analysis"
-	Language Command = "/language"
-	Timezone Command = "/timezone"
-	Help     Command = "/help"
-	None     Command = "" // No command, just plain text
+	Start         Command = "/start"
+	Note          Command = "/note"
+	Last          Command = "/last"
+	Analysis      Command = "/analysis"
+	Language      Command = "/language"
+	Timezone      Command = "/timezone"
+	Help          Command = "/help"
+	SleepAnalysis Command = "/sleep_analysis" // Sleep analysis of last note
+	None          Command = ""                // No command, just plain text
 )
 
 // Parse the command from the input
