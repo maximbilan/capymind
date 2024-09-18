@@ -18,7 +18,7 @@ type Job struct {
 	Command    Command
 	Parameters []string
 	Input      *string // Raw input
-	Output     *JobResult
+	Output     []JobResult
 }
 
 // Creates a job from an update

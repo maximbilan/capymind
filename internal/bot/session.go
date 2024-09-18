@@ -76,6 +76,6 @@ func handleSession(session *Session) {
 func finishSession(session *Session) {
 	// Save the user's data
 	session.SaveUser()
-	// Prepare the message, localize and send it
-	sendOutputMessage(session)
+	// Prepare the messages, localize and send it
+	sendOutputMessages(session)
 }
