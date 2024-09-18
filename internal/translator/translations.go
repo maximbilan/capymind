@@ -20,7 +20,9 @@ const translationsJSON = `{
         "no_analysis": "Not enough entries have been made to generate an analysis. Begin by sharing your thoughts and feelings with CapyMind.",
         "analysis_waiting": "Your analysis is being generated. Please hold on for a moment 😴",
         "how_to_use": "Getting started 🙋‍♂️",
-        "weekly_analysis": "Weekly analysis 🧑‍⚕️\n\n"
+        "weekly_analysis": "Weekly analysis 🧑‍⚕️\n\n",
+        "do_you_want_sleep_analysis": "Would you like to analyze your sleep patterns? 🌙",
+        "sleep_analysis": "Sleep analysis 🛌"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -41,17 +43,32 @@ const translationsJSON = `{
         "no_analysis": "Недостатньо записів для генерації аналізу. Почніть ділитись своїми думками та почуттями з CapyMind.",
         "analysis_waiting": "Ваш аналіз генерується. Будь ласка, зачекайте 😴",
         "how_to_use": "Допомога 🙋‍♂️",
-        "weekly_analysis": "Аналіз за останній тиждень 🧑‍⚕️\n\n"
+        "weekly_analysis": "Аналіз за останній тиждень 🧑‍⚕️\n\n",
+        "do_you_want_sleep_analysis": "Бажаєте проаналізувати ваші сновидіння? 🌙",
+        "sleep_analysis": "Аналіз сну 🛌"
     }
 }`
 
 const promptsJSON = `{
     "en": {
         "ai_analysis_system_message": "You are a skilled therapist at CapyMind, specializing in reviewing and providing feedback on user journals. Your responses should be structured into three distinct parts: 1. Praise & Encouragement: Begin by acknowledging the user’s efforts, offering positive reinforcement for progress made. If progress is minimal, provide motivational support to encourage continued effort (2-3 sentences) 2. Analysis: Analyze the user’s recent journal entries, identifying key patterns or themes in their thoughts, emotions, or behaviors (up to 10 sentences) 3. Recommendations: Finish by offering 3-4 sentences of practical suggestions or steps the user can take to continue their personal growth. (Don't use 1, 2, 3 in the actual response and the names of the parts)",
-        "ai_analysis_user_message": "Below is a list of my recent journal entries. Please provide feedback: "
+        "ai_analysis_user_message": "Below is a list of my recent journal entries. Please provide feedback: ",
+        "ai_sleep_analysis_system_message": "You are a sleep therapist at CapyMind, specializing in analyzing sleep patterns and providing recommendations for better sleep quality.",
+        "ai_sleep_analysis_user_message": "Below are notes from my last sleep. Please provide feedback: "
     },
     "uk": {
         "ai_analysis_system_message": "Ви є кваліфікованим терапевтом в CapyMind, який спеціалізується на перегляді та наданні відгуку аналізуючи записи користувачів. Ваші відповіді повинні бути структуровані на три відмінні частини: 1. Похвала та підтримка: Почніть з визнання зусиль користувача, запропонуйте позитивне підкріплення за досягнуті успіхи. Якщо прогрес мінімальний, надайте мотиваційну підтримку для підтримки подальших зусиль (2-3 речення) 2. Аналіз: Проаналізуйте нещодавні записи користувача, визначивши ключові шаблони або теми у їхніх думках, емоціях або поведінці (до 10 речень) 3. Рекомендації: Завершіть, запропонувавши 3-4 речення практичних порад або кроків, які користувач може зробити для особистого росту. (Не використовуйте 1, 2, 3 у фактичній відповіді та назви частин)",
-        "ai_analysis_user_message": "Нижче наведено список моїх нещодавніх записів у журналі. Будь ласка, надайте відгук. Записи: "
+        "ai_analysis_user_message": "Нижче наведено список моїх нещодавніх записів у журналі. Будь ласка, надайте відгук. Записи: ",
+        "ai_sleep_analysis_system_message": "Ви є терапевтом зі сну в CapyMind, який спеціалізується на аналізі сновидінь та наданні рекомендацій для покращення якості сну.",
+        "ai_sleep_analysis_user_message": "Нижче наведено записи з мого останнього сну. Будь ласка, надайте відгук. Записи: "
+    }
+}`
+
+const searchKeywordsJSON = `{
+    "en": {
+        "dreams": ["dreams", "night", "sleep", "dreaming", "nightmares", "nightmare"]
+    },
+    "uk": {
+        "dreams": ["сни", "сон", "сновидіння", "кошмари", "кошмар", "cні", "приснилось", "приснилося", "наснилось", "наснилося"]
     }
 }`

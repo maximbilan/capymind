@@ -47,3 +47,12 @@ func TestPromptJSON(t *testing.T) {
 		t.Errorf("Number of prompts for en and uk locales is different")
 	}
 }
+
+func TestSearchKeywordsJSON(t *testing.T) {
+	en_searchKeywords := searchKeywords["en"]
+	uk_searchKeywords := searchKeywords["uk"]
+
+	if len(en_searchKeywords) != len(uk_searchKeywords) {
+		t.Errorf("Number of search keywords for en and uk locales is different")
+	}
+}
