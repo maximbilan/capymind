@@ -11,6 +11,10 @@ import (
 
 // Create a user from an update
 func createUser(update telegram.Update) *firestore.User {
+	if update.Message == nil {
+		return nil
+	}
+
 	var chatID int64
 	var telegramUser *telegram.User
 
