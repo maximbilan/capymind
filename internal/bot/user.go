@@ -11,7 +11,12 @@ import (
 
 // Create a user from an update
 func createUser(update telegram.Update) *firestore.User {
-	if update.Message == nil {
+	// Check if the message is valid
+	if update.Message == nil && update.CallbackQuery == nil {
+		return nil
+	}
+	// Check if the message is valid (Callback variant)
+	if update.Message == nil && update.CallbackQuery != nil && update.CallbackQuery.Message == nil {
 		return nil
 	}
 
