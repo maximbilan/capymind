@@ -64,7 +64,7 @@ func GetNotes(ctx *context.Context, userID string) ([]Note, error) {
 	return notes, nil
 }
 
-// Get notes count (aggregation query)
+// Get notes count for the current user (aggregation query)
 func NotesCount(ctx *context.Context, userID string) (int64, error) {
 	userRef := client.Collection(users.String()).Doc(userID)
 	query := client.Collection(notes.String()).Where("user", "==", userRef)
