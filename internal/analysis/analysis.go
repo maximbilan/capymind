@@ -10,10 +10,18 @@ import (
 	"github.com/openai/openai-go"
 )
 
-// Reqeust an analysis of the user's journal entries
-func AnalyzeJournal(notes []string, locale translator.Locale, ctx *context.Context, header *string) *string {
-	systemPrompt := translator.Prompt(locale, "ai_analysis_system_message")
-	userPrompt := translator.Prompt(locale, "ai_analysis_user_message")
+func AnalyzeQuickly(notes []string, locale translator.Locale, ctx *context.Context) *string {
+	return analyzeJournal(getPrompt(QuickAnalysis, locale), notes, locale, ctx, nil)
+}
+
+func AnalyzeLastWeek(notes []string, locale translator.Locale, ctx *context.Context) *string {
+	header := "weekly_analysis"
+	return analyzeJournal(getPrompt(WeeklyAnalysis, locale), notes, locale, ctx, &header)
+}
+
+func analyzeJournal(prompt Prompt, notes []string, locale translator.Locale, ctx *context.Context, header *string) *string {
+	systemPrompt := prompt.System
+	userPrompt := prompt.User
 	for index, note := range notes {
 		userPrompt += fmt.Sprintf("%d. %s ", index+1, note)
 	}
@@ -35,8 +43,10 @@ func AnalyzeJournal(notes []string, locale translator.Locale, ctx *context.Conte
 
 // Request an analysis of the user's sleep
 func AnalyzeSleep(text string, locale translator.Locale, ctx *context.Context) *string {
-	systemPrompt := translator.Prompt(locale, "ai_sleep_analysis_system_message")
-	userPrompt := translator.Prompt(locale, "ai_sleep_analysis_user_message")
+	prompt := getPrompt(SleepAnalysis, locale)
+
+	systemPrompt := prompt.System
+	userPrompt := prompt.User
 	userPrompt += text
 
 	response := request("sleep_analysis", "Analysis of the user's sleep", systemPrompt, userPrompt, ctx)

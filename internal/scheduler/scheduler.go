@@ -79,8 +79,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 							strings = append(strings, note.Text)
 						}
 					}
-					header := "weekly_analysis"
-					localizedMessage = *analysis.AnalyzeJournal(strings, userLocale, &ctx, &header)
+					localizedMessage = *analysis.AnalyzeLastWeek(strings, userLocale, &ctx)
 				} else {
 					continue
 				}

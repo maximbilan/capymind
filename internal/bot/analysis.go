@@ -21,7 +21,7 @@ func handleAnalysis(session *Session) {
 		sendMessage("analysis_waiting", session)
 
 		// Request the analysis
-		analysis := analysis.AnalyzeJournal(strings, session.Locale(), session.Context, nil)
+		analysis := analysis.AnalyzeQuickly(strings, session.Locale(), session.Context)
 		if analysis != nil {
 			// Send the analysis
 			setOutputText(*analysis, session)
