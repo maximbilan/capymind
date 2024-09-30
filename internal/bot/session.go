@@ -60,6 +60,10 @@ func handleSession(session *Session) {
 		handleSleepAnalysis(session)
 	case NoteCount:
 		handleNoteCount(session)
+	case TotalUserCount:
+		handleTotalUserCount(session)
+	case TotalNoteCount:
+		handleTotalNoteCount(session)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {

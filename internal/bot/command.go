@@ -5,6 +5,7 @@ import "strings"
 type Command string
 
 const (
+	// User commands
 	Start         Command = "/start"
 	Note          Command = "/note"
 	Last          Command = "/last"
@@ -13,8 +14,14 @@ const (
 	Timezone      Command = "/timezone"
 	Help          Command = "/help"
 	SleepAnalysis Command = "/sleep_analysis" // Sleep analysis of last note
-	NoteCount     Command = "/note_count"     // Count of notes
-	None          Command = ""                // No command, just plain text
+	NoteCount     Command = "/note_count"     // Count of the current user notes
+
+	// Admin commands
+	TotalUserCount Command = "/total_user_count"
+	TotalNoteCount Command = "/total_note_count"
+
+	// Empty command
+	None Command = "" // No command, just plain text
 )
 
 // Parse the command from the input
