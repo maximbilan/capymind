@@ -7,7 +7,7 @@ import (
 // Handle the analysis command
 func handleAnalysis(session *Session) {
 	// Get the user's notes
-	notes := getNotes(session)
+	notes := getNotes(session, 3)
 	if len(notes) > 0 {
 		// Prepare the strings for analysis
 		var strings []string

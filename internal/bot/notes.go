@@ -68,8 +68,8 @@ func saveNote(text string, session *Session) {
 }
 
 // Get the user's notes
-func getNotes(session *Session) []firestore.Note {
-	notes, err := firestore.GetNotes(session.Context, session.User.ID)
+func getNotes(session *Session, count int) []firestore.Note {
+	notes, err := firestore.GetNotes(session.Context, session.User.ID, count)
 	if err != nil {
 		log.Printf("[Bot] Error getting notes from firestore, %s", err.Error())
 	}
