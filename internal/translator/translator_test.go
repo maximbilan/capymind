@@ -25,7 +25,7 @@ func TestTranslator(t *testing.T) {
 
 	// Test prompt
 	want = "Below is a list of my recent journal entries. Please provide feedback: "
-	if got := Prompt(locale1, "ai_analysis_user_message"); got != want {
+	if got := Prompt(locale1, "ai_weekly_analysis_user_message"); got != want {
 		t.Errorf("Prompt() = %v, want %v", got, want)
 	}
 }
