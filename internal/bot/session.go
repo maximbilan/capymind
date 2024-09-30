@@ -58,6 +58,8 @@ func handleSession(session *Session) {
 		setOutputText("commands_hint", session)
 	case SleepAnalysis:
 		handleSleepAnalysis(session)
+	case WeeklyAnalysis:
+		handleWeeklyAnalysis(session)
 	case NoteCount:
 		handleNoteCount(session)
 	case TotalUserCount:
