@@ -21,14 +21,14 @@ func getPrompt(promptType PromptType, locale translator.Locale) Prompt {
 
 	switch promptType {
 	case WeeklyAnalysis:
-		system = translator.Prompt(locale, "ai_analysis_system_message")
-		user = translator.Prompt(locale, "ai_analysis_user_message")
+		system = translator.Prompt(locale, "ai_weekly_analysis_system_message")
+		user = translator.Prompt(locale, "ai_weekly_analysis_user_message")
 	case SleepAnalysis:
 		system = translator.Prompt(locale, "ai_sleep_analysis_system_message")
 		user = translator.Prompt(locale, "ai_sleep_analysis_user_message")
 	case QuickAnalysis:
-		system = translator.Prompt(locale, "ai_analysis_system_message")
-		user = translator.Prompt(locale, "ai_analysis_user_message")
+		system = translator.Prompt(locale, "ai_quick_analysis_system_message")
+		user = translator.Prompt(locale, "ai_quick_analysis_user_message")
 	}
 
 	return Prompt{
