@@ -11,12 +11,12 @@ import (
 )
 
 func AnalyzeQuickly(notes []string, locale translator.Locale, ctx *context.Context) *string {
-	return analyzeJournal(getPrompt(QuickAnalysis, locale), notes, locale, ctx, nil)
+	return analyzeJournal(getLocalizedPrompt(QuickAnalysis, locale), notes, locale, ctx, nil)
 }
 
 func AnalyzeLastWeek(notes []string, locale translator.Locale, ctx *context.Context) *string {
 	header := "weekly_analysis"
-	return analyzeJournal(getPrompt(WeeklyAnalysis, locale), notes, locale, ctx, &header)
+	return analyzeJournal(getLocalizedPrompt(WeeklyAnalysis, locale), notes, locale, ctx, &header)
 }
 
 func analyzeJournal(prompt Prompt, notes []string, locale translator.Locale, ctx *context.Context, header *string) *string {
@@ -43,7 +43,7 @@ func analyzeJournal(prompt Prompt, notes []string, locale translator.Locale, ctx
 
 // Request an analysis of the user's sleep
 func AnalyzeSleep(text string, locale translator.Locale, ctx *context.Context) *string {
-	prompt := getPrompt(SleepAnalysis, locale)
+	prompt := getLocalizedPrompt(SleepAnalysis, locale)
 
 	systemPrompt := prompt.System
 	userPrompt := prompt.User

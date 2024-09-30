@@ -15,24 +15,29 @@ const (
 	QuickAnalysis  PromptType = "quick_analysis"  // Analysis of the user's last 3 journal entries
 )
 
-func getPrompt(promptType PromptType, locale translator.Locale) Prompt {
+func getPrompt(promptType PromptType) (string, string) {
 	var system string
 	var user string
 
 	switch promptType {
 	case WeeklyAnalysis:
-		system = translator.Prompt(locale, "ai_weekly_analysis_system_message")
-		user = translator.Prompt(locale, "ai_weekly_analysis_user_message")
+		system = "ai_weekly_analysis_system_message"
+		user = "ai_weekly_analysis_user_message"
 	case SleepAnalysis:
-		system = translator.Prompt(locale, "ai_sleep_analysis_system_message")
-		user = translator.Prompt(locale, "ai_sleep_analysis_user_message")
+		system = "ai_sleep_analysis_system_message"
+		user = "ai_sleep_analysis_user_message"
 	case QuickAnalysis:
-		system = translator.Prompt(locale, "ai_quick_analysis_system_message")
-		user = translator.Prompt(locale, "ai_quick_analysis_user_message")
+		system = "ai_quick_analysis_system_message"
+		user = "ai_quick_analysis_user_message"
 	}
 
+	return system, user
+}
+
+func getLocalizedPrompt(promptType PromptType, locale translator.Locale) Prompt {
+	system, user := getPrompt(promptType)
 	return Prompt{
-		System: system,
-		User:   user,
+		System: translator.Prompt(locale, system),
+		User:   translator.Prompt(locale, user),
 	}
 }
