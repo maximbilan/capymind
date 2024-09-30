@@ -6,15 +6,18 @@ type Command string
 
 const (
 	// User commands
-	Start         Command = "/start"
-	Note          Command = "/note"
-	Last          Command = "/last"
-	Analysis      Command = "/analysis"
-	Language      Command = "/language"
-	Timezone      Command = "/timezone"
-	Help          Command = "/help"
-	SleepAnalysis Command = "/sleep_analysis" // Sleep analysis of last note
-	NoteCount     Command = "/note_count"     // Count of the current user notes
+	Start    Command = "/start"
+	Note     Command = "/note"
+	Last     Command = "/last"
+	Analysis Command = "/analysis"
+	Language Command = "/language"
+	Timezone Command = "/timezone"
+	Help     Command = "/help"
+
+	// Hidden user commands
+	NoteCount      Command = "/note_count"      // Count of the current user notes
+	SleepAnalysis  Command = "/sleep_analysis"  // Sleep analysis of last note
+	WeeklyAnalysis Command = "/weekly_analysis" // Weekly analysis of the user's journal entries for last week
 
 	// Admin commands
 	TotalUserCount Command = "/total_user_count"

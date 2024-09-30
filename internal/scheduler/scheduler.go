@@ -66,7 +66,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 			var localizedMessage string
 			if messageType == WeeklyAnalysis {
-				notes, err := firestore.GetNotes(&ctx, user.ID)
+				notes, err := firestore.GetNotesForLastWeek(&ctx, user.ID)
 				if err != nil {
 					log.Printf("[Scheduler] Error getting notes from firestore, %s", err.Error())
 					continue
@@ -79,8 +79,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 							strings = append(strings, note.Text)
 						}
 					}
-					header := "weekly_analysis"
-					localizedMessage = *analysis.AnalyzeJournal(strings, userLocale, &ctx, &header)
+					localizedMessage = *analysis.AnalyzeLastWeek(strings, userLocale, &ctx)
 				} else {
 					continue
 				}

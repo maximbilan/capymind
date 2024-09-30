@@ -49,3 +49,31 @@ func checkIfNoteADream(text string, locale translator.Locale) bool {
 	}
 	return false
 }
+
+func handleWeeklyAnalysis(session *Session) {
+	sendMessage("analysis_waiting", session)
+
+	userID := session.User.ID
+	notes, err := firestore.GetNotesForLastWeek(session.Context, userID)
+	if err != nil {
+		log.Printf("[Bot] Error getting notes from firestore, %s", err.Error())
+	}
+
+	if len(notes) > 0 {
+		var strings []string
+		for _, note := range notes {
+			if note.Text != "" {
+				strings = append(strings, note.Text)
+			}
+		}
+
+		analysis := analysis.AnalyzeLastWeek(strings, session.Locale(), session.Context)
+		if analysis != nil {
+			setOutputText(*analysis, session)
+		} else {
+			sendNoNotes(session)
+		}
+	} else {
+		sendNoNotes(session)
+	}
+}
