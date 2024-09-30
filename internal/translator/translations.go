@@ -23,7 +23,9 @@ const translationsJSON = `{
         "weekly_analysis": "Weekly analysis 🧑‍⚕️\n\n",
         "do_you_want_sleep_analysis": "Would you like to analyze your sleep patterns? 🌙",
         "sleep_analysis": "Sleep analysis 🛌",
-        "user_progress_message": "You have made a total of %d entries in your journal.\nKeep up the great work! 🚀"
+        "user_progress_message": "You have made a total of %d entries in your journal.\nKeep up the great work! 🚀",
+        "total_user_count": "The total number of users is %d.",
+        "total_note_count": "The total number of notes is %d."
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -47,7 +49,9 @@ const translationsJSON = `{
         "weekly_analysis": "Аналіз за останній тиждень 🧑‍⚕️\n\n",
         "do_you_want_sleep_analysis": "Бажаєте проаналізувати ваші сновидіння? 🌙",
         "sleep_analysis": "Аналіз сну 🛌",
-        "user_progress_message": "Кількість записів у вашому журналі: %d!\nЧудова робота!\nПродовжуйте в тому ж дусі! 🚀"
+        "user_progress_message": "Кількість записів у вашому журналі: %d!\nЧудова робота!\nПродовжуйте в тому ж дусі! 🚀",
+        "total_user_count": "Загальна кількість користувачів: %d.",
+        "total_note_count": "Загальна кількість записів: %d."
     }
 }`
 
