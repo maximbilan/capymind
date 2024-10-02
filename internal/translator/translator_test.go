@@ -56,3 +56,18 @@ func TestSearchKeywordsJSON(t *testing.T) {
 		t.Errorf("Number of search keywords for en and uk locales is different")
 	}
 }
+
+func TestFormattedTexts(t *testing.T) {
+	locale1 := Locale("en")
+	locale2 := Locale("uk")
+
+	want := "The total number of users is %d"
+	if got := Translate(locale1, "total_user_count"); got != want {
+		t.Errorf("Translate() = %v, want %v", got, want)
+	}
+
+	want = "Загальна кількість користувачів: %d"
+	if got := Translate(locale2, "total_user_count"); got != want {
+		t.Errorf("Translate() = %v, want %v", got, want)
+	}
+}
