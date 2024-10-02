@@ -26,7 +26,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	// Create a user
 	user := createUser(*update)
 	if user == nil {
-		log.Printf("[Bot] No user to process: message_id=%d", update.Message.ID)
+		log.Printf("[Bot] No user to process: message_id=%d", update.ID)
 		return
 	}
 
