@@ -17,6 +17,7 @@ type User struct {
 	LastCommand    *string `firestore:"lastCommand"`
 	IsTyping       bool    `firestore:"isTyping"`
 	IsOnboarded    bool    `firestore:"isOnboarded"`
+	Role           *Role   `firestore:"role"`
 }
 
 // Get a user from the database

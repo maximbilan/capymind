@@ -36,11 +36,20 @@ func createSession(job *Job, user *firestore.User, context *context.Context) *Se
 	return &session
 }
 
+func (session *Session) isAdmin() bool {
+	return isAdmin(session.User)
+}
+
 // Handle the session
 func handleSession(session *Session) {
 	command := session.Job.Command
 	commandStr := string(command)
 	session.User.LastCommand = &commandStr
+
+	if command.IsAdmin() && !session.isAdmin() {
+		handleHelp(session)
+		return
+	}
 
 	switch command {
 	case Start:
@@ -58,7 +67,7 @@ func handleSession(session *Session) {
 	case Support:
 		startFeedback(session)
 	case Help:
-		setOutputText("commands_hint", session)
+		handleHelp(session)
 	case SleepAnalysis:
 		handleSleepAnalysis(session)
 	case WeeklyAnalysis:
@@ -81,15 +90,15 @@ func handleSession(session *Session) {
 				finishFeedback(session)
 			default:
 				// If the user is typing and the last command is not recognized
-				setOutputText("commands_hint", session)
+				handleHelp(session)
 			}
 		} else {
 			// Otherwise show the help message
-			setOutputText("commands_hint", session)
+			handleHelp(session)
 		}
 	default:
 		// Unknown command
-		setOutputText("commands_hint", session)
+		handleHelp(session)
 	}
 }
 

@@ -29,6 +29,22 @@ const (
 	None Command = "" // No command, just plain text
 )
 
+var adminCommands = []Command{
+	TotalUserCount,
+	TotalNoteCount,
+	FeedbackLastWeek,
+}
+
+// Check if the command is an admin command
+func (c Command) IsAdmin() bool {
+	for _, cmd := range adminCommands {
+		if c == cmd {
+			return true
+		}
+	}
+	return false
+}
+
 // Parse the command from the input
 func ParseCommand(input string) (Command, []string) {
 	if len(input) == 0 || input[0] != '/' {
