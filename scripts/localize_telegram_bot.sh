@@ -77,6 +77,7 @@ COMMANDS_EN='[
   { "command": "analysis", "description": "Get an analysis" },
   { "command": "language", "description": "Set a language" },
   { "command": "timezone", "description": "Set a timezone" },
+  { "command": "support", "description": "Send feedback" },
   { "command": "help", "description": "Help" }
 ]'
 
@@ -100,6 +101,7 @@ COMMANDS_UK='[
   { "command": "analysis", "description": "Зробити аналіз" },
   { "command": "language", "description": "Налаштувати мову" },
   { "command": "timezone", "description": "Налаштувати часовий пояс" },
+  { "command": "support", "description": "Надіслати відгук" },
   { "command": "help", "description": "Допомога" }
 ]'
 
