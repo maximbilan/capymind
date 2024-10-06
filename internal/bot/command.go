@@ -12,6 +12,7 @@ const (
 	Analysis Command = "/analysis"
 	Language Command = "/language"
 	Timezone Command = "/timezone"
+	Support  Command = "/support"
 	Help     Command = "/help"
 
 	// Hidden user commands
