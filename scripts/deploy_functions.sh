@@ -31,6 +31,9 @@ SECRETS=${SECRETS%,}
 # Set memory parameter
 MEMORY="256MB"
 
+# Timeout for scheduling 10 minutes
+SCHEDULER_TIMEOUT=600
+
 # Deploy the handler function
 gcloud functions deploy $HANDLER_FUNC_NAME \
     --runtime $RUNTIME \
@@ -62,7 +65,8 @@ gcloud functions deploy $SCHEDULER_FUNC_NAME \
     --region $CAPY_SERVER_REGION \
     --set-env-vars $ENV_VARS \
     --set-secrets $SECRETS \
-    --memory $MEMORY
+    --memory $MEMORY \
+    --timeout $SCHEDULER_TIMEOUT
 
 # Print the deployment status
 if [ $? -eq 0 ]; then
