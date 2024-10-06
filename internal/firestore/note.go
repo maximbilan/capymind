@@ -10,7 +10,6 @@ import (
 )
 
 type Note struct {
-	ID        string                 `firestore:"id"`
 	Text      string                 `firestore:"text"`
 	Timestamp time.Time              `firestore:"timestamp"`
 	User      *firestore.DocumentRef `firestore:"user"`
