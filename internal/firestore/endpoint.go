@@ -6,6 +6,7 @@ const (
 	users     Endpoint = "users"
 	notes     Endpoint = "notes"
 	feedbacks Endpoint = "feedbacks"
+	updates   Endpoint = "updates"
 )
 
 func (e Endpoint) String() string {

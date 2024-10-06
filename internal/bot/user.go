@@ -95,3 +95,12 @@ func saveUser(user *firestore.User, ctx *context.Context) {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())
 	}
 }
+
+// Check if the user is an admin
+func isAdmin(user *firestore.User) bool {
+	if user == nil {
+		return false
+	}
+	role := user.Role
+	return firestore.IsAdmin(role)
+}
