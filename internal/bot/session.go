@@ -39,7 +39,8 @@ func createSession(job *Job, user *firestore.User, context *context.Context) *Se
 // Handle the session
 func handleSession(session *Session) {
 	command := session.Job.Command
-	session.User.LastCommand = string(command)
+	commandStr := string(command)
+	session.User.LastCommand = &commandStr
 
 	switch command {
 	case Start:
@@ -54,6 +55,8 @@ func handleSession(session *Session) {
 		handleLanguage(session)
 	case Timezone:
 		handleTimezone(session)
+	case Support:
+		startFeedback(session)
 	case Help:
 		setOutputText("commands_hint", session)
 	case SleepAnalysis:
@@ -66,10 +69,20 @@ func handleSession(session *Session) {
 		handleTotalUserCount(session)
 	case TotalNoteCount:
 		handleTotalNoteCount(session)
+	case FeedbackLastWeek:
+		handleFeedbackLastWeek(session)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {
-			finishNote(session)
+			switch session.Job.LastCommand {
+			case Note:
+				finishNote(session)
+			case Support:
+				finishFeedback(session)
+			default:
+				// If the user is typing and the last command is not recognized
+				setOutputText("commands_hint", session)
+			}
 		} else {
 			// Otherwise show the help message
 			setOutputText("commands_hint", session)

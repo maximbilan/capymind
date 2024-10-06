@@ -25,7 +25,11 @@ const translationsJSON = `{
         "sleep_analysis": "Sleep analysis 🛌",
         "user_progress_message": "You have made a total of %d entries in your journal.\nKeep up the great work! 🚀",
         "total_user_count": "The total number of users is %d",
-        "total_note_count": "The total number of notes is %d"
+        "total_note_count": "The total number of notes is %d",
+        "start_feedback": "Your feedback is valuable to us! 🙏 Feel free to share your thoughts down below 👇",
+        "finish_feedback": "Thank you for sharing your feedback with CapyMind! 🚀",
+        "feedback_last_week": "Feedback from last week 📈",
+        "no_feedback": "No feedback has been provided yet"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -51,6 +55,10 @@ const translationsJSON = `{
         "sleep_analysis": "Аналіз сну 🛌",
         "user_progress_message": "Кількість записів у вашому журналі: %d!\nЧудова робота!\nПродовжуйте в тому ж дусі! 🚀",
         "total_user_count": "Загальна кількість користувачів: %d",
-        "total_note_count": "Загальна кількість записів: %d"
+        "total_note_count": "Загальна кількість записів: %d",
+        "start_feedback": "Ваш відгук для нас дуже важливий! 🙏 Не соромтеся ділитися своїми думками нижче 👇",
+        "finish_feedback": "Дякуємо вам за відгук про CapyMind! 🚀",
+        "feedback_last_week": "Відгуки з минулого тижня 📈",
+        "no_feedback": "Жодного відгуку ще не надано"
     }
 }`

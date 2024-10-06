@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/telegram"
 )
 
@@ -15,14 +16,15 @@ type JobResult struct {
 }
 
 type Job struct {
-	Command    Command
-	Parameters []string
-	Input      *string // Raw input
-	Output     []JobResult
+	Command     Command
+	LastCommand Command
+	Parameters  []string
+	Input       *string // Raw input
+	Output      []JobResult
 }
 
 // Creates a job from an update
-func createJob(update telegram.Update) *Job {
+func createJob(update telegram.Update, user *firestore.User) *Job {
 	var input *string
 
 	// Check if the update is a callback query or a message
@@ -42,11 +44,20 @@ func createJob(update telegram.Update) *Job {
 	// Create a command and parameters from the input
 	command, parameters := ParseCommand(*input)
 
+	// Gets the previous command
+	var lastCommand Command
+	if user != nil && user.LastCommand != nil {
+		lastCommand, _ = ParseCommand(*user.LastCommand)
+	} else {
+		lastCommand = None
+	}
+
 	// Create a job with the command and parameters
 	job := Job{
-		Command:    command,
-		Parameters: parameters,
-		Input:      input,
+		Command:     command,
+		LastCommand: lastCommand,
+		Parameters:  parameters,
+		Input:       input,
 	}
 
 	return &job

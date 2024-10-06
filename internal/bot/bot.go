@@ -34,7 +34,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	updatedUser := updateUser(user, &ctx)
 
 	// Create a job
-	job := createJob(*update)
+	job := createJob(*update, updatedUser)
 	if job == nil {
 		log.Printf("[Bot] No job to process: update_id=%d", update.ID)
 		return

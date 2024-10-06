@@ -25,7 +25,7 @@ func TestJobFromMessage(t *testing.T) {
 		},
 	}
 
-	job := createJob(update)
+	job := createJob(update, nil)
 	if job == nil {
 		t.Fatalf("Job is nil")
 	}
@@ -65,7 +65,7 @@ func TestJobFromCallbackQuery(t *testing.T) {
 		},
 	}
 
-	job := createJob(update)
+	job := createJob(update, nil)
 	if job == nil {
 		t.Fatalf("Job is nil")
 	}
@@ -88,7 +88,7 @@ func TestJobNil(t *testing.T) {
 		ID: 789,
 	}
 
-	job := createJob(update)
+	job := createJob(update, nil)
 	if job != nil {
 		t.Fatalf("Job is not nil")
 	}
@@ -100,7 +100,7 @@ func TestJobNil(t *testing.T) {
 		},
 	}
 
-	job = createJob(update)
+	job = createJob(update, nil)
 	if job != nil {
 		t.Fatalf("Job is not nil")
 	}

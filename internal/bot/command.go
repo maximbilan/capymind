@@ -12,6 +12,7 @@ const (
 	Analysis Command = "/analysis"
 	Language Command = "/language"
 	Timezone Command = "/timezone"
+	Support  Command = "/support"
 	Help     Command = "/help"
 
 	// Hidden user commands
@@ -20,8 +21,9 @@ const (
 	WeeklyAnalysis Command = "/weekly_analysis" // Weekly analysis of the user's journal entries for last week
 
 	// Admin commands
-	TotalUserCount Command = "/total_user_count"
-	TotalNoteCount Command = "/total_note_count"
+	TotalUserCount   Command = "/total_user_count"
+	TotalNoteCount   Command = "/total_note_count"
+	FeedbackLastWeek Command = "/feedback_last_week"
 
 	// Empty command
 	None Command = "" // No command, just plain text

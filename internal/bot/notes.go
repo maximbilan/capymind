@@ -55,7 +55,6 @@ func saveNote(text string, session *Session) {
 	// Note data
 	timestamp := time.Now()
 	var note = firestore.Note{
-		ID:        session.User.ID,
 		Text:      text,
 		Timestamp: timestamp,
 	}

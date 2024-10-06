@@ -14,7 +14,7 @@ type User struct {
 	LastName       *string `json:"lastName"`
 	Locale         *string `firestore:"locale"`
 	SecondsFromUTC *int    `firestore:"secondsFromUTC"`
-	LastCommand    string  `firestore:"lastCommand"`
+	LastCommand    *string `firestore:"lastCommand"`
 	IsTyping       bool    `firestore:"isTyping"`
 	IsOnboarded    bool    `firestore:"isOnboarded"`
 }
