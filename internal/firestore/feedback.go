@@ -23,9 +23,8 @@ func NewFeedback(ctx *context.Context, user User, feedback Feedback) error {
 	return err
 }
 
-func GetFeedbackForLastWeek(ctx *context.Context, userID string) ([]Feedback, error) {
-	userRef := client.Collection(users.String()).Doc(userID)
-	query := client.Collection(feedbacks.String()).OrderBy("timestamp", firestore.Desc).Where("user", "==", userRef).Where("timestamp", ">=", time.Now().AddDate(0, 0, -7))
+func GetFeedbackForLastWeek(ctx *context.Context) ([]Feedback, error) {
+	query := client.Collection(feedbacks.String()).OrderBy("timestamp", firestore.Desc).Where("timestamp", ">=", time.Now().AddDate(0, 0, -7))
 	return getFeedbackForQuery(ctx, query)
 }
 

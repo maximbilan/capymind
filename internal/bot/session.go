@@ -69,6 +69,8 @@ func handleSession(session *Session) {
 		handleTotalUserCount(session)
 	case TotalNoteCount:
 		handleTotalNoteCount(session)
+	case FeedbackLastWeek:
+		handleFeedbackLastWeek(session)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {
