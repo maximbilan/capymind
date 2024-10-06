@@ -21,6 +21,6 @@ func handleFeedbackLastWeek(session *Session) {
 	}
 
 	for _, f := range feedback {
-		setOutputText(f.Text+"\n\n", session)
+		setOutputText(*f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n\n", session)
 	}
 }
