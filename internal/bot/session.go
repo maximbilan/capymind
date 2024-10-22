@@ -60,6 +60,8 @@ func handleSession(session *Session) {
 		handleLastNote(session)
 	case Analysis:
 		handleAnalysis(session)
+	case Settings:
+		handleSettings(session)
 	case Language:
 		handleLanguage(session)
 	case Timezone:

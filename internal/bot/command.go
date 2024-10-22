@@ -11,11 +11,12 @@ const (
 	Last     Command = "/last"
 	Analysis Command = "/analysis"
 	Language Command = "/language"
-	Timezone Command = "/timezone"
-	Support  Command = "/support"
+	Settings Command = "/settings"
 	Help     Command = "/help"
 
 	// Hidden user commands
+	Timezone       Command = "/timezone"
+	Support        Command = "/support"
 	NoteCount      Command = "/note_count"      // Count of the current user notes
 	SleepAnalysis  Command = "/sleep_analysis"  // Sleep analysis of last note
 	WeeklyAnalysis Command = "/weekly_analysis" // Weekly analysis of the user's journal entries for last week
