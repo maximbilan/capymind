@@ -29,7 +29,10 @@ const translationsJSON = `{
         "start_feedback": "Your feedback is valuable to us! 🙏 Feel free to share your thoughts down below 👇",
         "finish_feedback": "Thank you for sharing your feedback with CapyMind! 🚀",
         "feedback_last_week": "Feedback from last week 📈",
-        "no_feedback": "No feedback has been provided yet"
+        "no_feedback": "No feedback has been provided yet",
+        "settings_descr": "Please select the setting you would like to change:",
+        "language": "Language 🌍",
+        "timezone": "Time zone ⏰"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -59,6 +62,9 @@ const translationsJSON = `{
         "start_feedback": "Ваш відгук для нас дуже важливий! 🙏 Не соромтеся ділитися своїми думками нижче 👇",
         "finish_feedback": "Дякуємо вам за відгук про CapyMind! 🚀",
         "feedback_last_week": "Відгуки з минулого тижня 📈",
-        "no_feedback": "Жодного відгуку ще не надано"
+        "no_feedback": "Жодного відгуку ще не надано",
+        "settings_descr": "Будь ласка, виберіть параметр, який ви хочете змінити:",
+        "language": "Мова 🌍",
+        "timezone": "Часовий пояс ⏰"
     }
 }`
