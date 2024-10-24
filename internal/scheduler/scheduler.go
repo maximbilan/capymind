@@ -32,10 +32,8 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 	var message string
 	switch messageType {
-	case Morning:
-		message = "how_are_you_morning"
-	case Evening:
-		message = "how_are_you_evening"
+	case Morning, Evening:
+		message = getMessage(messageType, time.Now().Weekday())
 	case WeeklyAnalysis, UserStats:
 		// Personalized for each user
 		message = ""
@@ -57,10 +55,16 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 	firestore.ForEachUser(&ctx, func(users []firestore.User) error {
 		for _, user := range users {
-			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
+			// Skip users without locale or timezone
 			if user.Locale == nil || user.SecondsFromUTC == nil {
 				continue
 			}
+			// For debugging locally
+			if !isCloud && !firestore.IsAdmin(user.Role) {
+				continue
+			}
+
+			log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
 
 			userLocale := translator.Locale(*user.Locale)
 

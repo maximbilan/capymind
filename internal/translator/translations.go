@@ -32,7 +32,21 @@ const translationsJSON = `{
         "no_feedback": "No feedback has been provided yet",
         "settings_descr": "Please select the setting you would like to change:",
         "language": "Language 🌍",
-        "timezone": "Time zone ⏰"
+        "timezone": "Time zone ⏰",
+        "how_are_you_morning_monday": "Good morning! A fresh start to the week. How are you feeling today? Any plans or thoughts to kick off your week?",
+        "how_are_you_morning_tuesday": "Good morning! How’s your energy today? Any reflections on how yesterday went or any thoughts for the day ahead?",
+        "how_are_you_morning_wednesday": "Good morning! Midweek already. How are you feeling? Anything you’d like to share or focus on today?",
+        "how_are_you_morning_thursday": "Good morning! How’s your week going so far? Any small wins or challenges you'd like to reflect on today?",
+        "how_are_you_morning_friday": "Good morning! It’s the end of the week. How do you feel about what you’ve accomplished? Any plans for the weekend?",
+        "how_are_you_morning_saturday": "Good morning! Weekend vibes are here. How are you feeling today? Any plans or moments of gratitude you’d like to share?",
+        "how_are_you_morning_sunday": "Good morning! A day of rest. How are you feeling today? Any thoughts on the past week or things you're looking forward to?",
+        "how_are_you_evening_monday": "Good evening! How was your first day of the week? Anything you’re grateful for or reflections from the day?",
+        "how_are_you_evening_tuesday": "Good evening! How was your day? Any thoughts or progress you'd like to reflect on from the past two days?",
+        "how_are_you_evening_wednesday": "Good evening! Midweek check-in. How did your day go? Any accomplishments or thoughts to share before you rest?",
+        "how_are_you_evening_thursday": "Good evening! How was your day? Anything you'd like to reflect on as the week starts winding down?",
+        "how_are_you_evening_friday": "Good evening! How did your week end? Any highlights or things you’re grateful for as you head into the weekend?",
+        "how_are_you_evening_saturday": "Good evening! How was your Saturday? Any moments you enjoyed or reflections you'd like to capture?",
+        "how_are_you_evening_sunday": "Good evening! How was your weekend? Any thoughts or reflections on the past week or the upcoming one?"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -65,6 +79,20 @@ const translationsJSON = `{
         "no_feedback": "Жодного відгуку ще не надано",
         "settings_descr": "Будь ласка, виберіть параметр, який ви хочете змінити:",
         "language": "Мова 🌍",
-        "timezone": "Часовий пояс ⏰"
+        "timezone": "Часовий пояс ⏰",
+        "how_are_you_morning_monday": "Доброго ранку! Новий тиждень починається. Як ти сьогодні почуваєшся? Є якісь плани чи думки на початок тижня?",
+        "how_are_you_morning_tuesday": "Доброго ранку! Як ти сьогодні себе почуваєш? Є думки про вчорашній день чи плани на сьогодні?",
+        "how_are_you_morning_wednesday": "Доброго ранку! Вже середина тижня. Як ти почуваєшся? Хочеш чимось поділитися або зосередитися сьогодні?",
+        "how_are_you_morning_thursday": "Доброго ранку! Як іде твій тиждень? Є маленькі перемоги чи виклики, про які хочеш подумати сьогодні?",
+        "how_are_you_morning_friday": "Доброго ранку! Ось і кінець тижня. Як ти почуваєшся після всього зробленого? Є плани на вихідні?",
+        "how_are_you_morning_saturday": "Доброго ранку! Вихідні настали. Як ти сьогодні почуваєшся? Є плани або моменти вдячності, якими хочеш поділитися?",
+        "how_are_you_morning_sunday": "Доброго ранку! День відпочинку. Як ти сьогодні почуваєшся? Є думки про минулий тиждень або очікування на наступний?",
+        "how_are_you_evening_monday": "Добрий вечір! Як пройшов перший день тижня? Є за що бути вдячним чи думки про день?",
+        "how_are_you_evening_tuesday": "Добрий вечір! Як пройшов твій день? Є думки або досягнення, якими хочеш поділитися після перших двох днів тижня?",
+        "how_are_you_evening_wednesday": "Добрий вечір! Вже середина тижня. Як пройшов твій день? Є досягнення або думки, які хочеш занотувати перед відпочинком?",
+        "how_are_you_evening_thursday": "Добрий вечір! Як пройшов твій день? Є про що подумати або що підсумувати, коли тиждень добігає кінця?",
+        "how_are_you_evening_friday": "Добрий вечір! Як закінчився твій тиждень? Є важливі моменти або вдячність, які ти відчуваєш перед вихідними?",
+        "how_are_you_evening_saturday": "Добрий вечір! Як пройшла твоя субота? Є моменти, які запам'ятались, або думки, якими хочеш поділитися?",
+        "how_are_you_evening_sunday": "Добрий вечір! Як пройшли твої вихідні? Є думки про минулий тиждень або очікування на наступний?"
     }
 }`
