@@ -16,7 +16,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - uses: 'google-github-actions/auth@v2.1.5'
+    - uses: 'google-github-actions/auth@v2.1.7'
       with:
         project_id: ${{ secrets.CAPY_PROJECT_ID }}
         workload_identity_provider: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
@@ -25,7 +25,7 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
       with:
-        version: '>= 495.0.0'
+        version: '>= 500.0.0'
 
     - name: Run script file
       run: |
