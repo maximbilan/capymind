@@ -1,6 +1,8 @@
 module github.com/capymind
 
-go 1.23.3
+go 1.22.7
+
+toolchain go1.23.3
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.2
