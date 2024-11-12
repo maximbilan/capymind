@@ -20,6 +20,7 @@ var wg sync.WaitGroup
 
 // Schedule a message for all users
 func Schedule(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 	log.Println("Schedule capymind...")
 
 	typeStr := r.URL.Query().Get("type")
@@ -80,6 +81,10 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	CloseTasks()
 	// Close Tasks client
 	firestore.CloseClient()
+
+	// Calculate how seconds this function takes to execute
+	elapsed := time.Since(start)
+	log.Printf("[Scheduler] Execution time for %s: %s", messageType, elapsed)
 }
 
 func prepareMessage(user *firestore.User, ctx *context.Context, offset int, messageType MessageType, message string, isCloud bool) {
