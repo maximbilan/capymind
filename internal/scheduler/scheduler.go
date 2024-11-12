@@ -86,6 +86,8 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 
+	wg.Wait()
+
 	// Close Firestore client
 	CloseTasks()
 	// Close Tasks client
