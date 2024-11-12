@@ -70,6 +70,18 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 			// Prepare message concurrently
 			wg.Add(1)
 			go prepareMessage(&user, &ctx, offset, messageType, message, isCloud)
+
+			wg.Add(1)
+			go prepareMessage(&user, &ctx, offset, messageType, message, isCloud)
+
+			wg.Add(1)
+			go prepareMessage(&user, &ctx, offset, messageType, message, isCloud)
+
+			wg.Add(1)
+			go prepareMessage(&user, &ctx, offset, messageType, message, isCloud)
+
+			wg.Add(1)
+			go prepareMessage(&user, &ctx, offset, messageType, message, isCloud)
 		}
 		return nil
 	})
