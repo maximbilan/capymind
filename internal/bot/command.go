@@ -22,9 +22,10 @@ const (
 	WeeklyAnalysis Command = "/weekly_analysis" // Weekly analysis of the user's journal entries for last week
 
 	// Admin commands
-	TotalUserCount   Command = "/total_user_count"
-	TotalNoteCount   Command = "/total_note_count"
-	FeedbackLastWeek Command = "/feedback_last_week"
+	TotalUserCount       Command = "/total_user_count"
+	TotalActiveUserCount Command = "/total_active_user_count"
+	TotalNoteCount       Command = "/total_note_count"
+	FeedbackLastWeek     Command = "/feedback_last_week"
 
 	// Empty command
 	None Command = "" // No command, just plain text
@@ -32,6 +33,7 @@ const (
 
 var adminCommands = []Command{
 	TotalUserCount,
+	TotalActiveUserCount,
 	TotalNoteCount,
 	FeedbackLastWeek,
 }

@@ -2,22 +2,24 @@ package firestore
 
 import (
 	"context"
+	"time"
 
 	"cloud.google.com/go/firestore"
 )
 
 type User struct {
-	ID             string  `firestore:"id"`
-	ChatID         int64   `firestore:"chatId"`
-	UserName       *string `json:"username"`
-	FirstName      *string `json:"firstName"`
-	LastName       *string `json:"lastName"`
-	Locale         *string `firestore:"locale"`
-	SecondsFromUTC *int    `firestore:"secondsFromUTC"`
-	LastCommand    *string `firestore:"lastCommand"`
-	IsTyping       bool    `firestore:"isTyping"`
-	IsOnboarded    bool    `firestore:"isOnboarded"`
-	Role           *Role   `firestore:"role"`
+	ID             string     `firestore:"id"`
+	ChatID         int64      `firestore:"chatId"`
+	UserName       *string    `json:"username"`
+	FirstName      *string    `json:"firstName"`
+	LastName       *string    `json:"lastName"`
+	Locale         *string    `firestore:"locale"`
+	SecondsFromUTC *int       `firestore:"secondsFromUTC"`
+	LastCommand    *string    `firestore:"lastCommand"`
+	IsTyping       bool       `firestore:"isTyping"`
+	IsOnboarded    bool       `firestore:"isOnboarded"`
+	Role           *Role      `firestore:"role"`
+	Timestamp      *time.Time `firestore:"timestamp"`
 }
 
 // Get a user from the database

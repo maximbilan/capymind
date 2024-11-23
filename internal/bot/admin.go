@@ -19,6 +19,17 @@ func handleTotalUserCount(session *Session) {
 	setOutputText(message, session)
 }
 
+func handleTotalActiveUserCount(session *Session) {
+	count, err := firestore.GetActiveUserCount(session.Context)
+	if err != nil {
+		log.Printf("[Admin] Error during fetching active user count: %v", err)
+		return
+	}
+
+	message := fmt.Sprintf(translator.Translate(session.Locale(), "total_active_user_count"), count)
+	setOutputText(message, session)
+}
+
 func handleTotalNoteCount(session *Session) {
 	count, err := firestore.GetTotalNoteCount(session.Context)
 	if err != nil {
