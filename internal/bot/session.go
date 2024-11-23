@@ -2,6 +2,7 @@ package bot
 
 import (
 	"context"
+	"time"
 
 	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/translator"
@@ -42,9 +43,11 @@ func (session *Session) isAdmin() bool {
 
 // Handle the session
 func handleSession(session *Session) {
+	now := time.Now()
 	command := session.Job.Command
 	commandStr := string(command)
 	session.User.LastCommand = &commandStr
+	session.User.Timestamp = &now
 
 	if command.IsAdmin() && !session.isAdmin() {
 		handleHelp(session)
