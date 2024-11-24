@@ -57,6 +57,8 @@ func handleSession(session *Session) {
 	switch command {
 	case Start:
 		handleStart(session)
+	case Why:
+		handleWhy(session)
 	case Note:
 		startNote(session)
 	case Last:

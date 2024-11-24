@@ -7,6 +7,7 @@ type Command string
 const (
 	// User commands
 	Start    Command = "/start"
+	Why      Command = "/why"
 	Note     Command = "/note"
 	Last     Command = "/last"
 	Analysis Command = "/analysis"
