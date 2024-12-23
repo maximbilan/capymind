@@ -48,6 +48,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Set up Git
+      run: |
+         git config --global user.name "capymind"
+         git config --global user.email "capymind@github.com"
+
     - name: Run script file
       run: |
          chmod +x ./scripts/get_version.sh
