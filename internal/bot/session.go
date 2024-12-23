@@ -75,6 +75,8 @@ func handleSession(session *Session) {
 		startFeedback(session)
 	case Help:
 		handleHelp(session)
+	case Version:
+		handleVersion(session)
 	case SleepAnalysis:
 		handleSleepAnalysis(session)
 	case WeeklyAnalysis:

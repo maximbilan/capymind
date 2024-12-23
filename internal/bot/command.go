@@ -14,6 +14,7 @@ const (
 	Language Command = "/language"
 	Settings Command = "/settings"
 	Help     Command = "/help"
+	Version  Command = "/version"
 
 	// Hidden user commands
 	Timezone       Command = "/timezone"
