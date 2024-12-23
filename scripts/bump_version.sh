@@ -1,16 +1,39 @@
 #!/bin/bash
 
-# Open ./version.go file
+# File containing the version constant (relative to the script location)
+VERSION_FILE="./version.go"
 
-# Read the version number from the file
-VERSION = $(grep "const Version" version.go | sed -E 's/.*"(.+)"$/\1/')
+# Check if version.go exists
+if [[ ! -f "$VERSION_FILE" ]]; then
+  echo "Error: $VERSION_FILE not found."
+  exit 1
+fi
 
-echo "Current version: $VERSION"
+# Pattern to match the version line
+VERSION_PATTERN='const AppVersion = "'
 
-# Increment the version number
-VERSION = $(echo $VERSION | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+# Extract the current version
+CURRENT_VERSION=$(grep "$VERSION_PATTERN" "$VERSION_FILE" | sed -E 's/.*"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
 
-echo "New version: $VERSION"
+if [[ -z "$CURRENT_VERSION" ]]; then
+  echo "Error: Could not find the current version in $VERSION_FILE"
+  exit 1
+fi
 
-# Write the new version number to the file
-sed -i '' "s/const Version = \".*\"/const Version = \"$VERSION\"/" version.go
+# Split the version into components
+IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+# Increment the PATCH version
+PATCH=$((PATCH + 1))
+
+# Construct the new version
+NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+
+# Update the version in the file
+sed -i.bak -E "s/$VERSION_PATTERN[0-9]+\.[0-9]+\.[0-9]+\"/$VERSION_PATTERN${NEW_VERSION}\"/" "$VERSION_FILE"
+
+# Print success message
+echo "Version bumped from $CURRENT_VERSION to $NEW_VERSION in $VERSION_FILE"
+
+# Optional: Remove the backup file created by sed
+rm -f "${VERSION_FILE}.bak"
