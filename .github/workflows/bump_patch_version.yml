@@ -24,7 +24,7 @@ jobs:
         git checkout -b bump-patch-version
         git add .
         git commit -m "Bump patch version"
-        git push origin bump-version
+        git push origin bump-patch-version
       shell: bash
 
     - name: Create a pull request
