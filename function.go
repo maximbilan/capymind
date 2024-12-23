@@ -3,6 +3,7 @@ package capymind
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/capymind/internal/bot"
@@ -10,7 +11,7 @@ import (
 )
 
 func init() {
-	log.Printf("Version: %s", AppVersion)
+	log.Printf("Version: %s", os.Getenv("APP_VERSION"))
 
 	functions.HTTP("handler", handler)
 	functions.HTTP("schedule", schedule)

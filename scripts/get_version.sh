@@ -1,24 +1,17 @@
 #!/bin/bash
 
-# File containing the version constant (relative to the script location)
-VERSION_FILE="./version.go"
+get_version() {
+  local script_dir version_file
+  script_dir=$(dirname "$0")
+  version_file="$script_dir/../VERSION"
 
-# Pattern to match the version line
-VERSION_PATTERN='const AppVersion = "'
+  if [[ ! -f "$version_file" ]]; then
+    echo "Error: $version_file not found." >&2
+    exit 1
+  fi
 
-# Check if version.go exists
-if [[ ! -f "$VERSION_FILE" ]]; then
-  echo "Error: $VERSION_FILE not found."
-  exit 1
-fi
+  cat "$version_file"
+}
 
-# Extract the current version
-CURRENT_VERSION=$(grep "$VERSION_PATTERN" "$VERSION_FILE" | sed -E 's/.*"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
-
-if [[ -z "$CURRENT_VERSION" ]]; then
-  echo "Error: Could not find the current version in $VERSION_FILE"
-  exit 1
-fi
-
-# Output the current version
-echo "$CURRENT_VERSION"
+CURRENT_VERSION=$(get_version)
+echo "The current version is: $CURRENT_VERSION"

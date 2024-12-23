@@ -1,22 +1,8 @@
 #!/bin/bash
 
-# Get the directory of this script
-SCRIPT_DIR=$(dirname "$0")
-
-# Path to the version.go file (adjusted for the relative path)
-VERSION_FILE="$SCRIPT_DIR/../version.go"
-
-# Check if version.go exists
-if [[ ! -f "$VERSION_FILE" ]]; then
-  echo "Error: $VERSION_FILE not found."
-  exit 1
-fi
-
-# Path to get_version.sh
-GET_VERSION_SCRIPT="$SCRIPT_DIR/get_version.sh"
-
-# Import the current version using the get_version.sh script
-CURRENT_VERSION=$("$GET_VERSION_SCRIPT")
+# Get current version
+source ./scripts/get_version.sh
+CURRENT_VERSION=$(get_version)
 
 if [[ $? -ne 0 ]]; then
   echo "Error: Failed to read the current version."
@@ -47,11 +33,10 @@ fi
 # Construct the new version
 NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
-# Update the version in the file
-sed -i.bak -E "s/(const AppVersion = \")[0-9]+\.[0-9]+\.[0-9]+(\".*)/\1${NEW_VERSION}\2/" "$VERSION_FILE"
+# Write the new version to the VERSION file
+SCRIPT_DIR=$(dirname "$0")
+VERSION_FILE="$SCRIPT_DIR/../VERSION"
+echo "$NEW_VERSION" > "$VERSION_FILE"
 
 # Print success message
 echo "Version bumped from $CURRENT_VERSION to $NEW_VERSION in $VERSION_FILE"
-
-# Optional: Remove the backup file created by sed
-rm -f "${VERSION_FILE}.bak"

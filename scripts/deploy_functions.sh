@@ -12,8 +12,12 @@ RUNTIME="go122"
 # Set the project ID
 PROJECT_ID=$CAPY_PROJECT_ID
 
+# Get current version
+source ./scripts/get_version.sh
+APP_VERSION=$(get_version)
+
 # Set environment variables
-ENV_PARAMS=("CAPY_PROJECT_ID=$CAPY_PROJECT_ID" "CAPY_SERVER_REGION=$CAPY_SERVER_REGION" "CLOUD=true")
+ENV_PARAMS=("CAPY_PROJECT_ID=$CAPY_PROJECT_ID" "CAPY_SERVER_REGION=$CAPY_SERVER_REGION" "CLOUD=true" "APP_VERSION=$APP_VERSION")
 ENV_VARS=""
 for PARAM in "${ENV_PARAMS[@]}"; do
   ENV_VARS+="$PARAM,"
