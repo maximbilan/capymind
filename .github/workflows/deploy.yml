@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup-telegram-bot:
+  deploy:
     name: Deploy Google Cloud Functions
     runs-on: ubuntu-latest
     environment: production
@@ -35,3 +35,49 @@ jobs:
         CAPY_PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
         CAPY_SERVER_REGION: ${{ secrets.CAPY_SERVER_REGION }}
       shell: bash
+
+  create-tag:
+    name: Create Tag
+    runs-on: ubuntu-latest
+    needs: deploy
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run script file
+      run: |
+         chmod +x ./scripts/get_version.sh
+         chmod +x ./scripts/create_tag.sh
+         ./scripts/create_tag.sh
+      shell: bash
+
+  bump-version:
+    name: Bump Patch Version
+    runs-on: ubuntu-latest
+    needs: create-tag
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run script file
+      run: |
+        chmod +x ./scripts/get_version.sh
+         chmod +x ./scripts/bump_version.sh
+         ./scripts/bump_version.sh
+      shell: bash
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        branch: 'bump-patch-version'
+        delete-branch: true
+        commit-message: 'Bump patch version'
+        title: 'Bump patch version'
+        token: ${{ secrets.GITHUB_TOKEN }}
