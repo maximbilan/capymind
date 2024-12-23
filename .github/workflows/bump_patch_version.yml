@@ -19,6 +19,7 @@ jobs:
 
     - name: Run script file
       run: |
+         chmod +x ./scripts/get_version.sh
          chmod +x ./scripts/bump_version.sh
          ./scripts/bump_version.sh
       shell: bash
