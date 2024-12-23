@@ -1,6 +1,7 @@
 package capymind
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
@@ -9,6 +10,8 @@ import (
 )
 
 func init() {
+	log.Printf("Version: %s", AppVersion)
+
 	functions.HTTP("handler", handler)
 	functions.HTTP("schedule", schedule)
 	functions.HTTP("sendMessage", sendMessage)
