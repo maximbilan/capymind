@@ -1,3 +1,3 @@
 package capymind
 
-const AppVersion = "1.0.6"
+const AppVersion = "1.0.7"
