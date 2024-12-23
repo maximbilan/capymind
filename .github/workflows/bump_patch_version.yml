@@ -1,0 +1,38 @@
+name: Bump Patch Version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-telegram-bot:
+    name: Bump Patch Version
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run script file
+      run: |
+         chmod +x ./scripts/bump_version.sh
+         ./scripts/bump_version.sh
+      shell: bash
+
+    - name: Create a branch
+      run: |
+        git checkout -b bump-patch-version
+        git add .
+        git commit -m "Bump patch version"
+        git push origin bump-version
+      shell: bash
+
+    - name: Create a pull request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Bump patch version"
+        title: "Bump patch version"
+        body: "Bump patch version"
+        branch: "bump-patch-version"
+        base: "main"
