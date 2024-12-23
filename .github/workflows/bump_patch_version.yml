@@ -23,17 +23,7 @@ jobs:
          ./scripts/bump_version.sh
       shell: bash
 
-    - name: Create a branch
-      run: |
-        git config --global user.name "capymind_bot"
-        git config --global user.email "capymind@github.com"
-        git checkout -b bump-patch-version
-        git add .
-        git commit -m "Bump patch version"
-        git push origin bump-patch-version
-      shell: bash
-
-    - name: Create a pull request
+    - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         branch: 'bump-patch-version'
