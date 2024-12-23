@@ -29,6 +29,7 @@ jobs:
 
     - name: Run script file
       run: |
+         chmod +x ./scripts/get_version.sh
          chmod +x ./scripts/deploy_functions.sh
          ./scripts/deploy_functions.sh
       env:
