@@ -9,9 +9,9 @@ require (
 	cloud.google.com/go/firestore v1.17.0
 	github.com/GoogleCloudPlatform/functions-framework-go v1.9.0
 	github.com/invopop/jsonschema v0.12.0
-	github.com/openai/openai-go v0.1.0-alpha.40
+	github.com/openai/openai-go v0.1.0-alpha.41
 	google.golang.org/api v0.214.0
-	google.golang.org/protobuf v1.36.0
+	google.golang.org/protobuf v1.36.1
 )
 
 require (
