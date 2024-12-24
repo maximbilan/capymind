@@ -6,9 +6,10 @@ import (
 	"github.com/capymind/internal/firestore"
 )
 
-func handleFeedbackLastWeek(session *Session) {
-	setOutputText("feedback_last_week", session)
-	setOutputText("\n\n", session)
+func prepareFeedback(session *Session) []string {
+	var array []string
+	array = append(array, "feedback_last_week")
+	array = append(array, "\n\n")
 
 	feedback, err := firestore.GetFeedbackForLastWeek(session.Context)
 	if err != nil {
@@ -16,11 +17,20 @@ func handleFeedbackLastWeek(session *Session) {
 	}
 
 	if len(feedback) == 0 {
-		setOutputText("no_feedback", session)
-		return
+		array = append(array, "no_feedback")
+		return array
 	}
 
 	for _, f := range feedback {
-		setOutputText(*f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n\n", session)
+		array = append(array, *f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n\n")
+	}
+
+	return array
+}
+
+func handleFeedbackLastWeek(session *Session) {
+	array := prepareFeedback(session)
+	for _, item := range array {
+		setOutputText(item, session)
 	}
 }
