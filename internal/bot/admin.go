@@ -3,20 +3,31 @@ package bot
 import (
 	"fmt"
 	"log"
+	"sync"
 
 	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/translator"
 )
 
-func handleTotalUserCount(session *Session) {
+type statFunc func(session *Session) *string
+
+var wg sync.WaitGroup
+
+func getTotalUserCount(session *Session) *string {
 	count, err := firestore.GetTotalUserCount(session.Context)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching total user count: %v", err)
-		return
+		return nil
 	}
-
 	message := fmt.Sprintf(translator.Translate(session.Locale(), "total_user_count"), count)
-	setOutputText(message, session)
+	return &message
+}
+
+func handleTotalUserCount(session *Session) {
+	message := getTotalUserCount(session)
+	if message != nil {
+		setOutputText(*message, session)
+	}
 }
 
 func handleTotalActiveUserCount(session *Session) {
@@ -39,4 +50,26 @@ func handleTotalNoteCount(session *Session) {
 
 	message := fmt.Sprintf(translator.Translate(session.Locale(), "total_note_count"), count)
 	setOutputText(message, session)
+}
+
+func handleStats(session *Session) {
+	totalUserCount := waitForStatFunction(getTotalUserCount, session)
+
+	wg.Wait()
+
+	if totalUserCount != nil {
+		setOutputText(*totalUserCount, session)
+	}
+}
+
+func waitForStatFunction(statFunc statFunc, session *Session) *string {
+	wg.Add(1)
+	ch := make(chan *string)
+	go func() {
+		defer wg.Done()
+		count := statFunc(session)
+		ch <- count
+	}()
+	count := <-ch
+	return count
 }

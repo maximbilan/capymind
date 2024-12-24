@@ -89,6 +89,8 @@ func handleSession(session *Session) {
 		handleTotalActiveUserCount(session)
 	case TotalNoteCount:
 		handleTotalNoteCount(session)
+	case Stats:
+		handleStats(session)
 	case FeedbackLastWeek:
 		handleFeedbackLastWeek(session)
 	case None:
