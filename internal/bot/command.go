@@ -28,6 +28,7 @@ const (
 	TotalActiveUserCount Command = "/total_active_user_count"
 	TotalNoteCount       Command = "/total_note_count"
 	FeedbackLastWeek     Command = "/feedback_last_week"
+	Stats                Command = "/stats"
 
 	// Empty command
 	None Command = "" // No command, just plain text
@@ -38,6 +39,7 @@ var adminCommands = []Command{
 	TotalActiveUserCount,
 	TotalNoteCount,
 	FeedbackLastWeek,
+	Stats,
 }
 
 // Check if the command is an admin command
