@@ -77,9 +77,9 @@ func waitForStatFunction(statFunc statFunc, session *Session) *string {
 	ch := make(chan *string)
 	go func() {
 		defer wg.Done()
-		count := statFunc(session)
-		ch <- count
+		result := statFunc(session)
+		ch <- result
 	}()
-	count := <-ch
-	return count
+	result := <-ch
+	return result
 }
