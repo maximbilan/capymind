@@ -47,20 +47,27 @@ func handleTotalActiveUserCount(session *Session) {
 	}
 }
 
-func handleTotalNoteCount(session *Session) {
+func getTotalNoteCount(session *Session) *string {
 	count, err := firestore.GetTotalNoteCount(session.Context)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching total note count: %v", err)
-		return
+		return nil
 	}
-
 	message := fmt.Sprintf(translator.Translate(session.Locale(), "total_note_count"), count)
-	setOutputText(message, session)
+	return &message
+}
+
+func handleTotalNoteCount(session *Session) {
+	message := getTotalNoteCount(session)
+	if message != nil {
+		setOutputText(*message, session)
+	}
 }
 
 func handleStats(session *Session) {
 	totalUserCount := waitForStatFunction(getTotalUserCount, session)
 	totalActiveUserCount := waitForStatFunction(getTotalActiveUserCount, session)
+	totalNoteCount := waitForStatFunction(getTotalNoteCount, session)
 
 	wg.Wait()
 
@@ -69,6 +76,9 @@ func handleStats(session *Session) {
 	}
 	if totalActiveUserCount != nil {
 		setOutputText(*totalActiveUserCount, session)
+	}
+	if totalNoteCount != nil {
+		setOutputText(*totalNoteCount, session)
 	}
 }
 
