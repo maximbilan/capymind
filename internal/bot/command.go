@@ -39,6 +39,7 @@ var adminCommands = []Command{
 	TotalActiveUserCount,
 	TotalNoteCount,
 	FeedbackLastWeek,
+	Stats,
 }
 
 // Check if the command is an admin command
