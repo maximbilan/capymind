@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/capymind/internal/analysis"
-	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/translator"
 )
 
@@ -14,7 +13,7 @@ func handleSleepAnalysis(session *Session) {
 	sendMessage("analysis_waiting", session)
 
 	userID := session.User.ID
-	note, err := firestore.LastNote(session.Context, userID)
+	note, err := noteStorage.LastNote(session.Context, userID)
 	if err != nil {
 		log.Printf("[Bot] Error getting last note from firestore, %s", err.Error())
 	}
@@ -54,7 +53,7 @@ func handleWeeklyAnalysis(session *Session) {
 	sendMessage("analysis_waiting", session)
 
 	userID := session.User.ID
-	notes, err := firestore.GetNotesForLastWeek(session.Context, userID)
+	notes, err := noteStorage.GetNotesForLastWeek(session.Context, userID)
 	if err != nil {
 		log.Printf("[Bot] Error getting notes from firestore, %s", err.Error())
 	}

@@ -4,13 +4,13 @@ import (
 	"context"
 	"log"
 
-	"github.com/capymind/internal/firestore"
+	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 )
 
 // Create a user from an update
-func createUser(update telegram.Update) *firestore.User {
+func createUser(update telegram.Update) *database.User {
 	// Check if the message is valid
 	if update.Message == nil && update.CallbackQuery == nil {
 		log.Printf("[User] Invalid update: %d", update.ID)
@@ -42,7 +42,7 @@ func createUser(update telegram.Update) *firestore.User {
 	}
 
 	// Create a user from the telegram user
-	user := firestore.User{
+	user := database.User{
 		ID:        telegramUser.StringID(),
 		ChatID:    chatID,
 		UserName:  &telegramUser.UserName,
@@ -55,18 +55,18 @@ func createUser(update telegram.Update) *firestore.User {
 }
 
 // Update the user's data in the database if necessary
-func updateUser(user *firestore.User, ctx *context.Context) *firestore.User {
+func updateUser(user *database.User, ctx *context.Context) *database.User {
 	if user == nil {
 		return nil
 	}
 
 	// Check if the user exists
-	fetchedUser, err := firestore.GetUser(ctx, user.ID)
+	fetchedUser, err := userStorage.GetUser(ctx, user.ID)
 	if err != nil {
 		log.Printf("[User] Error fetching user from firestore, %s", err.Error())
 
 		// If the user doesn't exist, create a new user
-		fetchedUser = &firestore.User{
+		fetchedUser = &database.User{
 			ID: user.ID,
 		}
 	}
@@ -89,18 +89,18 @@ func updateUser(user *firestore.User, ctx *context.Context) *firestore.User {
 }
 
 // Save a user to the database
-func saveUser(user *firestore.User, ctx *context.Context) {
-	err := firestore.SaveUser(ctx, *user)
+func saveUser(user *database.User, ctx *context.Context) {
+	err := userStorage.SaveUser(ctx, *user)
 	if err != nil {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())
 	}
 }
 
 // Check if the user is an admin
-func isAdmin(user *firestore.User) bool {
+func isAdmin(user *database.User) bool {
 	if user == nil {
 		return false
 	}
 	role := user.Role
-	return firestore.IsAdmin(role)
+	return database.IsAdmin(role)
 }

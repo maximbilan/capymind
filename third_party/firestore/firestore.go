@@ -9,6 +9,8 @@ import (
 	"google.golang.org/api/option"
 )
 
+type Firestore struct{}
+
 var client *firestore.Client
 
 // Path to the credentials file
@@ -43,7 +45,7 @@ func newClient(ctx *context.Context) (*firestore.Client, error) {
 }
 
 // Create a new Firestore database connection
-func CreateClient(ctx *context.Context) {
+func (db Firestore) CreateClient(ctx *context.Context) {
 	newClient, err := newClient(ctx)
 	if err != nil {
 		log.Printf("[Firestore] Error creating firestore client, %s", err.Error())
@@ -52,6 +54,6 @@ func CreateClient(ctx *context.Context) {
 }
 
 // Close the Firestore database connection
-func CloseClient() {
+func (db Firestore) CloseClient() {
 	client.Close()
 }

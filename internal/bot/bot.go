@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/telegram"
 )
 
@@ -21,7 +20,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
 	// Creat a database connection
-	firestore.CreateClient(&ctx)
+	db.CreateClient(&ctx)
 
 	// Create a user
 	user := createUser(*update)
@@ -47,5 +46,5 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	// Send the response
 	finishSession(session)
 	// Close the database connection
-	firestore.CloseClient()
+	db.CloseClient()
 }

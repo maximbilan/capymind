@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/capymind/internal/analysis"
-	"github.com/capymind/internal/firestore"
+	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 )
@@ -47,7 +47,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	firestore.CreateClient(&ctx)
+	db.CreateClient(&ctx)
 
 	// Cloud Tasks
 	CreateTasks(&ctx)
@@ -57,14 +57,14 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		isCloud = true
 	}
 
-	firestore.ForEachUser(&ctx, func(users []firestore.User) error {
+	userStorage.ForEachUser(&ctx, func(users []database.User) error {
 		for _, user := range users {
 			// Skip users without locale or timezone
 			if user.Locale == nil || user.SecondsFromUTC == nil {
 				continue
 			}
 			// For debugging locally
-			if !isCloud && !firestore.IsAdmin(user.Role) {
+			if !isCloud && !database.IsAdmin(user.Role) {
 				continue
 			}
 
@@ -80,14 +80,14 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	// Close Firestore client
 	CloseTasks()
 	// Close Tasks client
-	firestore.CloseClient()
+	db.CloseClient()
 
 	// Calculate how seconds this function takes to execute
 	elapsed := time.Since(start)
 	log.Printf("[Scheduler] Execution time for %s: %s", messageType, elapsed)
 }
 
-func prepareMessage(user *firestore.User, ctx *context.Context, offset int, messageType MessageType, message string, isCloud bool) {
+func prepareMessage(user *database.User, ctx *context.Context, offset int, messageType MessageType, message string, isCloud bool) {
 	defer wg.Done()
 
 	log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
@@ -96,7 +96,7 @@ func prepareMessage(user *firestore.User, ctx *context.Context, offset int, mess
 
 	var localizedMessage string
 	if messageType == WeeklyAnalysis {
-		notes, err := firestore.GetNotesForLastWeek(ctx, user.ID)
+		notes, err := noteStorage.GetNotesForLastWeek(ctx, user.ID)
 		if err != nil {
 			log.Printf("[Scheduler] Error getting notes from firestore, %s", err.Error())
 			return
@@ -114,7 +114,7 @@ func prepareMessage(user *firestore.User, ctx *context.Context, offset int, mess
 			return
 		}
 	} else if messageType == UserStats {
-		count, err := firestore.NotesCount(ctx, user.ID)
+		count, err := noteStorage.NotesCount(ctx, user.ID)
 		if err != nil {
 			log.Printf("[Scheduler] Error getting notes count from firestore, %s", err.Error())
 			return

@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/capymind/internal/firestore"
+	"github.com/capymind/internal/database"
 )
 
 func startFeedback(session *Session) {
@@ -21,13 +21,13 @@ func finishFeedback(session *Session) {
 
 func saveFeedback(text string, session *Session) {
 	timestamp := time.Now()
-	var feedback = firestore.Feedback{
+	var feedback = database.Feedback{
 		Text:      text,
 		Timestamp: timestamp,
 	}
 
 	// Save the note
-	err := firestore.NewFeedback(session.Context, *session.User, feedback)
+	err := feedbackStorage.NewFeedback(session.Context, *session.User, feedback)
 	if err != nil {
 		log.Printf("[Bot] Error saving feedback in firestore, %s", err.Error())
 	}
