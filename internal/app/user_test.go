@@ -3,29 +3,21 @@ package app
 import (
 	"testing"
 
-	"github.com/capymind/internal/telegram"
+	"github.com/capymind/internal/botservice"
 )
 
 func TestCreateUserFromMessage(t *testing.T) {
-	update := telegram.Update{
-		ID: 789,
-		Message: &telegram.Message{
-			ID:   101,
-			Text: "/language en",
-			Chat: &telegram.Chat{
-				ID: 456,
-			},
-			From: &telegram.User{
-				ID:           456,
-				UserName:     "test",
-				FirstName:    "Test",
-				LastName:     "User",
-				LanguageCode: "en",
-			},
-		},
+	message := botservice.BotMessage{
+		UserID:       "456",
+		ChatID:       456,
+		UserName:     "test",
+		FirstName:    "Test",
+		LastName:     "User",
+		LanguageCode: "en",
+		Text:         "/language en",
 	}
 
-	user := createUser(update)
+	user := createUser(message)
 	if user == nil {
 		t.Fatalf("User is nil")
 	}
@@ -50,28 +42,17 @@ func TestCreateUserFromMessage(t *testing.T) {
 }
 
 func TestUserFromCallback(t *testing.T) {
-	update := telegram.Update{
-		ID: 789,
-		CallbackQuery: &telegram.CallbackQuery{
-			ID:   "123",
-			Data: "/timezone 25200",
-			From: &telegram.User{
-				ID:           456,
-				UserName:     "test",
-				FirstName:    "Test",
-				LastName:     "User",
-				LanguageCode: "en",
-			},
-			Message: &telegram.Message{
-				ID: 101,
-				Chat: &telegram.Chat{
-					ID: 456,
-				},
-			},
-		},
+	message := botservice.BotMessage{
+		UserID:       "456",
+		ChatID:       456,
+		UserName:     "test",
+		FirstName:    "Test",
+		LastName:     "User",
+		LanguageCode: "en",
+		Text:         "/timezone 25200",
 	}
 
-	user := createUser(update)
+	user := createUser(message)
 	if user == nil {
 		t.Fatalf("User is nil")
 	}
