@@ -1,4 +1,4 @@
-package scheduler
+package taskservice
 
 import "time"
 
@@ -12,7 +12,7 @@ const (
 	UserStats      MessageType = "user_stats"
 )
 
-func getMessage(messageType MessageType, weekday time.Weekday) string {
+func GetMessage(messageType MessageType, weekday time.Weekday) string {
 	if weekday < 0 || weekday > 6 {
 		return ""
 	}

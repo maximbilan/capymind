@@ -13,10 +13,13 @@ import (
 	"github.com/capymind/internal/analysis"
 	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
+	"github.com/capymind/internal/taskservice"
 	"github.com/capymind/internal/translator"
+	"github.com/capymind/third_party/googletasks"
 )
 
 var wg sync.WaitGroup
+var tasks googletasks.GoogleTasks
 
 // Schedule a message for all users
 func Schedule(w http.ResponseWriter, r *http.Request) {
@@ -32,13 +35,13 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 			log.Printf("[Scheduler] Error getting offset parameter, %s", err.Error())
 		}
 	}
-	messageType := MessageType(typeStr)
+	messageType := taskservice.MessageType(typeStr)
 
 	var message string
 	switch messageType {
-	case Morning, Evening:
-		message = getMessage(messageType, time.Now().Weekday())
-	case WeeklyAnalysis, UserStats:
+	case taskservice.Morning, taskservice.Evening:
+		message = taskservice.GetMessage(messageType, time.Now().Weekday())
+	case taskservice.WeeklyAnalysis, taskservice.UserStats:
 		// Personalized for each user
 		message = ""
 	default:
@@ -48,9 +51,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 	db.CreateClient(&ctx)
-
-	// Cloud Tasks
-	CreateTasks(&ctx)
+	tasks.Connect(&ctx)
 
 	var isCloud = false
 	if os.Getenv("CLOUD") == "true" {
@@ -78,7 +79,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	wg.Wait()
 
 	// Close Firestore client
-	CloseTasks()
+	tasks.Close()
 	// Close Tasks client
 	db.CloseClient()
 
@@ -87,7 +88,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[Scheduler] Execution time for %s: %s", messageType, elapsed)
 }
 
-func prepareMessage(user *database.User, ctx *context.Context, offset int, messageType MessageType, message string, isCloud bool) {
+func prepareMessage(user *database.User, ctx *context.Context, offset int, messageType taskservice.MessageType, message string, isCloud bool) {
 	defer wg.Done()
 
 	log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
@@ -95,7 +96,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 	userLocale := translator.Locale(*user.Locale)
 
 	var localizedMessage string
-	if messageType == WeeklyAnalysis {
+	if messageType == taskservice.WeeklyAnalysis {
 		notes, err := noteStorage.GetNotesForLastWeek(ctx, user.ID)
 		if err != nil {
 			log.Printf("[Scheduler] Error getting notes from firestore, %s", err.Error())
@@ -113,7 +114,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 		} else {
 			return
 		}
-	} else if messageType == UserStats {
+	} else if messageType == taskservice.UserStats {
 		count, err := noteStorage.NotesCount(ctx, user.ID)
 		if err != nil {
 			log.Printf("[Scheduler] Error getting notes count from firestore, %s", err.Error())
@@ -138,26 +139,26 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 		scheduledTime = time.Now().Add(10 * time.Second)
 	}
 
-	scheduledMessage := ScheduledMessage{
+	scheduledMessage := taskservice.ScheduledTask{
 		ChatID: user.ChatID,
 		Text:   localizedMessage,
 		Type:   messageType,
 		Locale: userLocale,
 	}
 
-	scheduleTask(ctx, scheduledMessage, scheduledTime)
+	tasks.Schedule(ctx, scheduledMessage, scheduledTime)
 }
 
 // Send a message to a user
 func SendMessage(w http.ResponseWriter, r *http.Request) {
-	var msg ScheduledMessage
+	var msg taskservice.ScheduledTask
 	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {
 		log.Printf("[Scheduler] Could not parse message %s", err.Error())
 		return
 	}
 
 	switch msg.Type {
-	case Morning, Evening:
+	case taskservice.Morning, taskservice.Evening:
 		var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 			TextID:   "make_record_to_journal",
 			Locale:   msg.Locale,

@@ -1,4 +1,4 @@
-package scheduler
+package googletasks
 
 import (
 	"context"
@@ -10,13 +10,16 @@ import (
 
 	cloudtasks "cloud.google.com/go/cloudtasks/apiv2"
 	taskspb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
+	"github.com/capymind/internal/taskservice"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+type GoogleTasks struct{}
 
 var client *cloudtasks.Client
 
 // Create cloud tasks client
-func CreateTasks(ctx *context.Context) {
+func (tasks GoogleTasks) Connect(ctx *context.Context) {
 	var newClient, err = cloudtasks.NewClient(*ctx)
 	if err != nil {
 		log.Printf("[Scheduler] Error creating cloud tasks client, %s", err.Error())
@@ -25,12 +28,12 @@ func CreateTasks(ctx *context.Context) {
 }
 
 // Close cloud tasks client
-func CloseTasks() {
+func (tasks GoogleTasks) Close() {
 	client.Close()
 }
 
 // Schedule a cloud task
-func scheduleTask(ctx *context.Context, scheduledMessage ScheduledMessage, timeOffset time.Time) {
+func (tasks GoogleTasks) Schedule(ctx *context.Context, scheduledMessage taskservice.ScheduledTask, timeOffset time.Time) {
 	projectID := os.Getenv("CAPY_PROJECT_ID")
 	locationID := os.Getenv("CAPY_SERVER_REGION")
 	queueID := "messages"
