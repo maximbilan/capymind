@@ -1,4 +1,4 @@
-package scheduler
+package taskservice
 
 import "testing"
 
@@ -26,91 +26,91 @@ func TestMessageType(t *testing.T) {
 
 func TestGetMessage(t *testing.T) {
 	want := "how_are_you_morning_monday"
-	if got := getMessage(Morning, 1); got != want {
+	if got := GetMessage(Morning, 1); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_morning_tuesday"
-	if got := getMessage(Morning, 2); got != want {
+	if got := GetMessage(Morning, 2); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_morning_wednesday"
-	if got := getMessage(Morning, 3); got != want {
+	if got := GetMessage(Morning, 3); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_morning_thursday"
-	if got := getMessage(Morning, 4); got != want {
+	if got := GetMessage(Morning, 4); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_morning_friday"
-	if got := getMessage(Morning, 5); got != want {
+	if got := GetMessage(Morning, 5); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_morning_saturday"
-	if got := getMessage(Morning, 6); got != want {
+	if got := GetMessage(Morning, 6); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_morning_sunday"
-	if got := getMessage(Morning, 0); got != want {
+	if got := GetMessage(Morning, 0); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_evening_monday"
-	if got := getMessage(Evening, 1); got != want {
+	if got := GetMessage(Evening, 1); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_evening_tuesday"
-	if got := getMessage(Evening, 2); got != want {
+	if got := GetMessage(Evening, 2); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_evening_wednesday"
-	if got := getMessage(Evening, 3); got != want {
+	if got := GetMessage(Evening, 3); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_evening_thursday"
-	if got := getMessage(Evening, 4); got != want {
+	if got := GetMessage(Evening, 4); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_evening_friday"
-	if got := getMessage(Evening, 5); got != want {
+	if got := GetMessage(Evening, 5); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_evening_saturday"
-	if got := getMessage(Evening, 6); got != want {
+	if got := GetMessage(Evening, 6); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = "how_are_you_evening_sunday"
-	if got := getMessage(Evening, 0); got != want {
+	if got := GetMessage(Evening, 0); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 }
 
 func TestGetMessageInvalidWeekday(t *testing.T) {
 	want := ""
-	if got := getMessage(Morning, -1); got != want {
+	if got := GetMessage(Morning, -1); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 
 	want = ""
-	if got := getMessage(Morning, 7); got != want {
+	if got := GetMessage(Morning, 7); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 }
 
 func TestGetMessageInvalidMessageType(t *testing.T) {
 	want := ""
-	if got := getMessage(Regular, 1); got != want {
+	if got := GetMessage(Regular, 1); got != want {
 		t.Errorf("getMessage() = %v, want %v", got, want)
 	}
 }
