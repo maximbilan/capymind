@@ -1,4 +1,4 @@
-package firestore
+package database
 
 type Role string
 

@@ -1,7 +1,7 @@
 package bot
 
 import (
-	"github.com/capymind/internal/firestore"
+	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/telegram"
 )
 
@@ -24,7 +24,7 @@ type Job struct {
 }
 
 // Creates a job from an update
-func createJob(update telegram.Update, user *firestore.User) *Job {
+func createJob(update telegram.Update, user *database.User) *Job {
 	var input *string
 
 	// Check if the update is a callback query or a message

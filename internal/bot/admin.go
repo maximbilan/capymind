@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/capymind/internal/firestore"
 	"github.com/capymind/internal/translator"
 )
 
 func getTotalUserCount(session *Session) *string {
-	count, err := firestore.GetTotalUserCount(session.Context)
+	count, err := adminStorage.GetTotalUserCount(session.Context)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching total user count: %v", err)
 		return nil
@@ -26,7 +25,7 @@ func handleTotalUserCount(session *Session) {
 }
 
 func getTotalActiveUserCount(session *Session) *string {
-	count, err := firestore.GetActiveUserCount(session.Context)
+	count, err := adminStorage.GetActiveUserCount(session.Context)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching active user count: %v", err)
 		return nil
@@ -43,7 +42,7 @@ func handleTotalActiveUserCount(session *Session) {
 }
 
 func getTotalNoteCount(session *Session) *string {
-	count, err := firestore.GetTotalNoteCount(session.Context)
+	count, err := adminStorage.GetTotalNoteCount(session.Context)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching total note count: %v", err)
 		return nil

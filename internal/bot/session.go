@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
-	"github.com/capymind/internal/firestore"
+	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/translator"
 )
 
 type Session struct {
 	Job     *Job
-	User    *firestore.User
+	User    *database.User
 	Context *context.Context
 }
 
@@ -28,7 +28,7 @@ func (session *Session) SaveUser() {
 }
 
 // Create a session
-func createSession(job *Job, user *firestore.User, context *context.Context) *Session {
+func createSession(job *Job, user *database.User, context *context.Context) *Session {
 	session := Session{
 		Job:     job,
 		User:    user,

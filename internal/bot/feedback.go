@@ -2,8 +2,6 @@ package bot
 
 import (
 	"log"
-
-	"github.com/capymind/internal/firestore"
 )
 
 func prepareFeedback(session *Session) []string {
@@ -11,7 +9,7 @@ func prepareFeedback(session *Session) []string {
 	array = append(array, "feedback_last_week")
 	array = append(array, "\n\n")
 
-	feedback, err := firestore.GetFeedbackForLastWeek(session.Context)
+	feedback, err := feedbackStorage.GetFeedbackForLastWeek(session.Context)
 	if err != nil {
 		log.Printf("[Bot] Error getting feedbacks from firestore, %s", err.Error())
 	}

@@ -3,10 +3,10 @@ package database
 type Collection string
 
 const (
-	users     Collection = "users"
-	notes     Collection = "notes"
-	feedbacks Collection = "feedbacks"
-	updates   Collection = "updates"
+	Users     Collection = "users"
+	Notes     Collection = "notes"
+	Feedbacks Collection = "feedbacks"
+	Updates   Collection = "updates"
 )
 
 func (c Collection) String() string {
