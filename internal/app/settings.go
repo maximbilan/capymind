@@ -1,4 +1,4 @@
-package bot
+package app
 
 func handleSettings(session *Session) {
 	var languageButton JobResultTextButton = JobResultTextButton{

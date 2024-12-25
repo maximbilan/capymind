@@ -1,4 +1,4 @@
-package bot
+package app
 
 // handleStart is the entry point for the bot. It checks if the user has a locale and timezone set and sends a welcome message
 func handleStart(session *Session) {

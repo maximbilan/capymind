@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
-	"github.com/capymind/internal/bot"
+	"github.com/capymind/internal/app"
 	"github.com/capymind/internal/scheduler"
 )
 
@@ -19,7 +19,7 @@ func init() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	bot.Parse(w, r)
+	app.Parse(w, r)
 }
 
 func schedule(w http.ResponseWriter, r *http.Request) {

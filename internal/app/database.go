@@ -1,4 +1,4 @@
-package bot
+package app
 
 import "github.com/capymind/third_party/firestore"
 

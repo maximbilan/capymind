@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/capymind/internal/bot"
+	"github.com/capymind/internal/app"
 	"github.com/capymind/internal/scheduler"
 )
 
@@ -15,7 +15,7 @@ func main() {
 	log.Println("Starting capymind...")
 	log.Printf("Starting server on localhost: %d", port)
 
-	http.HandleFunc("/handler", bot.Parse)
+	http.HandleFunc("/handler", app.Parse)
 	http.HandleFunc("/schedule", scheduler.Schedule)
 	http.HandleFunc("/sendMessage", scheduler.SendMessage)
 
