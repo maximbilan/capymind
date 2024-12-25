@@ -18,10 +18,12 @@ func handleLanguage(session *Session) {
 func requestLanguage(session *Session) {
 	var enButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   translator.English.String(),
+		Locale:   translator.EN,
 		Callback: string(Language) + " " + translator.EN.String(),
 	}
 	var ukButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   translator.Ukrainian.String(),
+		Locale:   translator.UK,
 		Callback: string(Language) + " " + translator.UK.String(),
 	}
 	setOutputTextWithButtons("language_select", []botservice.BotResultTextButton{enButton, ukButton}, session)

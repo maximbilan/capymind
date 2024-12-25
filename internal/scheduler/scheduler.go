@@ -160,13 +160,15 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	case Morning, Evening:
 		var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 			TextID:   "make_record_to_journal",
+			Locale:   msg.Locale,
 			Callback: "/note",
 		}
 		result := botservice.BotResult{
 			TextID:  msg.Text,
+			Locale:  msg.Locale,
 			Buttons: []botservice.BotResultTextButton{button},
 		}
-		bot.SendResult(msg.ChatID, msg.Locale, result)
+		bot.SendResult(msg.ChatID, result)
 	default:
 		bot.SendMessage(msg.ChatID, msg.Text)
 	}

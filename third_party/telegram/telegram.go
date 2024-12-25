@@ -9,7 +9,6 @@ import (
 	"os"
 
 	"github.com/capymind/internal/botservice"
-	"github.com/capymind/internal/translator"
 )
 
 type Telegram struct{}
@@ -90,14 +89,14 @@ func (t Telegram) SendMessage(chatID int64, text string) {
 	sendMessage(chatID, text, nil)
 }
 
-func (t Telegram) SendResult(chatID int64, locale translator.Locale, result botservice.BotResult) {
+func (t Telegram) SendResult(chatID int64, result botservice.BotResult) {
 	// Prepare the reply markup
 	var replyMarkup *InlineKeyboardMarkup
 	if len(result.Buttons) > 0 {
 		var inlineKeyboard [][]InlineKeyboardButton
 		for _, button := range result.Buttons {
 			inlineKeyboard = append(inlineKeyboard, []InlineKeyboardButton{
-				{Text: translator.Translate(locale, button.TextID), CallbackData: &button.Callback},
+				{Text: button.Text(), CallbackData: &button.Callback},
 			})
 		}
 
@@ -106,10 +105,8 @@ func (t Telegram) SendResult(chatID int64, locale translator.Locale, result bots
 		}
 	}
 
-	// Localize the message
-	text := translator.Translate(locale, result.TextID)
 	// Send the message
-	sendMessage(chatID, text, replyMarkup)
+	sendMessage(chatID, result.Text(), replyMarkup)
 }
 
 func sendMessage(chatID int64, text string, replyMarkup *InlineKeyboardMarkup) {

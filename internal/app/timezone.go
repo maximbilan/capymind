@@ -44,6 +44,7 @@ func requestTimezone(session *Session) {
 		callback := string(Timezone) + " " + tz.Parameter()
 		button := botservice.BotResultTextButton{
 			TextID:   tz.String(),
+			Locale:   session.Locale(),
 			Callback: callback,
 		}
 		buttons = append(buttons, button)

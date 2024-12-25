@@ -40,10 +40,7 @@ func sendOutputMessages(session *Session) {
 
 // Send the output messages
 func sendJobResult(jobResult botservice.BotResult, session *Session) {
-	locale := session.Locale()
-	chatID := session.User.ChatID
-
-	bot.SendResult(chatID, locale, jobResult)
+	bot.SendResult(session.User.ChatID, jobResult)
 }
 
 // Send a message to the user (Immediately)

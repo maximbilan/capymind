@@ -35,6 +35,7 @@ func handleSleepAnalysis(session *Session) {
 func askForSleepAnalysis(session *Session) {
 	var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "sleep_analysis",
+		Locale:   session.Locale(),
 		Callback: string(SleepAnalysis),
 	}
 	setOutputTextWithButtons("do_you_want_sleep_analysis", []botservice.BotResultTextButton{button}, session)
