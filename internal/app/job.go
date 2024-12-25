@@ -15,6 +15,10 @@ type Job struct {
 
 // Creates a job from an update
 func createJob(input string, user *database.User) *Job {
+	if input == "" {
+		return nil
+	}
+
 	// Create a command and parameters from the input
 	command, parameters := ParseCommand(input)
 

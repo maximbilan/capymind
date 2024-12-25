@@ -2,30 +2,10 @@ package app
 
 import (
 	"testing"
-
-	"github.com/capymind/third_party/telegram"
 )
 
 func TestJobFromMessage(t *testing.T) {
-	update := telegram.Update{
-		ID: 789,
-		Message: &telegram.Message{
-			ID:   101,
-			Text: "/language en",
-			Chat: &telegram.Chat{
-				ID: 456,
-			},
-			From: &telegram.User{
-				ID:           456,
-				UserName:     "test",
-				FirstName:    "Test",
-				LastName:     "User",
-				LanguageCode: "en",
-			},
-		},
-	}
-
-	job := createJob(update, nil)
+	job := createJob("/language en", nil)
 	if job == nil {
 		t.Fatalf("Job is nil")
 	}
@@ -44,28 +24,7 @@ func TestJobFromMessage(t *testing.T) {
 }
 
 func TestJobFromCallbackQuery(t *testing.T) {
-	update := telegram.Update{
-		ID: 789,
-		CallbackQuery: &telegram.CallbackQuery{
-			ID:   "123",
-			Data: "/timezone 25200",
-			From: &telegram.User{
-				ID:           456,
-				UserName:     "test",
-				FirstName:    "Test",
-				LastName:     "User",
-				LanguageCode: "en",
-			},
-			Message: &telegram.Message{
-				ID: 101,
-				Chat: &telegram.Chat{
-					ID: 456,
-				},
-			},
-		},
-	}
-
-	job := createJob(update, nil)
+	job := createJob("/timezone 25200", nil)
 	if job == nil {
 		t.Fatalf("Job is nil")
 	}
@@ -83,24 +42,8 @@ func TestJobFromCallbackQuery(t *testing.T) {
 	}
 }
 
-func TestJobNil(t *testing.T) {
-	update := telegram.Update{
-		ID: 789,
-	}
-
-	job := createJob(update, nil)
-	if job != nil {
-		t.Fatalf("Job is not nil")
-	}
-
-	update = telegram.Update{
-		ID: 789,
-		Message: &telegram.Message{
-			ID: 101,
-		},
-	}
-
-	job = createJob(update, nil)
+func TestNil(t *testing.T) {
+	job := createJob("", nil)
 	if job != nil {
 		t.Fatalf("Job is not nil")
 	}
