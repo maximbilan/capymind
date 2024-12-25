@@ -33,6 +33,7 @@ func handleAnalysis(session *Session) {
 	// If there are no notes, send a message to make a note
 	var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "make_record_to_journal",
+		Locale:   session.Locale(),
 		Callback: string(Note),
 	}
 	setOutputTextWithButtons("no_analysis", []botservice.BotResultTextButton{button}, session)

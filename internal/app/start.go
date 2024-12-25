@@ -20,10 +20,12 @@ func handleStart(session *Session) {
 func sendWelcome(session *Session) {
 	var noteButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "make_record_to_journal",
+		Locale:   session.Locale(),
 		Callback: string(Note),
 	}
 	var helpButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "how_to_use",
+		Locale:   session.Locale(),
 		Callback: string(Help),
 	}
 	setOutputTextWithButtons("welcome", []botservice.BotResultTextButton{noteButton, helpButton}, session)

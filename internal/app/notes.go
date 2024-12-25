@@ -80,6 +80,7 @@ func getNotes(session *Session, count int) []database.Note {
 func sendNoNotes(session *Session) {
 	var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "make_record_to_journal",
+		Locale:   session.Locale(),
 		Callback: string(Note),
 	}
 	setOutputTextWithButtons("no_notes", []botservice.BotResultTextButton{button}, session)
