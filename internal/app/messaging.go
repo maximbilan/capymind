@@ -14,6 +14,7 @@ func appendJobResult(jobResult botservice.BotResult, session *Session) {
 func setOutputText(textID string, session *Session) {
 	jobResult := botservice.BotResult{
 		TextID: textID,
+		Locale: session.Locale(),
 	}
 	appendJobResult(jobResult, session)
 }
@@ -22,6 +23,7 @@ func setOutputText(textID string, session *Session) {
 func setOutputTextWithButtons(textID string, buttons []botservice.BotResultTextButton, session *Session) {
 	jobResult := botservice.BotResult{
 		TextID:  textID,
+		Locale:  session.Locale(),
 		Buttons: buttons,
 	}
 	appendJobResult(jobResult, session)
