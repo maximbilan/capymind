@@ -1,7 +1,8 @@
-package bot
+package app
 
 import (
 	"github.com/capymind/internal/analysis"
+	"github.com/capymind/internal/botservice"
 )
 
 // Handle the analysis command
@@ -30,9 +31,9 @@ func handleAnalysis(session *Session) {
 	}
 
 	// If there are no notes, send a message to make a note
-	var button JobResultTextButton = JobResultTextButton{
+	var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "make_record_to_journal",
 		Callback: string(Note),
 	}
-	setOutputTextWithButtons("no_analysis", []JobResultTextButton{button}, session)
+	setOutputTextWithButtons("no_analysis", []botservice.BotResultTextButton{button}, session)
 }

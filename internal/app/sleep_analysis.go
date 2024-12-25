@@ -1,10 +1,11 @@
-package bot
+package app
 
 import (
 	"log"
 	"strings"
 
 	"github.com/capymind/internal/analysis"
+	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/translator"
 )
 
@@ -32,11 +33,11 @@ func handleSleepAnalysis(session *Session) {
 
 // Ask the user if they want a sleep analysis
 func askForSleepAnalysis(session *Session) {
-	var button JobResultTextButton = JobResultTextButton{
+	var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "sleep_analysis",
 		Callback: string(SleepAnalysis),
 	}
-	setOutputTextWithButtons("do_you_want_sleep_analysis", []JobResultTextButton{button}, session)
+	setOutputTextWithButtons("do_you_want_sleep_analysis", []botservice.BotResultTextButton{button}, session)
 }
 
 func checkIfNoteADream(text string, locale translator.Locale) bool {

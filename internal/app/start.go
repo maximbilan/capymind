@@ -1,4 +1,6 @@
-package bot
+package app
+
+import "github.com/capymind/internal/botservice"
 
 // handleStart is the entry point for the bot. It checks if the user has a locale and timezone set and sends a welcome message
 func handleStart(session *Session) {
@@ -16,13 +18,13 @@ func handleStart(session *Session) {
 
 // Welcome message to the user
 func sendWelcome(session *Session) {
-	var noteButton JobResultTextButton = JobResultTextButton{
+	var noteButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "make_record_to_journal",
 		Callback: string(Note),
 	}
-	var helpButton JobResultTextButton = JobResultTextButton{
+	var helpButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "how_to_use",
 		Callback: string(Help),
 	}
-	setOutputTextWithButtons("welcome", []JobResultTextButton{noteButton, helpButton}, session)
+	setOutputTextWithButtons("welcome", []botservice.BotResultTextButton{noteButton, helpButton}, session)
 }

@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/capymind/internal/analysis"
+	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
-	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 )
 
@@ -156,20 +156,18 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var reply *telegram.InlineKeyboardMarkup
 	switch msg.Type {
 	case Morning, Evening:
-		callbackData := "/note"
-		reply = &telegram.InlineKeyboardMarkup{
-			InlineKeyboard: [][]telegram.InlineKeyboardButton{
-				{
-					{Text: translator.Translate(msg.Locale, "make_record_to_journal"), CallbackData: &callbackData},
-				},
-			},
+		var button botservice.BotResultTextButton = botservice.BotResultTextButton{
+			TextID:   "make_record_to_journal",
+			Callback: "/note",
 		}
+		result := botservice.BotResult{
+			TextID:  msg.Text,
+			Buttons: []botservice.BotResultTextButton{button},
+		}
+		bot.SendResult(msg.ChatID, msg.Locale, result)
 	default:
-		reply = nil
+		bot.SendMessage(msg.ChatID, msg.Text)
 	}
-
-	telegram.SendMessage(msg.ChatID, msg.Text, reply)
 }

@@ -1,9 +1,10 @@
-package bot
+package app
 
 import (
 	"log"
 	"strconv"
 
+	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/utils"
 )
 
@@ -37,11 +38,11 @@ func setupTimezone(session *Session) {
 
 // Set the timezone
 func requestTimezone(session *Session) {
-	var buttons []JobResultTextButton
+	var buttons []botservice.BotResultTextButton
 	timeZones := utils.GetTimeZones()
 	for _, tz := range timeZones {
 		callback := string(Timezone) + " " + tz.Parameter()
-		button := JobResultTextButton{
+		button := botservice.BotResultTextButton{
 			TextID:   tz.String(),
 			Callback: callback,
 		}
