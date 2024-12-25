@@ -5,8 +5,8 @@ import (
 )
 
 func TestIsAdmin(t *testing.T) {
-	role1 := Admin
-	result := IsAdmin(&role1)
+	role := Admin
+	result := IsAdmin(&role)
 	if result != true {
 		t.Fatalf("Expected true, got %v", result)
 	}
