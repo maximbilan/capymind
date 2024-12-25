@@ -4,53 +4,20 @@ import (
 	"context"
 	"log"
 
+	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
-	"github.com/capymind/internal/telegram"
 	"github.com/capymind/internal/translator"
 )
 
-// Create a user from an update
-func createUser(update telegram.Update) *database.User {
-	// Check if the message is valid
-	if update.Message == nil && update.CallbackQuery == nil {
-		log.Printf("[User] Invalid update: %d", update.ID)
-		return nil
-	}
-	// Check if the message is valid (Callback variant)
-	if update.Message == nil && update.CallbackQuery != nil && update.CallbackQuery.Message == nil {
-		log.Printf("[User] Invalid update (with callback): %d", update.ID)
-		return nil
-	}
-
-	var chatID int64
-	var telegramUser *telegram.User
-
-	// Check if the update is a callback query or a message
-	callbackQuery := update.CallbackQuery
-	if callbackQuery != nil && callbackQuery.Data != "" {
-		chatID = callbackQuery.Message.Chat.ID
-		telegramUser = callbackQuery.From
-	} else {
-		message := update.Message
-		chatID = message.Chat.ID
-		telegramUser = message.From
-	}
-
-	// Check if the user is valid
-	if telegramUser == nil || telegramUser.ID == 0 {
-		return nil
-	}
-
-	// Create a user from the telegram user
+func createUser(message botservice.BotMessage) *database.User {
 	user := database.User{
-		ID:        telegramUser.StringID(),
-		ChatID:    chatID,
-		UserName:  &telegramUser.UserName,
-		FirstName: &telegramUser.FirstName,
-		LastName:  &telegramUser.LastName,
-		Locale:    &telegramUser.LanguageCode,
+		ID:        message.UserID,
+		ChatID:    message.ChatID,
+		UserName:  &message.UserName,
+		FirstName: &message.FirstName,
+		LastName:  &message.LastName,
+		Locale:    &message.LanguageCode,
 	}
-
 	return &user
 }
 

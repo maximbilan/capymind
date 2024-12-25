@@ -4,13 +4,11 @@ import (
 	"context"
 	"log"
 	"net/http"
-
-	"github.com/capymind/internal/telegram"
 )
 
 // Entry point
 func Parse(w http.ResponseWriter, r *http.Request) {
-	update := telegram.Parse(r)
+	update := bot.Parse(r)
 	if update == nil {
 		log.Printf("[Bot] No update to process")
 		return
@@ -24,20 +22,12 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 
 	// Create a user
 	user := createUser(*update)
-	if user == nil {
-		log.Printf("[Bot] No user to process: message_id=%d", update.ID)
-		return
-	}
 
 	// Update the user's data in the database if necessary
 	updatedUser := updateUser(user, &ctx)
 
 	// Create a job
-	job := createJob(*update, updatedUser)
-	if job == nil {
-		log.Printf("[Bot] No job to process: update_id=%d", update.ID)
-		return
-	}
+	job := createJob(update.Text, updatedUser)
 
 	// Create and start a session
 	session := createSession(job, updatedUser, &ctx)

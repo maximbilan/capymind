@@ -3,7 +3,7 @@ package app
 import (
 	"testing"
 
-	"github.com/capymind/internal/telegram"
+	"github.com/capymind/third_party/telegram"
 )
 
 func TestJobFromMessage(t *testing.T) {

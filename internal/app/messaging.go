@@ -1,26 +1,26 @@
 package app
 
 import (
-	"github.com/capymind/internal/telegram"
+	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/translator"
 )
 
-func appendJobResult(jobResult JobResult, session *Session) {
+func appendJobResult(jobResult botservice.BotResult, session *Session) {
 	output := session.Job.Output
 	session.Job.Output = append(output, jobResult)
 }
 
 // Set the text of the output
 func setOutputText(textID string, session *Session) {
-	jobResult := JobResult{
+	jobResult := botservice.BotResult{
 		TextID: textID,
 	}
 	appendJobResult(jobResult, session)
 }
 
 // Set the text of the output with buttons
-func setOutputTextWithButtons(textID string, buttons []JobResultTextButton, session *Session) {
-	jobResult := JobResult{
+func setOutputTextWithButtons(textID string, buttons []botservice.BotResultTextButton, session *Session) {
+	jobResult := botservice.BotResult{
 		TextID:  textID,
 		Buttons: buttons,
 	}
@@ -39,29 +39,11 @@ func sendOutputMessages(session *Session) {
 }
 
 // Send the output messages
-func sendJobResult(jobResult JobResult, session *Session) {
+func sendJobResult(jobResult botservice.BotResult, session *Session) {
 	locale := session.Locale()
 	chatID := session.User.ChatID
 
-	// Prepare the reply markup
-	var replyMarkup *telegram.InlineKeyboardMarkup
-	if len(jobResult.Buttons) > 0 {
-		var inlineKeyboard [][]telegram.InlineKeyboardButton
-		for _, button := range jobResult.Buttons {
-			inlineKeyboard = append(inlineKeyboard, []telegram.InlineKeyboardButton{
-				{Text: translator.Translate(locale, button.TextID), CallbackData: &button.Callback},
-			})
-		}
-
-		replyMarkup = &telegram.InlineKeyboardMarkup{
-			InlineKeyboard: inlineKeyboard,
-		}
-	}
-
-	// Localize the message
-	text := translator.Translate(locale, jobResult.TextID)
-	// Send the message
-	telegram.SendMessage(chatID, text, replyMarkup)
+	bot.SendResult(chatID, locale, jobResult)
 }
 
 // Send a message to the user (Immediately)
@@ -72,5 +54,5 @@ func sendMessage(textID string, session *Session) {
 	// Localize the message
 	text := translator.Translate(locale, textID)
 	// Send the message
-	telegram.SendMessage(chatID, text, nil)
+	bot.SendMessage(chatID, text)
 }

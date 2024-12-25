@@ -1,13 +1,15 @@
 package app
 
+import "github.com/capymind/internal/botservice"
+
 func handleSettings(session *Session) {
-	var languageButton JobResultTextButton = JobResultTextButton{
+	var languageButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "language",
 		Callback: string(Language),
 	}
-	var timezoneButton JobResultTextButton = JobResultTextButton{
+	var timezoneButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "timezone",
 		Callback: string(Timezone),
 	}
-	setOutputTextWithButtons("settings_descr", []JobResultTextButton{languageButton, timezoneButton}, session)
+	setOutputTextWithButtons("settings_descr", []botservice.BotResultTextButton{languageButton, timezoneButton}, session)
 }

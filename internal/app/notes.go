@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/translator"
 )
@@ -77,11 +78,11 @@ func getNotes(session *Session, count int) []database.Note {
 
 // Send a message that says there are no notes
 func sendNoNotes(session *Session) {
-	var button JobResultTextButton = JobResultTextButton{
+	var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "make_record_to_journal",
 		Callback: string(Note),
 	}
-	setOutputTextWithButtons("no_notes", []JobResultTextButton{button}, session)
+	setOutputTextWithButtons("no_notes", []botservice.BotResultTextButton{button}, session)
 }
 
 // Handles the note count request
