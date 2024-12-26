@@ -98,4 +98,5 @@ func handleDeleteAccount(session *Session) {
 	}
 
 	setOutputText("delete_account_success", session)
+	setOutputText("delete_account_telegram_tip", session)
 }
