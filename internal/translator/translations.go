@@ -57,6 +57,7 @@ const translationsJSON = `{
         "delete_account_waiting": "Deleting your account and data. Please wait a moment ⏳",
         "delete_account_error": "An error occurred while deleting your account and data. Please try again later 🕒",
         "delete_account_success": "Your account and data have been successfully deleted. We hope to see you again soon! 🚀"
+    },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
         "welcome_onboarding": "Ласкаво просимо до CapyMind 👋 Перед початком давайте налаштуємо ваші параметри 🙂",
