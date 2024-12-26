@@ -10,6 +10,7 @@ const (
 	Evening        MessageType = "evening"
 	WeeklyAnalysis MessageType = "weekly_analysis"
 	UserStats      MessageType = "user_stats"
+	AdminStats     MessageType = "admin_stats"
 )
 
 func GetMessage(messageType MessageType, weekday time.Weekday) string {
