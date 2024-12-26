@@ -34,7 +34,7 @@ func newClient(ctx *context.Context) (*firestore.Client, error) {
 		client, err = firestore.NewClient(*ctx, projectID)
 	} else {
 		path := credentialsPath()
-		client, err = firestore.NewClient(*ctx, projectID, option.WithCredentialsFile(path))
+		client, err = firestore.NewClientWithDatabase(*ctx, projectID, "development", option.WithCredentialsFile(path))
 	}
 
 	if err != nil {
