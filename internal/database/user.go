@@ -18,10 +18,12 @@ type User struct {
 	IsOnboarded    bool       `json:"isOnboarded"`
 	Role           *Role      `json:"role"`
 	Timestamp      *time.Time `json:"timestamp"`
+	IsDeleted      bool       `json:"isDeleted"`
 }
 
 type UserStorage interface {
 	GetUser(ctx *context.Context, userID string) (*User, error)
 	SaveUser(ctx *context.Context, user User) error
+	DeleteUser(ctx *context.Context, userID string) error
 	ForEachUser(ctx *context.Context, callback func([]User) error) error
 }

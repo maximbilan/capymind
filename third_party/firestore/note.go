@@ -96,3 +96,10 @@ func (storage NoteStorage) NotesCount(ctx *context.Context, userID string) (int6
 	countValue := count.(*firestorepb.Value)
 	return countValue.GetIntegerValue(), nil
 }
+
+// Delete all notes for the current user efficiently
+func (storage NoteStorage) DeleteAllNotes(ctx *context.Context, userID string) error {
+	userRef := client.Collection(database.Users.String()).Doc(userID)
+	query := client.Collection(database.Notes.String()).Where("user", "==", userRef)
+	return deleteAllDocs(ctx, query, 500)
+}

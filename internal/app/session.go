@@ -24,6 +24,10 @@ func (session *Session) Locale() translator.Locale {
 
 // Save the user's data
 func (session *Session) SaveUser() {
+	if session.User.IsDeleted {
+		// Do not save the user if it is deleted
+		return
+	}
 	saveUser(session.User, session.Context)
 }
 
@@ -85,6 +89,10 @@ func handleSession(session *Session) {
 		handleNoteCount(session)
 	case DownloadData:
 		handleDownloadData(session)
+	case DeleteAccount:
+		handleDeleteAccount(session)
+	case ForceDeleteAccount:
+		handleForceDeleteAccount(session)
 	case TotalUserCount:
 		handleTotalUserCount(session)
 	case TotalActiveUserCount:

@@ -18,6 +18,11 @@ func handleSettings(session *Session) {
 		Locale:   session.Locale(),
 		Callback: string(DownloadData),
 	}
+	var deleteAccountButton botservice.BotResultTextButton = botservice.BotResultTextButton{
+		TextID:   "delete_account",
+		Locale:   session.Locale(),
+		Callback: string(DeleteAccount),
+	}
 
-	setOutputTextWithButtons("settings_descr", []botservice.BotResultTextButton{languageButton, timezoneButton, downloadDataButton}, session)
+	setOutputTextWithButtons("settings_descr", []botservice.BotResultTextButton{languageButton, timezoneButton, downloadDataButton, deleteAccountButton}, session)
 }

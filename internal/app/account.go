@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
 	"github.com/capymind/third_party/googledrive"
 )
@@ -75,4 +76,40 @@ func createZipFile(userID string, notes []database.Note) (*os.File, error) {
 		writer.Write([]byte(note.Text + "\n\n"))
 	}
 	return zipFile, nil
+}
+
+func handleDeleteAccount(session *Session) {
+	var deleteButton botservice.BotResultTextButton = botservice.BotResultTextButton{
+		TextID:   "delete_account_confirm",
+		Locale:   session.Locale(),
+		Callback: string(ForceDeleteAccount),
+	}
+
+	setOutputTextWithButtons("delete_account_are_you_sure", []botservice.BotResultTextButton{deleteButton}, session)
+}
+
+func handleForceDeleteAccount(session *Session) {
+	sendMessage("delete_account_waiting", session)
+
+	// Delete all notes
+	userID := session.User.ID
+	err := noteStorage.DeleteAllNotes(session.Context, userID)
+	if err != nil {
+		log.Printf("[Bot] Error deleting all notes from firestore, %s", err.Error())
+		setOutputText("delete_account_error", session)
+		return
+	}
+
+	// Delete the user
+	err = userStorage.DeleteUser(session.Context, userID)
+	if err != nil {
+		log.Printf("[Bot] Error deleting user from firestore, %s", err.Error())
+		setOutputText("delete_account_error", session)
+		return
+	}
+
+	session.User.IsDeleted = true
+
+	setOutputText("delete_account_success", session)
+	setOutputText("delete_account_telegram_tip", session)
 }
