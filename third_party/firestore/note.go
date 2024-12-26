@@ -55,6 +55,13 @@ func (storage NoteStorage) GetNotes(ctx *context.Context, userID string, count i
 	return getNotesForQuery(ctx, query)
 }
 
+// Get the user's all notes
+func (storage NoteStorage) GetAllNotes(ctx *context.Context, userID string) ([]database.Note, error) {
+	userRef := client.Collection(database.Users.String()).Doc(userID)
+	query := client.Collection(database.Notes.String()).OrderBy("timestamp", firestore.Desc).Where("user", "==", userRef)
+	return getNotesForQuery(ctx, query)
+}
+
 func getNotesForQuery(ctx *context.Context, query firestore.Query) ([]database.Note, error) {
 	docs, err := query.Documents(*ctx).GetAll()
 	if err != nil {

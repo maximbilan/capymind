@@ -15,5 +15,6 @@ type NoteStorage interface {
 	LastNote(ctx *context.Context, userID string) (*Note, error)
 	GetNotesForLastWeek(ctx *context.Context, userID string) ([]Note, error)
 	GetNotes(ctx *context.Context, userID string, count int) ([]Note, error)
+	GetAllNotes(ctx *context.Context, userID string) ([]Note, error)
 	NotesCount(ctx *context.Context, userID string) (int64, error)
 }
