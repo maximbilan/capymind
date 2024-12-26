@@ -1,33 +1,9 @@
 package app
 
-import (
-	"log"
-)
-
-func prepareFeedback(session *Session) []string {
-	var array []string
-	array = append(array, "feedback_last_week")
-	array = append(array, "\n\n")
-
-	feedback, err := feedbackStorage.GetFeedbackForLastWeek(session.Context)
-	if err != nil {
-		log.Printf("[Bot] Error getting feedbacks from firestore, %s", err.Error())
-	}
-
-	if len(feedback) == 0 {
-		array = append(array, "no_feedback")
-		return array
-	}
-
-	for _, f := range feedback {
-		array = append(array, *f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n\n")
-	}
-
-	return array
-}
+import "github.com/capymind/internal/helpers"
 
 func handleFeedbackLastWeek(session *Session) {
-	array := prepareFeedback(session)
+	array := helpers.PrepareFeedback(session.Context, session.Locale())
 	for _, item := range array {
 		setOutputText(item, session)
 	}
