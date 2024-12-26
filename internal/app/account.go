@@ -45,6 +45,8 @@ func handleDownloadData(session *Session) {
 		} else {
 			setOutputText("download_all_notes_error", session)
 		}
+		// Remove the ZIP file after upload and close it
+		os.Remove(zipFile.Name())
 		zipFile.Close()
 	} else {
 		setOutputText("download_all_notes_error", session)
