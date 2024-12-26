@@ -18,6 +18,7 @@ type User struct {
 	IsOnboarded    bool       `json:"isOnboarded"`
 	Role           *Role      `json:"role"`
 	Timestamp      *time.Time `json:"timestamp"`
+	IsDeleted      bool       `json:"isDeleted"`
 }
 
 type UserStorage interface {

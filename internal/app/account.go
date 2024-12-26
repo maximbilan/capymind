@@ -108,6 +108,8 @@ func handleForceDeleteAccount(session *Session) {
 		return
 	}
 
+	session.User.IsDeleted = true
+
 	setOutputText("delete_account_success", session)
 	setOutputText("delete_account_telegram_tip", session)
 }
