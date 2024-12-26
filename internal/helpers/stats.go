@@ -75,8 +75,9 @@ func GetStats(ctx *context.Context, locale translator.Locale) []string {
 
 func PrepareFeedback(ctx *context.Context, locale translator.Locale) []string {
 	var array []string
-	array = append(array, "feedback_last_week")
-	array = append(array, "\n\n")
+	array = append(array, "\n")
+	array = append(array, translator.Translate(locale, "feedback_last_week"))
+	array = append(array, "\n")
 
 	feedback, err := feedbackStorage.GetFeedbackForLastWeek(ctx)
 	if err != nil {
@@ -89,7 +90,7 @@ func PrepareFeedback(ctx *context.Context, locale translator.Locale) []string {
 	}
 
 	for _, f := range feedback {
-		array = append(array, *f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n\n")
+		array = append(array, *f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n")
 	}
 
 	return array
