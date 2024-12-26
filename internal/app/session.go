@@ -87,6 +87,8 @@ func handleSession(session *Session) {
 		handleDownloadData(session)
 	case DeleteAccount:
 		handleDeleteAccount(session)
+	case ForceDeleteAccount:
+		handleForceDeleteAccount(session)
 	case TotalUserCount:
 		handleTotalUserCount(session)
 	case TotalActiveUserCount:
