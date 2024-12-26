@@ -24,8 +24,15 @@ func credentialsPath() string {
 }
 
 func create(ctx context.Context) (*drive.Service, error) {
-	// Authenticate using the credentials file
-	srv, err := drive.NewService(ctx, option.WithCredentialsFile(credentialsPath()))
+	var srv *drive.Service
+	var err error
+
+	if os.Getenv("CLOUD") == "true" {
+		srv, err = drive.NewService(ctx)
+	} else {
+		srv, err = drive.NewService(ctx, option.WithCredentialsFile(credentialsPath()))
+	}
+
 	if err != nil {
 		return nil, fmt.Errorf("unable to create Drive service: %w", err)
 	}
