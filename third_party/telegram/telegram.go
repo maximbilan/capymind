@@ -3,7 +3,6 @@ package telegram
 import (
 	"bytes"
 	"encoding/json"
-	"io"
 	"log"
 	"net/http"
 	"os"
@@ -130,11 +129,4 @@ func sendMessage(chatID int64, text string, replyMarkup *InlineKeyboardMarkup) {
 		return
 	}
 	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Printf("[SendMessage] Body reading error: %s", err)
-		return
-	}
-	log.Printf("[SendMessage] Response body: %s", body)
 }

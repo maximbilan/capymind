@@ -24,13 +24,11 @@ func init() {
 func localize(data *map[Locale]map[string]string, locale Locale, key string) string {
 	// Checks if the locale is in the map
 	if _, ok := (*data)[locale]; !ok {
-		log.Printf("Locale %s not found in translations", locale)
 		return key
 	}
 
 	// Checks if the key is in the map
 	if _, ok := (*data)[locale][key]; !ok {
-		log.Printf("Key %s not found in translations", key)
 		return key
 	}
 
@@ -49,13 +47,11 @@ func Prompt(locale Locale, key string) string {
 func SearchKeywords(locale Locale, key string) []string {
 	// Checks if the locale is in the map
 	if _, ok := searchKeywords[locale]; !ok {
-		log.Printf("Locale %s not found in translations", locale)
 		return nil
 	}
 
 	// Checks if the key is in the map
 	if _, ok := searchKeywords[locale][key]; !ok {
-		log.Printf("Key %s not found in translations", key)
 		return nil
 	}
 

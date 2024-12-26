@@ -44,7 +44,7 @@ func (googleDrive GoogleDrive) Upload(title string, filePath string, expirationD
 
 	srv, err := create(ctx)
 	if err != nil {
-		fmt.Println(err)
+		log.Print(err)
 		return nil
 	}
 
