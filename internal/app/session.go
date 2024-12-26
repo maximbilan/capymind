@@ -65,6 +65,8 @@ func handleSession(session *Session) {
 		handleWhy(session)
 	case Note:
 		startNote(session)
+	case MissingNote:
+		handleMissingNote(session)
 	case Last:
 		handleLastNote(session)
 	case Analysis:
@@ -108,7 +110,7 @@ func handleSession(session *Session) {
 		if session.User.IsTyping && session.Job.Input != nil {
 			switch session.Job.LastCommand {
 			case Note:
-				finishNote(session)
+				finishNote(*session.Job.Input, session)
 			case Support:
 				finishFeedback(session)
 			default:
@@ -116,8 +118,13 @@ func handleSession(session *Session) {
 				handleHelp(session)
 			}
 		} else {
-			// Otherwise show the help message
-			handleHelp(session)
+			if session.Job.Input != nil && len(*session.Job.Input) > 1 && (*session.Job.Input)[0] != '/' {
+				// If the user is not typing and the input is not a command
+				handleInputWithoutCommand(session)
+			} else {
+				// If the user is not typing and the input is not recognized
+				handleHelp(session)
+			}
 		}
 	default:
 		// Unknown command
