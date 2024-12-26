@@ -91,11 +91,6 @@ func PrepareFeedback(ctx *context.Context, locale translator.Locale) []string {
 	array = append(array, translator.Translate(locale, "feedback_last_week"))
 	array = append(array, "")
 
-	if len(feedback) == 0 {
-		array = append(array, translator.Translate(locale, "no_feedback"))
-		return array
-	}
-
 	for _, f := range feedback {
 		array = append(array, *f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n")
 	}
