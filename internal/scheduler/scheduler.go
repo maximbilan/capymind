@@ -13,6 +13,7 @@ import (
 	"github.com/capymind/internal/analysis"
 	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
+	"github.com/capymind/internal/helpers"
 	"github.com/capymind/internal/taskservice"
 	"github.com/capymind/internal/translator"
 	"github.com/capymind/third_party/googletasks"
@@ -126,6 +127,18 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 		} else {
 			return
 		}
+	} else if messageType == taskservice.AdminStats {
+		// Send only to admins
+		if !database.IsAdmin(user.Role) {
+			return
+		}
+		stats := helpers.GetStats(ctx, userLocale)
+
+		var finalString string
+		for _, stat := range stats {
+			finalString += stat + "\n"
+		}
+		localizedMessage = finalString
 	} else {
 		localizedMessage = translator.Translate(userLocale, message)
 	}
