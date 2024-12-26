@@ -42,7 +42,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	switch messageType {
 	case taskservice.Morning, taskservice.Evening:
 		message = taskservice.GetMessage(messageType, time.Now().Weekday())
-	case taskservice.WeeklyAnalysis, taskservice.UserStats:
+	case taskservice.WeeklyAnalysis, taskservice.UserStats, taskservice.AdminStats:
 		// Personalized for each user
 		message = ""
 	default:
