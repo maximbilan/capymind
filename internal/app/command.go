@@ -6,15 +6,16 @@ type Command string
 
 const (
 	// User commands
-	Start    Command = "/start"
-	Why      Command = "/why"
-	Note     Command = "/note"
-	Last     Command = "/last"
-	Analysis Command = "/analysis"
-	Language Command = "/language"
-	Settings Command = "/settings"
-	Help     Command = "/help"
-	Version  Command = "/version"
+	Start       Command = "/start"
+	Why         Command = "/why"
+	Note        Command = "/note"
+	MissingNote Command = "/missing_note"
+	Last        Command = "/last"
+	Analysis    Command = "/analysis"
+	Language    Command = "/language"
+	Settings    Command = "/settings"
+	Help        Command = "/help"
+	Version     Command = "/version"
 
 	// Hidden user commands
 	Timezone           Command = "/timezone"

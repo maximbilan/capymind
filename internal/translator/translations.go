@@ -59,7 +59,9 @@ const translationsJSON = `{
         "delete_account_success": "Your account and data have been successfully deleted. We hope to see you again soon! 🚀",
         "delete_account_telegram_tip": "To remove all messages from the chat, you can use the 'Clear Chat History' option in the Telegram app settings.",
         "delete_account_are_you_sure": "Are you sure you want to delete your account and all data? This action cannot be undone.",
-        "delete_account_confirm": "Yes, I'm sure"
+        "delete_account_confirm": "Yes, I'm sure",
+        "missing_note": "Do you want to save these thoughts to your journal? 💭",
+        "missing_note_confirm": "Yes, save"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -119,6 +121,8 @@ const translationsJSON = `{
         "delete_account_success": "Ваш обліковий запис та дані успішно видалено. Сподіваємося побачити вас знову! 🚀",
         "delete_account_telegram_tip": "Щоб видалити всі повідомлення з чату, ви можете використати опцію 'Очистити історію чату' у налаштуваннях додатка Telegram.",
         "delete_account_are_you_sure": "Ви впевнені, що хочете видалити свій обліковий запис та всі дані? Цю дію неможливо буде скасувати.",
-        "delete_account_confirm": "Так! Видалити"
+        "delete_account_confirm": "Так! Видалити",
+        "missing_note": "Бажаєте зберегти ці думки у свій журнал? 💭",
+        "missing_note_confirm": "Так, зберегти"
     }
 }`

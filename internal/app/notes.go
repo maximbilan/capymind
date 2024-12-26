@@ -17,8 +17,7 @@ func startNote(session *Session) {
 }
 
 // Finish typing a note
-func finishNote(session *Session) {
-	text := *session.Job.Input
+func finishNote(text string, session *Session) {
 	saveNote(text, session)
 	setOutputText("finish_note", session)
 
@@ -28,6 +27,23 @@ func finishNote(session *Session) {
 	}
 
 	session.User.IsTyping = false
+}
+
+func handleMissingNote(session *Session) {
+	text := *session.Job.Input
+	// remove the command from the text at the beginning
+	text = text[len(MissingNote):]
+
+	finishNote(text, session)
+}
+
+func handleInputWithoutCommand(session *Session) {
+	var saveButton botservice.BotResultTextButton = botservice.BotResultTextButton{
+		TextID:   "missing_note_confirm",
+		Locale:   session.Locale(),
+		Callback: fmt.Sprintf("%s %s", string(MissingNote), *session.Job.Input),
+	}
+	setOutputTextWithButtons("missing_note", []botservice.BotResultTextButton{saveButton}, session)
 }
 
 // Handle the note command
