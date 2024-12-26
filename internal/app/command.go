@@ -18,6 +18,7 @@ const (
 
 	// Hidden user commands
 	Timezone       Command = "/timezone"
+	DownloadData   Command = "/download_data"
 	Support        Command = "/support"
 	NoteCount      Command = "/note_count"      // Count of the current user notes
 	SleepAnalysis  Command = "/sleep_analysis"  // Sleep analysis of last note

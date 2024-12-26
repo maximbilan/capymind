@@ -13,5 +13,11 @@ func handleSettings(session *Session) {
 		Locale:   session.Locale(),
 		Callback: string(Timezone),
 	}
-	setOutputTextWithButtons("settings_descr", []botservice.BotResultTextButton{languageButton, timezoneButton}, session)
+	var downloadDataButton botservice.BotResultTextButton = botservice.BotResultTextButton{
+		TextID:   "download_all_notes",
+		Locale:   session.Locale(),
+		Callback: string(DownloadData),
+	}
+
+	setOutputTextWithButtons("settings_descr", []botservice.BotResultTextButton{languageButton, timezoneButton, downloadDataButton}, session)
 }
