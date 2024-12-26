@@ -12,9 +12,13 @@ type Note struct {
 
 type NoteStorage interface {
 	NewNote(ctx *context.Context, user User, note Note) error
+
 	LastNote(ctx *context.Context, userID string) (*Note, error)
 	GetNotesForLastWeek(ctx *context.Context, userID string) ([]Note, error)
 	GetNotes(ctx *context.Context, userID string, count int) ([]Note, error)
 	GetAllNotes(ctx *context.Context, userID string) ([]Note, error)
+
 	NotesCount(ctx *context.Context, userID string) (int64, error)
+
+	DeleteAllNotes(ctx *context.Context, userID string) error
 }

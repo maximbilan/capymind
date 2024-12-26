@@ -52,7 +52,8 @@ const translationsJSON = `{
         "download_all_notes": "Download all notes 📥",
         "download_all_notes_waiting": "Your notes are being prepared for download. Please wait a moment ⏳",
         "download_all_notes_error": "An error occurred while preparing your notes for download. Please try again later 🕒",
-        "download_all_notes_empty": "You don't have any notes to download yet. Start by sharing your thoughts and feelings with CapyMind."
+        "download_all_notes_empty": "You don't have any notes to download yet. Start by sharing your thoughts and feelings with CapyMind.",
+        "delete_account": "Delete account & data 🗑️"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -105,6 +106,7 @@ const translationsJSON = `{
         "download_all_notes": "Завантажити всі записи 📥",
         "download_all_notes_waiting": "Ваші записи готуються для завантаження. Будь ласка, зачекайте ⏳",
         "download_all_notes_error": "Під час підготовки ваших записів для завантаження виникла помилка. Будь ласка, спробуйте ще раз пізніше 🕒",
-        "download_all_notes_empty": "У вас ще немає записів для завантаження. Почніть, поділившись своїми думками та почуттями з CapyMind."
+        "download_all_notes_empty": "У вас ще немає записів для завантаження. Почніть, поділившись своїми думками та почуттями з CapyMind.",
+        "delete_account": "Видалити обліковий запис та дані 🗑️"
     }
 }`
