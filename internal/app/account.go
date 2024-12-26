@@ -8,7 +8,10 @@ import (
 	"time"
 
 	"github.com/capymind/internal/database"
+	"github.com/capymind/third_party/googledrive"
 )
+
+var fileStorage googledrive.GoogleDrive
 
 func handleDownloadData(session *Session) {
 	sendMessage("download_all_notes_waiting", session)
@@ -27,7 +30,7 @@ func handleDownloadData(session *Session) {
 	}
 
 	// create a ZIP file with all notes
-	zipFile, err := createZipFile(notes)
+	zipFile, err := createZipFile(userID, notes)
 	if err != nil {
 		log.Printf("[Bot] Error creating ZIP file, %s", err.Error())
 		setOutputText("download_all_notes_error", session)
@@ -35,18 +38,26 @@ func handleDownloadData(session *Session) {
 	}
 	if zipFile != nil {
 		// Upload the ZIP file to Google Drive
+		link := fileStorage.Upload(zipFile.Name(), time.Now().Add(7*24*time.Hour))
+		if link != nil {
+			setOutputText(*link, session)
+		} else {
+			setOutputText("download_all_notes_error", session)
+		}
+		zipFile.Close()
 	} else {
 		setOutputText("download_all_notes_error", session)
 	}
 }
 
-func createZipFile(notes []database.Note) (*os.File, error) {
-	zipFileName := fmt.Sprintf("notes_%s.zip", time.Now().Format("2006-01-02_15-04-05"))
+// Create a ZIP file with all notes
+// Attention: zipFile must be closed after use
+func createZipFile(userID string, notes []database.Note) (*os.File, error) {
+	zipFileName := fmt.Sprintf("notes_%s_%s.zip", userID, time.Now().Format("2006-01-02_15-04-05"))
 	zipFile, err := os.Create(zipFileName)
 	if err != nil {
 		return nil, err
 	}
-	defer zipFile.Close()
 
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
