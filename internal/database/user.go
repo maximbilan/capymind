@@ -23,5 +23,6 @@ type User struct {
 type UserStorage interface {
 	GetUser(ctx *context.Context, userID string) (*User, error)
 	SaveUser(ctx *context.Context, user User) error
+	DeleteUser(ctx *context.Context, userID string) error
 	ForEachUser(ctx *context.Context, callback func([]User) error) error
 }

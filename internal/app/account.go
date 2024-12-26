@@ -89,13 +89,13 @@ func handleDeleteAccount(session *Session) {
 		return
 	}
 
-	// // Delete the user
-	// err = userStorage.DeleteUser(session.Context, userID)
-	// if err != nil {
-	// 	log.Printf("[Bot] Error deleting user from firestore, %s", err.Error())
-	// 	setOutputText("delete_account_error", session)
-	// 	return
-	// }
+	// Delete the user
+	err = userStorage.DeleteUser(session.Context, userID)
+	if err != nil {
+		log.Printf("[Bot] Error deleting user from firestore, %s", err.Error())
+		setOutputText("delete_account_error", session)
+		return
+	}
 
 	setOutputText("delete_account_success", session)
 }

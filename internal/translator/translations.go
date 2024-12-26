@@ -53,8 +53,10 @@ const translationsJSON = `{
         "download_all_notes_waiting": "Your notes are being prepared for download. Please wait a moment ⏳",
         "download_all_notes_error": "An error occurred while preparing your notes for download. Please try again later 🕒",
         "download_all_notes_empty": "You don't have any notes to download yet. Start by sharing your thoughts and feelings with CapyMind.",
-        "delete_account": "Delete account & data 🗑️"
-    },
+        "delete_account": "Delete account & data 🗑️",
+        "delete_account_waiting": "Deleting your account and data. Please wait a moment ⏳",
+        "delete_account_error": "An error occurred while deleting your account and data. Please try again later 🕒",
+        "delete_account_success": "Your account and data have been successfully deleted. We hope to see you again soon! 🚀"
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
         "welcome_onboarding": "Ласкаво просимо до CapyMind 👋 Перед початком давайте налаштуємо ваші параметри 🙂",
@@ -107,6 +109,9 @@ const translationsJSON = `{
         "download_all_notes_waiting": "Ваші записи готуються для завантаження. Будь ласка, зачекайте ⏳",
         "download_all_notes_error": "Під час підготовки ваших записів для завантаження виникла помилка. Будь ласка, спробуйте ще раз пізніше 🕒",
         "download_all_notes_empty": "У вас ще немає записів для завантаження. Почніть, поділившись своїми думками та почуттями з CapyMind.",
-        "delete_account": "Видалити обліковий запис та дані 🗑️"
+        "delete_account": "Видалити обліковий запис та дані 🗑️",
+        "delete_account_waiting": "Видаляємо ваш обліковий запис та дані. Будь ласка, зачекайте ⏳",
+        "delete_account_error": "Під час видалення вашого облікового запису та даних виникла помилка. Будь ласка, спробуйте ще раз пізніше 🕒",
+        "delete_account_success": "Ваш обліковий запис та дані успішно видалено. Сподіваємося побачити вас знову! 🚀"
     }
 }`

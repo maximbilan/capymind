@@ -27,6 +27,12 @@ func (storage UserStorage) SaveUser(ctx *context.Context, user database.User) er
 	return err
 }
 
+// Delete a user from the database
+func (storage UserStorage) DeleteUser(ctx *context.Context, userID string) error {
+	_, err := client.Collection(database.Users.String()).Doc(userID).Delete(*ctx)
+	return err
+}
+
 // Iterate over all users
 func (storage UserStorage) ForEachUser(ctx *context.Context, callback func([]database.User) error) error {
 	var lastDoc *firestore.DocumentSnapshot
