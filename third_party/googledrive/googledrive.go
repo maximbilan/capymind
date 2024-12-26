@@ -49,6 +49,7 @@ func (googleDrive GoogleDrive) Upload(title string, filePath string, expirationD
 	defer file.Close()
 
 	driveFile := &drive.File{
+		Name:    title,
 		Parents: []string{"root"},
 	}
 
