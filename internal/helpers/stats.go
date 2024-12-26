@@ -75,9 +75,9 @@ func GetStats(ctx *context.Context, locale translator.Locale) []string {
 
 func PrepareFeedback(ctx *context.Context, locale translator.Locale) []string {
 	var array []string
-	array = append(array, "\n")
+	array = append(array, "")
 	array = append(array, translator.Translate(locale, "feedback_last_week"))
-	array = append(array, "\n")
+	array = append(array, "")
 
 	feedback, err := feedbackStorage.GetFeedbackForLastWeek(ctx)
 	if err != nil {
