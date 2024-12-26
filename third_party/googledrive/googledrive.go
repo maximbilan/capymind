@@ -32,7 +32,7 @@ func create(ctx context.Context) (*drive.Service, error) {
 	return srv, nil
 }
 
-func (googleDrive GoogleDrive) Upload(filePath string, expirationDate time.Time) *string {
+func (googleDrive GoogleDrive) Upload(title string, filePath string, expirationDate time.Time) *string {
 	ctx := context.Background()
 
 	srv, err := create(ctx)

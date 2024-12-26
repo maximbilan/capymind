@@ -38,7 +38,8 @@ func handleDownloadData(session *Session) {
 	}
 	if zipFile != nil {
 		// Upload the ZIP file to Google Drive
-		link := fileStorage.Upload(zipFile.Name(), time.Now().Add(7*24*time.Hour))
+		title := fmt.Sprintf("Notes %s", userID)
+		link := fileStorage.Upload(title, zipFile.Name(), time.Now().Add(7*24*time.Hour))
 		if link != nil {
 			setOutputText(*link, session)
 		} else {
