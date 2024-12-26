@@ -75,19 +75,21 @@ func GetStats(ctx *context.Context, locale translator.Locale) []string {
 
 func PrepareFeedback(ctx *context.Context, locale translator.Locale) []string {
 	var array []string
-	array = append(array, "")
-	array = append(array, translator.Translate(locale, "feedback_last_week"))
-	array = append(array, "")
 
 	feedback, err := feedbackStorage.GetFeedbackForLastWeek(ctx)
 	if err != nil {
 		log.Printf("[Bot] Error getting feedbacks from firestore, %s", err.Error())
+		return array
 	}
 
 	if len(feedback) == 0 {
-		array = append(array, translator.Translate(locale, "no_feedback"))
+		// No feedback
 		return array
 	}
+
+	array = append(array, "")
+	array = append(array, translator.Translate(locale, "feedback_last_week"))
+	array = append(array, "")
 
 	for _, f := range feedback {
 		array = append(array, *f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n")
