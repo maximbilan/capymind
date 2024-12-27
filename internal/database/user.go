@@ -27,3 +27,12 @@ type UserStorage interface {
 	DeleteUser(ctx *context.Context, userID string) error
 	ForEachUser(ctx *context.Context, callback func([]User) error) error
 }
+
+// returns true if the user is active (User.timestamp less than 7 days)
+func (u User) IsActive() bool {
+	if u.Timestamp == nil {
+		return false
+	}
+	sevenDaysAgo := time.Now().AddDate(0, 0, -7)
+	return u.Timestamp.After(sevenDaysAgo)
+}
