@@ -42,6 +42,8 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	switch messageType {
 	case taskservice.Morning, taskservice.Evening:
 		message = taskservice.GetMessage(messageType, time.Now().Weekday())
+	case taskservice.Feedback:
+		message = ""
 	case taskservice.WeeklyAnalysis, taskservice.UserStats, taskservice.AdminStats:
 		// Personalized for each user
 		message = ""
@@ -176,6 +178,18 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 			TextID:   "make_record_to_journal",
 			Locale:   msg.Locale,
 			Callback: "/note",
+		}
+		result := botservice.BotResult{
+			TextID:  msg.Text,
+			Locale:  msg.Locale,
+			Buttons: []botservice.BotResultTextButton{button},
+		}
+		bot.SendResult(msg.ChatID, result)
+	case taskservice.Feedback:
+		var button botservice.BotResultTextButton = botservice.BotResultTextButton{
+			TextID:   "feedback_button",
+			Locale:   msg.Locale,
+			Callback: "/feedback",
 		}
 		result := botservice.BotResult{
 			TextID:  msg.Text,
