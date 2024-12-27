@@ -118,6 +118,11 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 			return
 		}
 	} else if messageType == taskservice.UserStats {
+		// Send only to active users
+		if !user.IsActive() {
+			return
+		}
+
 		count, err := noteStorage.NotesCount(ctx, user.ID)
 		if err != nil {
 			log.Printf("[Scheduler] Error getting notes count from firestore, %s", err.Error())
