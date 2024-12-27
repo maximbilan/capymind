@@ -17,22 +17,6 @@ CapyMind is a personal mental health journal designed to help you track your tho
 5. `chmod +x ./scripts/setup_telegram.bot.sh`
 6. `./scripts/setup_telegram.bot.sh` (Set up a Telegram token)
 
-# How to set up GCloud service account
+# Scripts
 
-1. `chmod +x ./scripts/setup_gcloud_access.sh`
-2. `./scripts/setup_gcloud_access.sh`
-
-# How to deploy cloud functions
-
-1. `chmod +x ./scripts/deploy_functions.sh`
-2. `./scripts/deploy_functions.sh`
-
-# How to localize Telegram Bot description (short and full)
-
-1. `chmod +x ./scripts/localize_telegram_bot.sh`
-2. `./scripts/localize_telegram_bot.sh`
-
-# How to schedule (cron) jobs to send Morning and Evening messages + Weekly Analysis
-
-1. `chmod +x ./scripts/schedule_jobs.sh`
-2. `./scripts/schedule_jobs.sh`
+More information <a href="./docs/SCRIPTS.md">here</a>
