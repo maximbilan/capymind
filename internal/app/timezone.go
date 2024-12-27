@@ -43,7 +43,7 @@ func requestTimezone(session *Session) {
 	for _, tz := range timeZones {
 		callback := string(Timezone) + " " + tz.Parameter()
 		button := botservice.BotResultTextButton{
-			TextID:   tz.String(),
+			TextID:   tz.Description,
 			Locale:   session.Locale(),
 			Callback: callback,
 		}
