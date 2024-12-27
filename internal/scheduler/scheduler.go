@@ -43,7 +43,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	case taskservice.Morning, taskservice.Evening:
 		message = taskservice.GetMessage(messageType, time.Now().Weekday())
 	case taskservice.Feedback:
-		message = ""
+		message = "ask_write_review_about_bot"
 	case taskservice.WeeklyAnalysis, taskservice.UserStats, taskservice.AdminStats:
 		// Personalized for each user
 		message = ""
