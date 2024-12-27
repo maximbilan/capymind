@@ -1,6 +1,6 @@
 # Setup
 
-Run `chmod +x <path to script> before running
+Run `chmod +x <path to script>` before running
 
 # Set up GCloud service account
 
