@@ -7,46 +7,20 @@ import (
 
 type TimeZoneInfo struct {
 	Offset         int    // UTC offset in hours
-	Description    string // Major cities or countries in this time zone
+	Description    string // ex. "GMT +1"
 	SecondsFromUTC int    // Seconds from UTC
 }
 
 // Return a list of time zones
 func GetTimeZones() []TimeZoneInfo {
-	timezoneMap := map[int]string{
-		-12: "Baker Island",
-		-11: "American Samoa, Niue",
-		-10: "Hawaii, Tahiti",
-		-9:  "Alaska",
-		-8:  "Los Angeles, Vancouver, Tijuana",
-		-7:  "Denver, Phoenix, Calgary",
-		-6:  "Mexico City, Chicago, Guatemala",
-		-5:  "New York, Toronto, Lima",
-		-4:  "Caracas, La Paz, Manaus",
-		-3:  "Buenos Aires, São Paulo",
-		-2:  "South Georgia and the South Sandwich Islands",
-		-1:  "Azores, Cape Verde",
-		0:   "London, Dublin, Lisbon",
-		1:   "Berlin, Paris, Rome",
-		2:   "Athens, Cairo, Jerusalem",
-		3:   "Kyiv, Istanbul, Helsinki",
-		4:   "Dubai, Baku",
-		5:   "Karachi, Tashkent",
-		6:   "Almaty, Dhaka",
-		7:   "Bangkok, Jakarta",
-		8:   "Beijing, Singapore, Perth",
-		9:   "Tokyo, Seoul",
-		10:  "Sydney, Guam",
-		11:  "Solomon Islands, New Caledonia",
-		12:  "Fiji, Marshall Islands",
-	}
+	gmtValues := []int{-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}
 
 	var timeZones []TimeZoneInfo
-	for offset, description := range timezoneMap {
+	for _, value := range gmtValues {
 		timeZones = append(timeZones, TimeZoneInfo{
-			Offset:         offset,
-			Description:    description,
-			SecondsFromUTC: offset * 3600,
+			Offset:         value,
+			Description:    fmt.Sprintf("GMT %+d", value),
+			SecondsFromUTC: value * 3600,
 		})
 	}
 
@@ -55,11 +29,6 @@ func GetTimeZones() []TimeZoneInfo {
 	})
 
 	return timeZones
-}
-
-// Return the time zone info as a string. Example: "UTC -9 - Alaska"
-func (info TimeZoneInfo) String() string {
-	return fmt.Sprintf("UTC %+d - %s", info.Offset, info.Description)
 }
 
 // Return the time zone info as a parameter. Example: "-25200"

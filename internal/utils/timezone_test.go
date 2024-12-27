@@ -22,10 +22,6 @@ func TestTimeZones(t *testing.T) {
 		t.Fatalf("Expected 43200, got %d", list[24].SecondsFromUTC)
 	}
 
-	if list[3].String() != "UTC -9 - Alaska" {
-		t.Fatalf("Expected UTC -9 - Alaska, got %s", list[3].String())
-	}
-
 	if list[5].Parameter() != "-25200" {
 		t.Fatalf("Expected -7, got %s", list[5].Parameter())
 	}
