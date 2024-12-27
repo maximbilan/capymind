@@ -9,6 +9,7 @@ JOB2="schedule-evening-messages"
 JOB3="schedule-weekly-analysis"
 JOB4="schedule-motivational-messages"
 JOB5="schedule-admin-stats"
+JOB6="schedule-feedback"
 
 JOBS=($JOB1 $JOB2 $JOB3 $JOB4)
 
@@ -54,6 +55,14 @@ gcloud scheduler jobs create http $JOB5 \
   --project $PROJECT_ID \
   --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME?type=admin_stats&offset=10" \
   --schedule="0 0 * * 5" \
+  --http-method=GET \
+  --location=$REGION
+
+# Every Friday third week of the month
+gcloud scheduler jobs create http $JOB6 \
+  --project $PROJECT_ID \
+  --uri="https://$REGION-$PROJECT_ID.cloudfunctions.net/$FUNCTION_NAME?type=feedback&offset=10" \
+  --schedule="0 0 15-21 * 5" \
   --http-method=GET \
   --location=$REGION
 
