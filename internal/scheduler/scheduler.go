@@ -189,7 +189,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 			TextID:   "feedback_button",
 			Locale:   msg.Locale,
-			Callback: "/feedback",
+			Callback: "/support",
 		}
 		result := botservice.BotResult{
 			TextID:  msg.Text,
