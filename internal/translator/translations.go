@@ -61,7 +61,9 @@ const translationsJSON = `{
         "delete_account_are_you_sure": "Are you sure you want to delete your account and all data? This action cannot be undone.",
         "delete_account_confirm": "Yes, I'm sure",
         "missing_note": "Do you want to save these thoughts to your journal? 💭",
-        "missing_note_confirm": "Yes, save"
+        "missing_note_confirm": "Yes, save",
+        "ask_write_review_about_bot": "Enjoying CapyMind? Share your experience with others by writing a review! 🚀",
+        "feedback_button": "Write a review ✍️"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -123,6 +125,8 @@ const translationsJSON = `{
         "delete_account_are_you_sure": "Ви впевнені, що хочете видалити свій обліковий запис та всі дані? Цю дію неможливо буде скасувати.",
         "delete_account_confirm": "Так! Видалити",
         "missing_note": "Бажаєте зберегти ці думки у свій журнал? 💭",
-        "missing_note_confirm": "Так, зберегти"
+        "missing_note_confirm": "Так, зберегти",
+        "ask_write_review_about_bot": "Вам подобається CapyMind? Поділіться своїм досвідом з іншими, написавши відгук! 🚀",
+        "feedback_button": "Написати відгук ✍️"
     }
 }`

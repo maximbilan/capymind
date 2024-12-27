@@ -11,6 +11,7 @@ const (
 	WeeklyAnalysis MessageType = "weekly_analysis"
 	UserStats      MessageType = "user_stats"
 	AdminStats     MessageType = "admin_stats"
+	Feedback       MessageType = "feedback"
 )
 
 func GetMessage(messageType MessageType, weekday time.Weekday) string {
