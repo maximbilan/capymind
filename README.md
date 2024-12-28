@@ -2,6 +2,16 @@
 
 CapyMind is a personal mental health journal designed to help you track your thoughts, emotions, and progress over time. By offering a simple and secure platform to make journal entries, set reminders, and receive personalized therapy insights, CapyMind empowers you to reflect on your mental well-being. With support for multiple languages and time zones, it fits seamlessly into your daily routine, providing a personalized space for self-reflection and growth.
 
+# Screenshots
+
+<table>
+  <tr>
+    <td><img src="assets/screen1.jpeg" alt="Image 1" width="300"/></td>
+    <td><img src="assets/screen2.jpeg" alt="Image 2" width="300"/></td>
+    <td><img src="assets/screen3.jpeg" alt="Image 3" width="300"/></td>
+  </tr>
+</table>
+
 # Prerequisites
 
 1. Install Go
