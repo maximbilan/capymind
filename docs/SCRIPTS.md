@@ -20,9 +20,10 @@ Run `./scripts/schedule_jobs.sh`
 
 ## Bump version
 
-Run `./scripts/bump_version.sh` (patching ex. 1.0.7 -> 1.0.8)
-Parameters:
-    `--minor` - ex. 1.0.7 -> 1.1.0
+Run `./scripts/bump_version.sh` (patching ex. 1.0.7 -> 1.0.8)<br/>
+
+Parameters:<br/>
+    `--minor` ex. 1.0.7 -> 1.1.0<br/>
 
 To get current version, run `./scripts/get_version.sh`
 
