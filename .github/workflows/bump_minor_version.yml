@@ -1,4 +1,5 @@
 name: Bump Minor Version
+description: This workflow bumps the minor version of the project ex. 1.0.0 -> 1.1.0
 
 on:
   workflow_dispatch:

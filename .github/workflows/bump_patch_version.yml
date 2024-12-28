@@ -1,4 +1,5 @@
 name: Bump Patch Version
+description: This workflow bumps the patch version of the project ex. 1.0.0 -> 1.0.1
 
 on:
   workflow_dispatch:

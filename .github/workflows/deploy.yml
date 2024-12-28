@@ -1,4 +1,5 @@
 name: Deploy Functions
+description: This workflow deploys the Google Cloud Functions
 
 on:
   workflow_dispatch:

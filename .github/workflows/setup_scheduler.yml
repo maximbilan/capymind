@@ -1,4 +1,5 @@
 name: Setup Message Scheduler
+description: This workflow sets up the Google Cloud Scheduler to send messages
 
 on:
   workflow_dispatch:

@@ -1,4 +1,5 @@
 name: Localize Telegram Bot
+description: This workflow localizes the Telegram Bot (commands, descriptions, etc.)
 
 on:
   workflow_dispatch:
