@@ -21,7 +21,7 @@ func (storage AdminStorage) GetTotalUserCount(ctx *context.Context) (int64, erro
 func (storage AdminStorage) GetActiveUserCount(ctx *context.Context) (int64, error) {
 	sevenDaysAgo := time.Now().AddDate(0, 0, -7)
 	filter := func(query firestore.Query) firestore.Query {
-		return query.Where("timestamp", ">", sevenDaysAgo)
+		return query.Where("Timestamp", ">", sevenDaysAgo)
 	}
 	return getTotalRecordsCount(ctx, database.Users.String(), filter)
 }
