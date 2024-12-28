@@ -12,20 +12,62 @@ CapyMind is a personal mental health journal designed to help you track your tho
   </tr>
 </table>
 
-# Prerequisites
+# Reference
+
+
+# Commands
+
+## User commands
+```
+/start - Start the bot
+/why - Tells the purpose of the bot
+/note - Add a new note
+/last - Get the last note
+/analysis - Get the analysis of the last notes
+/language - Change the language
+/settings - Show the settings
+/help - Show the help
+/version - Show the version
+```
+
+## Hidden user commands
+```
+/missing_note - Ask to put a note from the previous text
+/timezone - Change the timezone
+/download_data - Download the user data (all notes)
+/delete_account - Ask to delete the account
+/force_delete_account - Force delete the account
+/support - Give feedback or ask for support
+/note_count - Count of the current user notes
+/sleep_analysis - Sleep analysis of last note
+/weekly_analysis - Weekly analysis of the user's journal entries for last week
+```
+
+## Admin commands
+```
+/total_user_count - Get the total number of users
+/total_active_user_count - Get the number of active users
+/total_note_count - Get the total number of notes
+/feedback_last_week - Get the feedback from the last week
+/stats - Get the stats (total number of users, active users, notes, feedback)
+```
+
+# Building
+
+## Prerequisites
 
 1. Install Go
 2. VSCode or other editors
 3. ngrok or other tunnels
 
-# How to run locally
+## How to run locally
 
 1. `go build`
-2. `go run cmd/main.go` to run the server
-3. Start `ngrok` or other tunnel
-4. Set up `CAPY_CLOUD_FUNCTION_URL` as a env variable with the tunnel url
-5. `chmod +x ./scripts/setup_telegram.bot.sh`
-6. `./scripts/setup_telegram.bot.sh` (Set up a Telegram token)
+2. Start `ngrok` or other tunnel
+3. Set up `CAPY_CLOUD_FUNCTION_URL` as a env variable with the tunnel url
+4. `chmod +x ./scripts/setup_telegram.bot.sh`
+5. `./scripts/setup_telegram.bot.sh` (Set up a Telegram token)
+6. `go run cmd/main.go` to run the server
 
 # Scripts
 
