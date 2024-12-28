@@ -6,33 +6,33 @@ type Command string
 
 const (
 	// User commands
-	Start       Command = "/start"
-	Why         Command = "/why"
-	Note        Command = "/note"
-	MissingNote Command = "/missing_note"
-	Last        Command = "/last"
-	Analysis    Command = "/analysis"
-	Language    Command = "/language"
-	Settings    Command = "/settings"
-	Help        Command = "/help"
-	Version     Command = "/version"
+	Start    Command = "/start"    // Start the bot
+	Why      Command = "/why"      // Tells the purpose of the bot
+	Note     Command = "/note"     // Add a new note
+	Last     Command = "/last"     // Get the last note
+	Analysis Command = "/analysis" // Get the analysis of the last notes
+	Language Command = "/language" // Change the language
+	Settings Command = "/settings" // Show the settings
+	Help     Command = "/help"     // Show the help
+	Version  Command = "/version"  // Show the version
 
 	// Hidden user commands
-	Timezone           Command = "/timezone"
-	DownloadData       Command = "/download_data"
-	DeleteAccount      Command = "/delete_account"
-	ForceDeleteAccount Command = "/force_delete_account"
-	Support            Command = "/support"
-	NoteCount          Command = "/note_count"      // Count of the current user notes
-	SleepAnalysis      Command = "/sleep_analysis"  // Sleep analysis of last note
-	WeeklyAnalysis     Command = "/weekly_analysis" // Weekly analysis of the user's journal entries for last week
+	MissingNote        Command = "/missing_note"         // Ask to put a note from the previous text
+	Timezone           Command = "/timezone"             // Change the timezone
+	DownloadData       Command = "/download_data"        // Download the user data (all notes)
+	DeleteAccount      Command = "/delete_account"       // Ask to delete the account
+	ForceDeleteAccount Command = "/force_delete_account" // Force delete the account
+	Support            Command = "/support"              // Give feedback or ask for support
+	NoteCount          Command = "/note_count"           // Count of the current user notes
+	SleepAnalysis      Command = "/sleep_analysis"       // Sleep analysis of last note
+	WeeklyAnalysis     Command = "/weekly_analysis"      // Weekly analysis of the user's journal entries for last week
 
 	// Admin commands
-	TotalUserCount       Command = "/total_user_count"
-	TotalActiveUserCount Command = "/total_active_user_count"
-	TotalNoteCount       Command = "/total_note_count"
-	FeedbackLastWeek     Command = "/feedback_last_week"
-	Stats                Command = "/stats"
+	TotalUserCount       Command = "/total_user_count"        // Get the total number of users
+	TotalActiveUserCount Command = "/total_active_user_count" // Get the number of active users
+	TotalNoteCount       Command = "/total_note_count"        // Get the total number of notes
+	FeedbackLastWeek     Command = "/feedback_last_week"      // Get the feedback from the last week
+	Stats                Command = "/stats"                   // Get the stats (total number of users, active users, notes, feedback)
 
 	// Empty command
 	None Command = "" // No command, just plain text
