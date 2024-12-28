@@ -57,15 +57,14 @@ CapyMind is a personal mental health journal designed to help you track your tho
 
 ## Prerequisites
 
-1. Install Go
-2. VSCode or other editors
-3. ngrok or other tunnels
+1. Install `Go`
+2. Tunnel ex. `ngrok`
 
 ## How to run locally
 
 1. `go build`
-2. Start `ngrok` or other tunnel
-3. Set up `CAPY_CLOUD_FUNCTION_URL` as a env variable with the tunnel url
+2. Run `ngrok` or other tunnel
+3. Set up `CAPY_CLOUD_FUNCTION_URL` as a ENV variable with the tunnel url
 4. `chmod +x ./scripts/setup_telegram.bot.sh`
 5. `./scripts/setup_telegram.bot.sh` (Set up a Telegram token)
 6. `go run cmd/main.go` to run the server
