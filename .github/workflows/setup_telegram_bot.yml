@@ -1,4 +1,5 @@
 name: Setup Telegram Bot
+description: This workflow sets up the Telegram Bot (webhook)
 
 on:
   workflow_dispatch:
