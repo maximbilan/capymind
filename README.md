@@ -14,6 +14,7 @@ CapyMind is a personal mental health journal designed to help you track your tho
 
 # Reference
 
+<a href="t.me/capymind_bot">capymind</a> is deployed as a telegram bot.
 
 # Commands
 
