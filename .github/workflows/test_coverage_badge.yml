@@ -7,7 +7,7 @@ on:
       - 'main'
 
 jobs:
-  build-and-test:
+  test-and-generate-coverage-badge:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
     - name: Run script file
       run: |
          chmod +x ./scripts/test_coverage_badge.sh
-         ./test_coverage_badge.sh
+         ./scripts/test_coverage_badge.sh
       shell: bash
 
     - name: Commit Badge to Main Branch
