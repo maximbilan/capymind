@@ -26,3 +26,15 @@ func TestTimeZones(t *testing.T) {
 		t.Fatalf("Expected -7, got %s", list[5].Parameter())
 	}
 }
+
+func TestStr(t *testing.T) {
+	info := TimeZoneInfo{
+		Offset:         1,
+		Description:    "GMT +1",
+		SecondsFromUTC: 3600,
+	}
+
+	if info.Parameter() != "3600" {
+		t.Fatalf("Expected 3600, got %s", info.Parameter())
+	}
+}
