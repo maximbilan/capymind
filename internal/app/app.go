@@ -8,7 +8,7 @@ import (
 
 // Entry point
 func Parse(w http.ResponseWriter, r *http.Request) {
-	update := bot.Parse(r)
+	update := bot.Parse(r.Body)
 	if update == nil {
 		log.Printf("[Bot] No update to process")
 		return
