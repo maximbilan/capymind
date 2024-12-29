@@ -7,7 +7,7 @@ import (
 	"github.com/capymind/internal/database"
 )
 
-func TestHelpCommand(t *testing.T) {
+func TestCommandExecution(t *testing.T) {
 	job := &Job{
 		Command: "/help",
 	}
