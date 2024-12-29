@@ -14,6 +14,7 @@ type Telegram struct{}
 
 var baseURL string
 
+//coverage:ignore
 func init() {
 	baseURL = "https://api.telegram.org/bot" + os.Getenv("CAPY_TELEGRAM_BOT_TOKEN")
 }
@@ -84,10 +85,12 @@ func (t Telegram) Parse(r *http.Request) *botservice.BotMessage {
 	return &message
 }
 
+//coverage:ignore
 func (t Telegram) SendMessage(chatID int64, text string) {
 	sendMessage(chatID, text, nil)
 }
 
+//coverage:ignore
 func (t Telegram) SendResult(chatID int64, result botservice.BotResult) {
 	// Prepare the reply markup
 	var replyMarkup *InlineKeyboardMarkup
@@ -108,6 +111,7 @@ func (t Telegram) SendResult(chatID int64, result botservice.BotResult) {
 	sendMessage(chatID, result.Text(), replyMarkup)
 }
 
+//coverage:ignore
 func sendMessage(chatID int64, text string, replyMarkup *InlineKeyboardMarkup) {
 	var url string = baseURL + "/sendMessage"
 
