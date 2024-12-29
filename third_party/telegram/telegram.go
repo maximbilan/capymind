@@ -22,15 +22,6 @@ func init() {
 
 // Parse an incoming update
 func (t Telegram) Parse(body io.ReadCloser) *botservice.BotMessage {
-
-	// print the request body
-	// reqBody, err := ioutil.ReadAll(r.Body)
-	// if err != nil {
-	// 	log.Printf("[Parse] Could not read incoming update %s", err.Error())
-	// 	return nil
-	// }
-	// log.Printf("[Parse] Request body: %s", reqBody)
-
 	var update Update
 	if err := json.NewDecoder(body).Decode(&update); err != nil {
 		log.Printf("[Parse] Could not decode incoming update %s", err.Error())
