@@ -1,3 +1,5 @@
+//coverage:ignore file
+
 package googledrive
 
 import (
