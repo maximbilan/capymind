@@ -37,3 +37,6 @@ jobs:
 
     - name: Display coverage
       run: go tool cover -func=coverage.out
+
+    - name: Update coverage report
+      uses: ncruces/go-coverage-report@v0
