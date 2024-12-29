@@ -2,5 +2,5 @@
   <rect width='60' height='20' fill='#555'/>
   <rect x='60' width='60' height='20' fill='#red'/>
   <text x='30' y='14' fill='#fff' font-family='Verdana' font-size='11' text-anchor='middle'>coverage</text>
-  <text x='90' y='14' fill='#fff' font-family='Verdana' font-size='11' text-anchor='middle'>10.3%</text>
+  <text x='90' y='14' fill='#fff' font-family='Verdana' font-size='11' text-anchor='middle'>10.8%</text>
 </svg>
