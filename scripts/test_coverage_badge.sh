@@ -1,6 +1,9 @@
 #!/bin/bash
 
-go test -coverprofile=coverage.out ./...
+go test -coverprofile coverage.out -covermode count -coverpkg=./... -v ./...
+go-ignore-cov --file coverage.out
+go tool cover -func=coverage.out
+
 COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
 
 COLOR="red"

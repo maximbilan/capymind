@@ -1,4 +1,4 @@
-//go:build !test
+//coverage:ignore file
 
 package capymind
 
