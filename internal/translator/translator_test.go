@@ -71,3 +71,33 @@ func TestFormattedTexts(t *testing.T) {
 		t.Errorf("Translate() = %v, want %v", got, want)
 	}
 }
+
+func TestPromptMethod(t *testing.T) {
+	locale1 := Locale("en")
+	locale2 := Locale("uk")
+
+	want := "Below is a list of my recent journal entries. Please provide feedback: "
+	if got := Prompt(locale1, "ai_weekly_analysis_user_message"); got != want {
+		t.Errorf("Prompt() = %v, want %v", got, want)
+	}
+
+	want = "Нижче наведено список моїх нещодавніх записів у журналі. Будь ласка, надайте відгук. Записи: "
+	if got := Prompt(locale2, "ai_weekly_analysis_user_message"); got != want {
+		t.Errorf("Prompt() = %v, want %v", got, want)
+	}
+}
+
+func TestSearchKeywordsMethod(t *testing.T) {
+	locale1 := Locale("en")
+	locale2 := Locale("uk")
+
+	want := []string{"dream", "dreams", "night", "sleep", "dreaming", "nightmare"}
+	if got := SearchKeywords(locale1, "dreams"); len(got) != len(want) {
+		t.Errorf("SearchKeywords() = %v, want %v", got, want)
+	}
+
+	want = []string{"сни", "сон", "сновидіння", "кошмари", "кошмар", "cні", "приснилось", "приснилося", "наснилось", "наснилося", "сниться", "снів", "снах", "снилось", "снилося", "сновидінь", "сновидіннях"}
+	if got := SearchKeywords(locale2, "dreams"); len(got) != len(want) {
+		t.Errorf("SearchKeywords() = %v, want %v", got, want)
+	}
+}
