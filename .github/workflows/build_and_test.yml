@@ -2,9 +2,6 @@ name: Build and Test
 description: This workflow builds and run tests on the project
 
 on:
-  push:
-    branches:
-      - 'main'
   pull_request:
     branches:
       - '**'

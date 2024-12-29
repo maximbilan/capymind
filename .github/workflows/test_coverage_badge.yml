@@ -1,0 +1,38 @@
+name: Test Coverage Badge
+description: This workflow generates a test coverage badge for the project
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
+        cache-dependency-path: go.sum
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Run script file
+      run: |
+         chmod +x ./scripts/test_coverage_badge.sh
+         ./test_coverage_badge.sh
+      shell: bash
+
+    - name: Commit Badge to Main Branch
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add ./.badges/test_coverage.svg
+        git commit -m "Update coverage badge"
+        git push
