@@ -1,6 +1,6 @@
 # capymind
 
-![capymind workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![build and test workflow](https://github.com/github/docs/actions/workflows/build_and_test.yml/badge.svg)
 
 CapyMind is a personal mental health journal designed to help you track your thoughts, emotions, and progress over time. By offering a simple and secure platform to make journal entries, set reminders, and receive personalized therapy insights, CapyMind empowers you to reflect on your mental well-being. With support for multiple languages and time zones, it fits seamlessly into your daily routine, providing a personalized space for self-reflection and growth.
 
