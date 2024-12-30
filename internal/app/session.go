@@ -70,7 +70,7 @@ func handleSession(session *Session) {
 	case Last:
 		handleLastNote(session)
 	case Analysis:
-		handleAnalysis(session)
+		handleAnalysis(session, noteStorage, aiService)
 	case Settings:
 		handleSettings(session)
 	case Language:
@@ -90,21 +90,21 @@ func handleSession(session *Session) {
 	case NoteCount:
 		handleNoteCount(session)
 	case DownloadData:
-		handleDownloadData(session)
+		handleDownloadData(session, noteStorage, fileStorage)
 	case DeleteAccount:
 		handleDeleteAccount(session)
 	case ForceDeleteAccount:
-		handleForceDeleteAccount(session)
+		handleForceDeleteAccount(session, noteStorage, userStorage)
 	case TotalUserCount:
-		handleTotalUserCount(session)
+		handleTotalUserCount(session, adminStorage)
 	case TotalActiveUserCount:
-		handleTotalActiveUserCount(session)
+		handleTotalActiveUserCount(session, adminStorage)
 	case TotalNoteCount:
-		handleTotalNoteCount(session)
+		handleTotalNoteCount(session, adminStorage)
 	case Stats:
 		handleStats(session)
 	case FeedbackLastWeek:
-		handleFeedbackLastWeek(session)
+		handleFeedbackLastWeek(session, feedbackStorage)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {

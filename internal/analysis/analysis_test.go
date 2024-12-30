@@ -4,24 +4,12 @@ import (
 	"context"
 	"testing"
 
+	"github.com/capymind/internal/mocks"
 	"github.com/capymind/internal/translator"
 )
 
-type validServiceMock struct{}
-
-func (service validServiceMock) Request(name string, description string, systemPrompt string, userPrompt string, ctx *context.Context) *string {
-	response := "valid response"
-	return &response
-}
-
-type invalidServiceMock struct{}
-
-func (service invalidServiceMock) Request(name string, description string, systemPrompt string, userPrompt string, ctx *context.Context) *string {
-	return nil
-}
-
 func TestValidAnalysis(t *testing.T) {
-	service := validServiceMock{}
+	service := mocks.ValidAIServiceMock{}
 	notes := []string{"note1", "note2", "note3"}
 	ctx := context.Background()
 	response := AnalyzeQuickly(service, notes, translator.EN, &ctx)
@@ -31,7 +19,7 @@ func TestValidAnalysis(t *testing.T) {
 }
 
 func TestInvalidAnalysis(t *testing.T) {
-	service := invalidServiceMock{}
+	service := mocks.InvalidAIServiceMock{}
 	notes := []string{"note1", "note2", "note3"}
 	ctx := context.Background()
 	response := AnalyzeQuickly(service, notes, translator.EN, &ctx)
@@ -41,7 +29,7 @@ func TestInvalidAnalysis(t *testing.T) {
 }
 
 func TestAnalysisWithHeader(t *testing.T) {
-	service := validServiceMock{}
+	service := mocks.ValidAIServiceMock{}
 	notes := []string{"note1", "note2", "note3"}
 	ctx := context.Background()
 	response := AnalyzeLastWeek(service, notes, translator.EN, &ctx)
@@ -51,7 +39,7 @@ func TestAnalysisWithHeader(t *testing.T) {
 }
 
 func TestAnalyzeSleep(t *testing.T) {
-	service := validServiceMock{}
+	service := mocks.ValidAIServiceMock{}
 	text := "I slept well last night"
 	ctx := context.Background()
 	response := AnalyzeSleep(service, text, translator.EN, &ctx)
