@@ -85,8 +85,14 @@ func TestHandleLastNoteHandler(t *testing.T) {
 
 	handleLastNote(session, noteStorage)
 
-	if session.Job.Output[0].TextID != "Here’s your most recent note 👇\n\nTest note" {
+	if session.Job.Output[0].TextID != "Here’s your most recent note 👇\n\nTest note ... dream" {
 		t.Error("Expected 'your_last_note', got", session.Job.Output[0].TextID)
+	}
+	if session.Job.Output[1].TextID != "do_you_want_sleep_analysis" {
+		t.Error("Expected 'do_you_want_sleep_analysis', got", session.Job.Output[1].TextID)
+	}
+	if session.Job.Output[1].Buttons[0].TextID != "sleep_analysis" {
+		t.Error("Expected 'sleep_analysis', got", session.Job.Output[1].Buttons[0].TextID)
 	}
 }
 
@@ -99,6 +105,54 @@ func TestHandleLastEmptyNoteHandler(t *testing.T) {
 	noteStorage := mocks.EmptyNoteStorageMock{}
 
 	handleLastNote(session, noteStorage)
+
+	if session.Job.Output[0].TextID != "no_notes" {
+		t.Error("Expected 'no_notes', got", session.Job.Output[0].TextID)
+	}
+}
+
+func TestHandleWeeklyAnalysisHandler(t *testing.T) {
+	user := &database.User{
+		ID: "test",
+	}
+	job := createJob("/weekly_analysis", user)
+	session := createSession(job, user, nil)
+	noteStorage := mocks.NoteStorageMock{}
+	aiService := mocks.ValidAIServiceMock{}
+
+	handleWeeklyAnalysis(session, noteStorage, aiService)
+
+	if session.Job.Output[0].TextID != "Weekly analysis 🧑‍⚕️\n\nvalid response" {
+		t.Error("Expected 'analysis_waiting', got", session.Job.Output[0].TextID)
+	}
+}
+
+func TestHandleWeeklyAnalysisEmptyNotesHandler(t *testing.T) {
+	user := &database.User{
+		ID: "test",
+	}
+	job := createJob("/weekly_analysis", user)
+	session := createSession(job, user, nil)
+	noteStorage := mocks.EmptyNoteStorageMock{}
+	aiService := mocks.ValidAIServiceMock{}
+
+	handleWeeklyAnalysis(session, noteStorage, aiService)
+
+	if session.Job.Output[0].TextID != "no_notes" {
+		t.Error("Expected 'no_notes', got", session.Job.Output[0].TextID)
+	}
+}
+
+func TestHandleWeeklyAnalysisEmptyAnalysisHandler(t *testing.T) {
+	user := &database.User{
+		ID: "test",
+	}
+	job := createJob("/weekly_analysis", user)
+	session := createSession(job, user, nil)
+	noteStorage := mocks.NoteStorageMock{}
+	aiService := mocks.InvalidAIServiceMock{}
+
+	handleWeeklyAnalysis(session, noteStorage, aiService)
 
 	if session.Job.Output[0].TextID != "no_notes" {
 		t.Error("Expected 'no_notes', got", session.Job.Output[0].TextID)

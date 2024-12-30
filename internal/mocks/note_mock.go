@@ -16,7 +16,7 @@ func (storage NoteStorageMock) NewNote(ctx *context.Context, user database.User,
 
 func (storage NoteStorageMock) LastNote(ctx *context.Context, userID string) (*database.Note, error) {
 	note := database.Note{
-		Text: "Test note",
+		Text: "Test note ... dream",
 	}
 	return &note, nil
 }
