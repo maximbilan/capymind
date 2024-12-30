@@ -5,7 +5,7 @@ import (
 )
 
 func handleStats(session *Session) {
-	stats := helpers.GetStats(session.Context, session.Locale())
+	stats := helpers.GetStats(session.Context, session.Locale(), adminStorage, feedbackStorage)
 
 	var finalString string
 	for _, stat := range stats {

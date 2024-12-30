@@ -12,5 +12,6 @@ var aiService openai.OpenAI
 // Use Firestore for the database
 var db firestore.Firestore
 var userStorage firestore.UserStorage
-var feedbackStorage firestore.FeedbackStorage
 var noteStorage firestore.NoteStorage
+var adminStorage firestore.AdminStorage
+var feedbackStorage firestore.FeedbackStorage

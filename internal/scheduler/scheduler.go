@@ -139,7 +139,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 		if !database.IsAdmin(user.Role) {
 			return
 		}
-		stats := helpers.GetStats(ctx, userLocale)
+		stats := helpers.GetStats(ctx, userLocale, adminStorage, feedbackStorage)
 
 		var finalString string
 		for _, stat := range stats {
