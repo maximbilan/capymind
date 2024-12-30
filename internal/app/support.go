@@ -12,14 +12,14 @@ func startFeedback(session *Session) {
 	session.User.IsTyping = true
 }
 
-func finishFeedback(session *Session) {
+func finishFeedback(session *Session, feedbackStorage database.FeedbackStorage) {
 	text := *session.Job.Input
-	saveFeedback(text, session)
+	saveFeedback(text, session, feedbackStorage)
 	setOutputText("finish_feedback", session)
 	session.User.IsTyping = false
 }
 
-func saveFeedback(text string, session *Session) {
+func saveFeedback(text string, session *Session, feedbackStorage database.FeedbackStorage) {
 	timestamp := time.Now()
 	var feedback = database.Feedback{
 		Text:      text,

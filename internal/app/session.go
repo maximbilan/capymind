@@ -112,7 +112,7 @@ func handleSession(session *Session) {
 			case Note:
 				finishNote(*session.Job.Input, session, noteStorage)
 			case Support:
-				finishFeedback(session)
+				finishFeedback(session, feedbackStorage)
 			default:
 				// If the user is typing and the last command is not recognized
 				handleHelp(session)
