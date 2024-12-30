@@ -9,10 +9,7 @@ import (
 
 	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
-	"github.com/capymind/third_party/googledrive"
 )
-
-var fileStorage googledrive.GoogleDrive
 
 func handleDownloadData(session *Session) {
 	sendMessage("download_all_notes_waiting", session)
