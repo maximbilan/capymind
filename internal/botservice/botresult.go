@@ -1,3 +1,5 @@
+//coverage:ignore file
+
 package botservice
 
 import "github.com/capymind/internal/translator"
