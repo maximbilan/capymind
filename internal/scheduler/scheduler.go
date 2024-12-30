@@ -16,11 +16,9 @@ import (
 	"github.com/capymind/internal/helpers"
 	"github.com/capymind/internal/taskservice"
 	"github.com/capymind/internal/translator"
-	"github.com/capymind/third_party/googletasks"
 )
 
 var wg sync.WaitGroup
-var tasks googletasks.GoogleTasks
 
 // Schedule a message for all users
 func Schedule(w http.ResponseWriter, r *http.Request) {
