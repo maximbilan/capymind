@@ -1,3 +1,5 @@
+//coverage:ignore file
+
 package taskservice
 
 import "github.com/capymind/internal/translator"

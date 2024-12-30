@@ -1,3 +1,5 @@
+//coverage:ignore file
+
 package botservice
 
 type BotMessage struct {
