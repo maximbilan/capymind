@@ -96,38 +96,48 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 
 // Send a message to a user
 func SendMessage(w http.ResponseWriter, r *http.Request) {
+	//coverage:ignore
 	var msg taskservice.ScheduledTask
 	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {
 		log.Printf("[Scheduler] Could not parse message %s", err.Error())
 		return
 	}
 
-	switch msg.Type {
+	result := prepareBotResult(msg)
+	bot.SendResult(msg.ChatID, result)
+	log.Printf("[Scheduler] Message sent to user: %d", msg.ChatID)
+}
+
+func prepareBotResult(scheduledTask taskservice.ScheduledTask) botservice.BotResult {
+	var result botservice.BotResult
+	switch scheduledTask.Type {
 	case taskservice.Morning, taskservice.Evening:
 		var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 			TextID:   "make_record_to_journal",
-			Locale:   msg.Locale,
+			Locale:   scheduledTask.Locale,
 			Callback: "/note",
 		}
-		result := botservice.BotResult{
-			TextID:  msg.Text,
-			Locale:  msg.Locale,
+		result = botservice.BotResult{
+			TextID:  scheduledTask.Text,
+			Locale:  scheduledTask.Locale,
 			Buttons: []botservice.BotResultTextButton{button},
 		}
-		bot.SendResult(msg.ChatID, result)
 	case taskservice.Feedback:
 		var button botservice.BotResultTextButton = botservice.BotResultTextButton{
 			TextID:   "feedback_button",
-			Locale:   msg.Locale,
+			Locale:   scheduledTask.Locale,
 			Callback: "/support",
 		}
-		result := botservice.BotResult{
-			TextID:  msg.Text,
-			Locale:  msg.Locale,
+		result = botservice.BotResult{
+			TextID:  scheduledTask.Text,
+			Locale:  scheduledTask.Locale,
 			Buttons: []botservice.BotResultTextButton{button},
 		}
-		bot.SendResult(msg.ChatID, result)
 	default:
-		bot.SendMessage(msg.ChatID, msg.Text)
+		result = botservice.BotResult{
+			TextID: scheduledTask.Text,
+			Locale: scheduledTask.Locale,
+		}
 	}
+	return result
 }
