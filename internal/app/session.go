@@ -104,7 +104,7 @@ func handleSession(session *Session) {
 	case Stats:
 		handleStats(session)
 	case FeedbackLastWeek:
-		handleFeedbackLastWeek(session)
+		handleFeedbackLastWeek(session, feedbackStorage)
 	case None:
 		// Typing mode
 		if session.User.IsTyping && session.Job.Input != nil {
