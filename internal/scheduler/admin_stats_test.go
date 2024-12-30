@@ -16,7 +16,7 @@ func TestAdminStats(t *testing.T) {
 
 	response := prepareAdminStats(&context, locale, adminStorage, feedbackStorage)
 
-	if *response != "The total number of users is 100\nThe total number of active users is 75\nThe total number of notes is 999\n\nFeedback from last week 📈\n\nJohn \nDoe\n:\n\nTest feedback\n\nJohn \nDoe\n:\n\nTest feedback 2\n\n" {
+	if *response != "The total number of users is 100\nThe total number of active users is 75\nThe total number of notes is 999\n\nFeedback from last week 📈\n\nJohn Doe:\nTest feedback\n\nJohn Doe:\nTest feedback 2\n\n" {
 		t.Errorf("Expected valid response, got %s", *response)
 	}
 }
