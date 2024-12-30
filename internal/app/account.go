@@ -9,9 +9,10 @@ import (
 
 	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
+	"github.com/capymind/internal/filestorage"
 )
 
-func handleDownloadData(session *Session) {
+func handleDownloadData(session *Session, noteStorage database.NoteStorage, fileStorage filestorage.FileStorage) {
 	sendMessage("download_all_notes_waiting", session)
 
 	userID := session.User.ID
@@ -85,7 +86,7 @@ func handleDeleteAccount(session *Session) {
 	setOutputTextWithButtons("delete_account_are_you_sure", []botservice.BotResultTextButton{deleteButton}, session)
 }
 
-func handleForceDeleteAccount(session *Session) {
+func handleForceDeleteAccount(session *Session, noteStorage database.NoteStorage, userStorage database.UserStorage) {
 	sendMessage("delete_account_waiting", session)
 
 	// Delete all notes
