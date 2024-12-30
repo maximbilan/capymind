@@ -88,7 +88,7 @@ func handleSession(session *Session) {
 	case WeeklyAnalysis:
 		handleWeeklyAnalysis(session, noteStorage, aiService)
 	case NoteCount:
-		handleNoteCount(session)
+		handleNoteCount(session, noteStorage)
 	case DownloadData:
 		handleDownloadData(session, noteStorage, fileStorage)
 	case DeleteAccount:

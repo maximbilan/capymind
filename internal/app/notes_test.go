@@ -110,3 +110,16 @@ func TestHandleLastEmptyNoteHandler(t *testing.T) {
 		t.Error("Expected 'no_notes', got", session.Job.Output[0].TextID)
 	}
 }
+
+func TestNoteCountHandler(t *testing.T) {
+	user := &database.User{}
+	job := createJob("/note_count", user)
+	session := createSession(job, user, nil)
+	noteStorage := mocks.NoteStorageMock{}
+
+	handleNoteCount(session, noteStorage)
+
+	if session.Job.Output[0].TextID != "You have made a total of 10 entries in your journal.\nKeep up the great work! 🚀" {
+		t.Error("Expected 'You have made a total of 10 entries in your journal.\nKeep up the great work! 🚀', got", session.Job.Output[0].TextID)
+	}
+}
