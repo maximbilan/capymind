@@ -15,8 +15,8 @@ func TestGetStats(t *testing.T) {
 	context := context.Background()
 	stats := GetStats(&context, translator.EN, adminStorage, feedbackStorage)
 
-	if len(stats) != 14 {
-		t.Error("Expected 14 stats, got", len(stats))
+	if len(stats) != 8 {
+		t.Error("Expected 8 stats, got", len(stats))
 	}
 
 	if stats[0] != "The total number of users is 100" {
@@ -31,11 +31,11 @@ func TestGetStats(t *testing.T) {
 		t.Error("Expected The total number of notes is 999, got", stats[2])
 	}
 
-	if stats[9] != "\nTest feedback\n" {
-		t.Error("Expected Test feedback, got", stats[9])
+	if stats[6] != "John Doe:\nTest feedback\n" {
+		t.Error("Expected feedback, got", stats[6])
 	}
 
-	if stats[13] != "\nTest feedback 2\n" {
-		t.Error("Expected Test feedback 2, got", stats[9])
+	if stats[7] != "John Doe:\nTest feedback 2\n" {
+		t.Error("Expected feedback, got", stats[7])
 	}
 }
