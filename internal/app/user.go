@@ -55,8 +55,8 @@ func updateUser(user *database.User, ctx *context.Context, userStorage database.
 	return fetchedUser
 }
 
-//coverage:ignore
 func saveUser(user *database.User, ctx *context.Context, userStorage database.UserStorage) {
+	//coverage:ignore
 	err := userStorage.SaveUser(ctx, *user)
 	if err != nil {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())
