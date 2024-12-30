@@ -3,76 +3,46 @@ package scheduler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
 
-	"github.com/capymind/internal/analysis"
 	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
-	"github.com/capymind/internal/helpers"
 	"github.com/capymind/internal/taskservice"
 	"github.com/capymind/internal/translator"
 )
 
 func prepareMessage(user *database.User, ctx *context.Context, offset int, messageType taskservice.MessageType, message string, isCloud bool) {
+	//coverage:ignore
 	defer wg.Done()
 
 	log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
 
 	userLocale := translator.Locale(*user.Locale)
 
-	var localizedMessage string
+	var localizedMessage *string
 	if messageType == taskservice.WeeklyAnalysis {
-		notes, err := noteStorage.GetNotesForLastWeek(ctx, user.ID)
-		if err != nil {
-			log.Printf("[Scheduler] Error getting notes from firestore, %s", err.Error())
-			return
-		}
-
-		if len(notes) > 0 {
-			var strings []string
-			for _, note := range notes {
-				if note.Text != "" {
-					strings = append(strings, note.Text)
-				}
-			}
-			localizedMessage = *analysis.AnalyzeLastWeek(aiService, strings, userLocale, ctx)
-		} else {
-			return
-		}
+		localizedMessage = prepareWeeklyAnalysis(user, ctx, userLocale, aiService)
 	} else if messageType == taskservice.UserStats {
 		// Send only to active users
 		if !user.IsActive() {
 			return
 		}
-
-		count, err := noteStorage.NotesCount(ctx, user.ID)
-		if err != nil {
-			log.Printf("[Scheduler] Error getting notes count from firestore, %s", err.Error())
-			return
-		}
-		// Send only if the user has more than one note in the journal
-		if count > 1 {
-			localizedMessage = fmt.Sprintf(translator.Translate(userLocale, "user_progress_message"), count)
-		} else {
-			return
-		}
+		localizedMessage = prepareUserStats(user, ctx, userLocale)
 	} else if messageType == taskservice.AdminStats {
 		// Send only to admins
 		if !database.IsAdmin(user.Role) {
 			return
 		}
-		stats := helpers.GetStats(ctx, userLocale, adminStorage, feedbackStorage)
-
-		var finalString string
-		for _, stat := range stats {
-			finalString += stat + "\n"
-		}
-		localizedMessage = finalString
+		localizedMessage = prepareAdminStats(user, ctx, userLocale)
 	} else {
-		localizedMessage = translator.Translate(userLocale, message)
+		msg := translator.Translate(userLocale, message)
+		localizedMessage = &msg
+	}
+
+	if localizedMessage == nil {
+		return
 	}
 
 	var scheduledTime time.Time
@@ -86,7 +56,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 
 	scheduledMessage := taskservice.ScheduledTask{
 		ChatID: user.ChatID,
-		Text:   localizedMessage,
+		Text:   *localizedMessage,
 		Type:   messageType,
 		Locale: userLocale,
 	}
