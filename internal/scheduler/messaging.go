@@ -35,7 +35,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 		if !database.IsAdmin(user.Role) {
 			return
 		}
-		localizedMessage = prepareAdminStats(user, ctx, userLocale)
+		localizedMessage = prepareAdminStats(ctx, userLocale)
 	} else {
 		msg := translator.Translate(userLocale, message)
 		localizedMessage = &msg
