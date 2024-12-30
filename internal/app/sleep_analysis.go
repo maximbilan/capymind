@@ -12,7 +12,7 @@ import (
 )
 
 // Handle the sleep analysis command
-func handleSleepAnalysis(session *Session) {
+func handleSleepAnalysis(session *Session, noteStorage database.NoteStorage, aiService aiservice.AIService) {
 	sendMessage("analysis_waiting", session)
 
 	userID := session.User.ID

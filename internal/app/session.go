@@ -84,7 +84,7 @@ func handleSession(session *Session) {
 	case Version:
 		handleVersion(session)
 	case SleepAnalysis:
-		handleSleepAnalysis(session)
+		handleSleepAnalysis(session, noteStorage, aiService)
 	case WeeklyAnalysis:
 		handleWeeklyAnalysis(session, noteStorage, aiService)
 	case NoteCount:
