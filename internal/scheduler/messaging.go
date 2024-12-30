@@ -23,7 +23,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 
 	var localizedMessage *string
 	if messageType == taskservice.WeeklyAnalysis {
-		localizedMessage = prepareWeeklyAnalysis(user, ctx, userLocale, aiService)
+		localizedMessage = prepareWeeklyAnalysis(user, ctx, userLocale, noteStorage, aiService)
 	} else if messageType == taskservice.UserStats {
 		// Send only to active users
 		if !user.IsActive() {

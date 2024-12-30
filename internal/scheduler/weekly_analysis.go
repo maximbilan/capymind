@@ -10,7 +10,7 @@ import (
 	"github.com/capymind/internal/translator"
 )
 
-func prepareWeeklyAnalysis(user *database.User, ctx *context.Context, locale translator.Locale, aiService aiservice.AIService) *string {
+func prepareWeeklyAnalysis(user *database.User, ctx *context.Context, locale translator.Locale, noteStorage database.NoteStorage, aiService aiservice.AIService) *string {
 	notes, err := noteStorage.GetNotesForLastWeek(ctx, user.ID)
 	if err != nil {
 		log.Printf("[Scheduler] Error getting notes from firestore, %s", err.Error())

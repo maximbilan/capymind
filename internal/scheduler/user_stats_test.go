@@ -18,6 +18,6 @@ func TestUserStats(t *testing.T) {
 	response := prepareUserStats(&user, &context, locale, noteStorage)
 
 	if *response != "You have made a total of 10 entries in your journal.\nKeep up the great work! 🚀" {
-		t.Error("Expected valid response, got nil")
+		t.Errorf("Expected valid response, got %s", *response)
 	}
 }
