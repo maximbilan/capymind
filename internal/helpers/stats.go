@@ -89,19 +89,16 @@ func PrepareFeedback(ctx *context.Context, locale translator.Locale, feedbackSto
 	array = append(array, "")
 
 	for _, f := range feedback {
-		var hasName bool
+		var name string
+
 		if f.User.FirstName != nil {
-			array = append(array, *f.User.FirstName+" ")
-			hasName = true
+			name += *f.User.FirstName + " "
 		}
 		if f.User.LastName != nil {
-			array = append(array, *f.User.LastName)
-			hasName = true
+			name += *f.User.LastName
 		}
-		if hasName {
-			array = append(array, ":")
-		}
-		array = append(array, "\n"+f.Feedback.Text+"\n")
+		name = name + ":"
+		array = append(array, name+"\n"+f.Feedback.Text+"\n")
 	}
 
 	return array
