@@ -29,7 +29,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 		if !user.IsActive() {
 			return
 		}
-		localizedMessage = prepareUserStats(user, ctx, userLocale)
+		localizedMessage = prepareUserStats(user, ctx, userLocale, noteStorage)
 	} else if messageType == taskservice.AdminStats {
 		// Send only to admins
 		if !database.IsAdmin(user.Role) {
