@@ -1,4 +1,4 @@
-package app
+package scheduler
 
 import (
 	"github.com/capymind/third_party/firestore"
@@ -12,5 +12,4 @@ var aiService openai.OpenAI
 // Use Firestore for the database
 var db firestore.Firestore
 var userStorage firestore.UserStorage
-var feedbackStorage firestore.FeedbackStorage
 var noteStorage firestore.NoteStorage

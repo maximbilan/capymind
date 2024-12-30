@@ -113,7 +113,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 					strings = append(strings, note.Text)
 				}
 			}
-			localizedMessage = *analysis.AnalyzeLastWeek(strings, userLocale, ctx)
+			localizedMessage = *analysis.AnalyzeLastWeek(aiService, strings, userLocale, ctx)
 		} else {
 			return
 		}
