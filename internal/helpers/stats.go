@@ -6,19 +6,16 @@ import (
 	"log"
 	"sync"
 
+	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/translator"
-	"github.com/capymind/third_party/firestore"
 )
 
-type statFunc func(ctx *context.Context, locale translator.Locale) *string
-type feedbackFunc func(ctx *context.Context, locale translator.Locale) []string
+type statFunc func(ctx *context.Context, locale translator.Locale, adminStorage database.AdminStorage) *string
+type feedbackFunc func(ctx *context.Context, locale translator.Locale, feedbackStorage database.FeedbackStorage) []string
 
 var wg sync.WaitGroup
 
-var adminStorage firestore.AdminStorage
-var feedbackStorage firestore.FeedbackStorage
-
-func GetTotalUserCount(ctx *context.Context, locale translator.Locale) *string {
+func GetTotalUserCount(ctx *context.Context, locale translator.Locale, adminStorage database.AdminStorage) *string {
 	count, err := adminStorage.GetTotalUserCount(ctx)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching total user count: %v", err)
@@ -28,7 +25,7 @@ func GetTotalUserCount(ctx *context.Context, locale translator.Locale) *string {
 	return &message
 }
 
-func GetTotalActiveUserCount(ctx *context.Context, locale translator.Locale) *string {
+func GetTotalActiveUserCount(ctx *context.Context, locale translator.Locale, adminStorage database.AdminStorage) *string {
 	count, err := adminStorage.GetActiveUserCount(ctx)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching active user count: %v", err)
@@ -38,7 +35,7 @@ func GetTotalActiveUserCount(ctx *context.Context, locale translator.Locale) *st
 	return &message
 }
 
-func GetTotalNoteCount(ctx *context.Context, locale translator.Locale) *string {
+func GetTotalNoteCount(ctx *context.Context, locale translator.Locale, adminStorage database.AdminStorage) *string {
 	count, err := adminStorage.GetTotalNoteCount(ctx)
 	if err != nil {
 		log.Printf("[Admin] Error during fetching total note count: %v", err)
@@ -48,11 +45,11 @@ func GetTotalNoteCount(ctx *context.Context, locale translator.Locale) *string {
 	return &message
 }
 
-func GetStats(ctx *context.Context, locale translator.Locale) []string {
-	totalUserCount := waitForStatFunction(GetTotalUserCount, ctx, locale)
-	totalActiveUserCount := waitForStatFunction(GetTotalActiveUserCount, ctx, locale)
-	totalNoteCount := waitForStatFunction(GetTotalNoteCount, ctx, locale)
-	feedback := waitForFeedback(PrepareFeedback, ctx, locale)
+func GetStats(ctx *context.Context, locale translator.Locale, adminStorage database.AdminStorage, feedbackStorage database.FeedbackStorage) []string {
+	totalUserCount := waitForStatFunction(GetTotalUserCount, ctx, locale, adminStorage)
+	totalActiveUserCount := waitForStatFunction(GetTotalActiveUserCount, ctx, locale, adminStorage)
+	totalNoteCount := waitForStatFunction(GetTotalNoteCount, ctx, locale, adminStorage)
+	feedback := waitForFeedback(PrepareFeedback, ctx, locale, feedbackStorage)
 
 	wg.Wait()
 
@@ -73,7 +70,7 @@ func GetStats(ctx *context.Context, locale translator.Locale) []string {
 	return array
 }
 
-func PrepareFeedback(ctx *context.Context, locale translator.Locale) []string {
+func PrepareFeedback(ctx *context.Context, locale translator.Locale, feedbackStorage database.FeedbackStorage) []string {
 	var array []string
 
 	feedback, err := feedbackStorage.GetFeedbackForLastWeek(ctx)
@@ -92,30 +89,42 @@ func PrepareFeedback(ctx *context.Context, locale translator.Locale) []string {
 	array = append(array, "")
 
 	for _, f := range feedback {
-		array = append(array, *f.User.FirstName+" "+*f.User.LastName+":"+"\n"+f.Feedback.Text+"\n")
+		var hasName bool
+		if f.User.FirstName != nil {
+			array = append(array, *f.User.FirstName+" ")
+			hasName = true
+		}
+		if f.User.LastName != nil {
+			array = append(array, *f.User.LastName)
+			hasName = true
+		}
+		if hasName {
+			array = append(array, ":")
+		}
+		array = append(array, "\n"+f.Feedback.Text+"\n")
 	}
 
 	return array
 }
 
-func waitForStatFunction(statFunc statFunc, ctx *context.Context, locale translator.Locale) *string {
+func waitForStatFunction(statFunc statFunc, ctx *context.Context, locale translator.Locale, adminStorage database.AdminStorage) *string {
 	wg.Add(1)
 	ch := make(chan *string)
 	go func() {
 		defer wg.Done()
-		result := statFunc(ctx, locale)
+		result := statFunc(ctx, locale, adminStorage)
 		ch <- result
 	}()
 	result := <-ch
 	return result
 }
 
-func waitForFeedback(feedbackFunc feedbackFunc, ctx *context.Context, locale translator.Locale) []string {
+func waitForFeedback(feedbackFunc feedbackFunc, ctx *context.Context, locale translator.Locale, feedbackStorage database.FeedbackStorage) []string {
 	wg.Add(1)
 	ch := make(chan []string)
 	go func() {
 		defer wg.Done()
-		result := feedbackFunc(ctx, locale)
+		result := feedbackFunc(ctx, locale, feedbackStorage)
 		ch <- result
 	}()
 	result := <-ch
