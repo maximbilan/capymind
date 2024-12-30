@@ -13,13 +13,13 @@ func TestFeedbackHandler(t *testing.T) {
 
 	handleFeedbackLastWeek(session, feedbackStorage)
 
-	if len(session.Job.Output) != 11 {
-		t.Errorf("Expected 11 feedback items, got %d", len(session.Job.Output))
+	if len(session.Job.Output) != 5 {
+		t.Errorf("Expected 5 feedback items, got %d", len(session.Job.Output))
 	}
-	if session.Job.Output[6].TextID != "\nTest feedback\n" {
-		t.Errorf("Expected Test feedback, got %s", session.Job.Output[0].TextID)
+	if session.Job.Output[3].TextID != "John Doe:\nTest feedback\n" {
+		t.Errorf("Expected Test feedback, got %s", session.Job.Output[3].TextID)
 	}
-	if session.Job.Output[10].TextID != "\nTest feedback 2\n" {
-		t.Errorf("Expected Test feedback 2, got %s", session.Job.Output[0].TextID)
+	if session.Job.Output[4].TextID != "John Doe:\nTest feedback 2\n" {
+		t.Errorf("Expected Test feedback 2, got %s", session.Job.Output[4].TextID)
 	}
 }
