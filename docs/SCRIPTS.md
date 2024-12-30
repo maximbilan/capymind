@@ -33,5 +33,9 @@ Run `./scripts/create_tag.sh`
 
 ## Update dependencies
 
-Run `./scripts/update_deps`
+Run `./scripts/update_deps.sh`
+
+## Generate test coverage badge
+
+Run `./scripts/test_coverage_badge.sh`
 
