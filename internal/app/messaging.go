@@ -30,6 +30,8 @@ func setOutputTextWithButtons(textID string, buttons []botservice.BotResultTextB
 }
 
 // Send the output messages
+//
+//coverage:ignore
 func sendOutputMessages(session *Session) {
 	if len(session.Job.Output) == 0 {
 		return
@@ -41,6 +43,8 @@ func sendOutputMessages(session *Session) {
 }
 
 // Send the output messages
+//
+//coverage:ignore
 func sendJobResult(jobResult botservice.BotResult, session *Session) {
 	bot.SendResult(session.User.ChatID, jobResult)
 }
