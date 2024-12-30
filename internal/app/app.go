@@ -26,7 +26,7 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	user := createUser(*update)
 
 	// Update the user's data in the database if necessary
-	updatedUser := updateUser(user, &ctx)
+	updatedUser := updateUser(user, &ctx, userStorage)
 
 	// Create a job
 	job := createJob(update.Text, updatedUser)

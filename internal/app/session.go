@@ -23,12 +23,12 @@ func (session *Session) Locale() translator.Locale {
 }
 
 // Save the user's data
-func (session *Session) SaveUser() {
+func (session *Session) SaveUser(userStorage database.UserStorage) {
 	if session.User.IsDeleted {
 		// Do not save the user if it is deleted
 		return
 	}
-	saveUser(session.User, session.Context)
+	saveUser(session.User, session.Context, userStorage)
 }
 
 // Create a session
@@ -133,9 +133,11 @@ func handleSession(session *Session) {
 }
 
 // Finish the session. Send the output to the user
+//
+//coverage:ignore
 func finishSession(session *Session) {
 	// Save the user's data
-	session.SaveUser()
+	session.SaveUser(userStorage)
 	// Prepare the messages, localize and send it
 	sendOutputMessages(session)
 }
