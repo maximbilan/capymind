@@ -66,7 +66,7 @@ func handleSession(session *Session) {
 	case Note:
 		startNote(session)
 	case MissingNote:
-		handleMissingNote(session)
+		handleMissingNote(session, noteStorage)
 	case Last:
 		handleLastNote(session)
 	case Analysis:
@@ -110,7 +110,7 @@ func handleSession(session *Session) {
 		if session.User.IsTyping && session.Job.Input != nil {
 			switch session.Job.LastCommand {
 			case Note:
-				finishNote(*session.Job.Input, session)
+				finishNote(*session.Job.Input, session, noteStorage)
 			case Support:
 				finishFeedback(session)
 			default:
