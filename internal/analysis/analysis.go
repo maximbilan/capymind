@@ -4,20 +4,20 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/capymind/internal/aiservice"
 	"github.com/capymind/internal/translator"
-	"github.com/capymind/third_party/openai"
 )
 
-func AnalyzeQuickly(service openai.OpenAI, notes []string, locale translator.Locale, ctx *context.Context) *string {
+func AnalyzeQuickly(service aiservice.AIService, notes []string, locale translator.Locale, ctx *context.Context) *string {
 	return analyzeJournal(service, getLocalizedPrompt(QuickAnalysis, locale), notes, locale, ctx, nil)
 }
 
-func AnalyzeLastWeek(service openai.OpenAI, notes []string, locale translator.Locale, ctx *context.Context) *string {
+func AnalyzeLastWeek(service aiservice.AIService, notes []string, locale translator.Locale, ctx *context.Context) *string {
 	header := "weekly_analysis"
 	return analyzeJournal(service, getLocalizedPrompt(WeeklyAnalysis, locale), notes, locale, ctx, &header)
 }
 
-func analyzeJournal(service openai.OpenAI, prompt Prompt, notes []string, locale translator.Locale, ctx *context.Context, header *string) *string {
+func analyzeJournal(service aiservice.AIService, prompt Prompt, notes []string, locale translator.Locale, ctx *context.Context, header *string) *string {
 	systemPrompt := prompt.System
 	userPrompt := prompt.User
 	for index, note := range notes {
@@ -40,7 +40,7 @@ func analyzeJournal(service openai.OpenAI, prompt Prompt, notes []string, locale
 }
 
 // Request an analysis of the user's sleep
-func AnalyzeSleep(service openai.OpenAI, text string, locale translator.Locale, ctx *context.Context) *string {
+func AnalyzeSleep(service aiservice.AIService, text string, locale translator.Locale, ctx *context.Context) *string {
 	prompt := getLocalizedPrompt(SleepAnalysis, locale)
 
 	systemPrompt := prompt.System
