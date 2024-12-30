@@ -17,8 +17,8 @@ else
 fi
 
 echo "<svg xmlns='http://www.w3.org/2000/svg' width='150' height='20'>
-  <rect width='100' height='20' fill='#555'/>
-  <rect x='100' width='50' height='20' fill='${COLOR}'/>
+  <rect width='100' height='20' fill='#555' rx='3' ry='3'/>
+  <rect x='100' width='50' height='20' fill='${COLOR}' rx='3' ry='3'/>
   <text x='50' y='14' fill='#fff' font-family='Verdana' font-size='11' text-anchor='middle'>Test Coverage</text>
   <text x='125' y='14' fill='#fff' font-family='Verdana' font-size='11' text-anchor='middle'>${COVERAGE}%</text>
 </svg>" > .badges/test_coverage.svg
