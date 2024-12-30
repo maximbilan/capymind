@@ -4,6 +4,7 @@ package scheduler
 
 import (
 	"github.com/capymind/third_party/firestore"
+	"github.com/capymind/third_party/googletasks"
 	"github.com/capymind/third_party/openai"
 	"github.com/capymind/third_party/telegram"
 )
@@ -17,3 +18,5 @@ var userStorage firestore.UserStorage
 var noteStorage firestore.NoteStorage
 var adminStorage firestore.AdminStorage
 var feedbackStorage firestore.FeedbackStorage
+
+var tasks googletasks.GoogleTasks
