@@ -22,36 +22,30 @@ var wg sync.WaitGroup
 
 // Schedule a message for all users
 func Schedule(w http.ResponseWriter, r *http.Request) {
+	//coverage:ignore
 	start := time.Now()
 	log.Println("Schedule capymind...")
 
-	typeStr := r.URL.Query().Get("type")
-	offsetStr := r.URL.Query().Get("offset") // hours (from UTC 0)
-	var offset int = 0
-	if offsetStr != "" {
-		_, err := fmt.Sscanf(offsetStr, "%d", &offset)
-		if err != nil {
-			log.Printf("[Scheduler] Error getting offset parameter, %s", err.Error())
-		}
+	// Parse the URL parameters
+	typeStr, offset := parse(r.URL)
+	if typeStr == nil {
+		log.Println("Missing type parameter")
+		return
 	}
-	messageType := taskservice.MessageType(typeStr)
-
-	var message string
-	switch messageType {
-	case taskservice.Morning, taskservice.Evening:
-		message = taskservice.GetMessage(messageType, time.Now().Weekday())
-	case taskservice.Feedback:
-		message = "ask_write_review_about_bot"
-	case taskservice.WeeklyAnalysis, taskservice.UserStats, taskservice.AdminStats:
-		// Personalized for each user
-		message = ""
-	default:
+	// Get the message type
+	messageType := taskservice.MessageType(*typeStr)
+	// Get the message
+	message := getTextMessage(messageType)
+	if message == nil {
 		log.Println("Missing message type parameter")
 		return
 	}
 
+	// Create a context
 	ctx := context.Background()
+	// Create a Firestore client
 	db.CreateClient(&ctx)
+	// Create a Tasks client
 	tasks.Connect(&ctx)
 
 	var isCloud = false
@@ -72,7 +66,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 			// Prepare message concurrently
 			wg.Add(1)
-			go prepareMessage(&user, &ctx, offset, messageType, message, isCloud)
+			go prepareMessage(&user, &ctx, offset, messageType, *message, isCloud)
 		}
 		return nil
 	})
