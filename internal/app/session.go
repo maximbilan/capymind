@@ -133,9 +133,8 @@ func handleSession(session *Session) {
 }
 
 // Finish the session. Send the output to the user
-//
-//coverage:ignore
 func finishSession(session *Session) {
+	//coverage:ignore
 	// Save the user's data
 	session.SaveUser(userStorage)
 	// Prepare the messages, localize and send it

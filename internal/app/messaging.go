@@ -30,9 +30,8 @@ func setOutputTextWithButtons(textID string, buttons []botservice.BotResultTextB
 }
 
 // Send the output messages
-//
-//coverage:ignore
 func sendOutputMessages(session *Session) {
+	//coverage:ignore
 	if len(session.Job.Output) == 0 {
 		return
 	}
@@ -43,16 +42,14 @@ func sendOutputMessages(session *Session) {
 }
 
 // Send the output messages
-//
-//coverage:ignore
 func sendJobResult(jobResult botservice.BotResult, session *Session) {
+	//coverage:ignore
 	bot.SendResult(session.User.ChatID, jobResult)
 }
 
 // Send a message to the user (Immediately)
-//
-//coverage:ignore
 func sendMessage(textID string, session *Session) {
+	//coverage:ignore
 	locale := session.Locale()
 	chatID := session.User.ChatID
 
