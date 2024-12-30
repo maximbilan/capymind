@@ -20,7 +20,7 @@ func handleSleepAnalysis(session *Session) {
 	}
 
 	if note != nil {
-		sleepAnalysis := analysis.AnalyzeSleep(note.Text, session.Locale(), session.Context)
+		sleepAnalysis := analysis.AnalyzeSleep(aiService, note.Text, session.Locale(), session.Context)
 		if sleepAnalysis != nil {
 			setOutputText(*sleepAnalysis, session)
 		} else {
@@ -68,7 +68,7 @@ func handleWeeklyAnalysis(session *Session) {
 			}
 		}
 
-		analysis := analysis.AnalyzeLastWeek(strings, session.Locale(), session.Context)
+		analysis := analysis.AnalyzeLastWeek(aiService, strings, session.Locale(), session.Context)
 		if analysis != nil {
 			setOutputText(*analysis, session)
 		} else {

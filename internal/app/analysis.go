@@ -22,7 +22,7 @@ func handleAnalysis(session *Session) {
 		sendMessage("analysis_waiting", session)
 
 		// Request the analysis
-		analysis := analysis.AnalyzeQuickly(strings, session.Locale(), session.Context)
+		analysis := analysis.AnalyzeQuickly(aiService, strings, session.Locale(), session.Context)
 		if analysis != nil {
 			// Send the analysis
 			setOutputText(*analysis, session)
