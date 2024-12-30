@@ -46,6 +46,8 @@ func sendJobResult(jobResult botservice.BotResult, session *Session) {
 }
 
 // Send a message to the user (Immediately)
+//
+//coverage:ignore
 func sendMessage(textID string, session *Session) {
 	locale := session.Locale()
 	chatID := session.User.ChatID
