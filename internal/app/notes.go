@@ -47,7 +47,7 @@ func handleInputWithoutCommand(session *Session) {
 }
 
 // Handle the note command
-func handleLastNote(session *Session) {
+func handleLastNote(session *Session, noteStorage database.NoteStorage) {
 	userID := session.User.ID
 	note, err := noteStorage.LastNote(session.Context, userID)
 	if err != nil {

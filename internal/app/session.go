@@ -68,7 +68,7 @@ func handleSession(session *Session) {
 	case MissingNote:
 		handleMissingNote(session, noteStorage)
 	case Last:
-		handleLastNote(session)
+		handleLastNote(session, noteStorage)
 	case Analysis:
 		handleAnalysis(session, noteStorage, aiService)
 	case Settings:
