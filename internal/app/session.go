@@ -70,7 +70,7 @@ func handleSession(session *Session) {
 	case Last:
 		handleLastNote(session)
 	case Analysis:
-		handleAnalysis(session)
+		handleAnalysis(session, noteStorage, aiService)
 	case Settings:
 		handleSettings(session)
 	case Language:
