@@ -17,8 +17,8 @@ func startNote(session *Session) {
 }
 
 // Finish typing a note
-func finishNote(text string, session *Session) {
-	saveNote(text, session)
+func finishNote(text string, session *Session, noteStorage database.NoteStorage) {
+	saveNote(text, session, noteStorage)
 	setOutputText("finish_note", session)
 
 	isDream := checkIfNoteADream(text, session.Locale())
@@ -29,12 +29,12 @@ func finishNote(text string, session *Session) {
 	session.User.IsTyping = false
 }
 
-func handleMissingNote(session *Session) {
+func handleMissingNote(session *Session, noteStorage database.NoteStorage) {
 	text := *session.Job.Input
 	// remove the command from the text at the beginning
 	text = text[len(MissingNote):]
 
-	finishNote(text, session)
+	finishNote(text, session, noteStorage)
 }
 
 func handleInputWithoutCommand(session *Session) {
@@ -47,7 +47,7 @@ func handleInputWithoutCommand(session *Session) {
 }
 
 // Handle the note command
-func handleLastNote(session *Session) {
+func handleLastNote(session *Session, noteStorage database.NoteStorage) {
 	userID := session.User.ID
 	note, err := noteStorage.LastNote(session.Context, userID)
 	if err != nil {
@@ -68,7 +68,7 @@ func handleLastNote(session *Session) {
 }
 
 // Save a note
-func saveNote(text string, session *Session) {
+func saveNote(text string, session *Session, noteStorage database.NoteStorage) {
 	// Note data
 	timestamp := time.Now()
 	var note = database.Note{
@@ -103,7 +103,7 @@ func sendNoNotes(session *Session) {
 }
 
 // Handles the note count request
-func handleNoteCount(session *Session) {
+func handleNoteCount(session *Session, noteStorage database.NoteStorage) {
 	count, err := noteStorage.NotesCount(session.Context, session.User.ID)
 	if err != nil {
 		log.Printf("[Bot] Error getting notes count from firestore, %s", err.Error())

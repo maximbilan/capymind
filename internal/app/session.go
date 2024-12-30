@@ -23,12 +23,12 @@ func (session *Session) Locale() translator.Locale {
 }
 
 // Save the user's data
-func (session *Session) SaveUser() {
+func (session *Session) SaveUser(userStorage database.UserStorage) {
 	if session.User.IsDeleted {
 		// Do not save the user if it is deleted
 		return
 	}
-	saveUser(session.User, session.Context)
+	saveUser(session.User, session.Context, userStorage)
 }
 
 // Create a session
@@ -66,9 +66,9 @@ func handleSession(session *Session) {
 	case Note:
 		startNote(session)
 	case MissingNote:
-		handleMissingNote(session)
+		handleMissingNote(session, noteStorage)
 	case Last:
-		handleLastNote(session)
+		handleLastNote(session, noteStorage)
 	case Analysis:
 		handleAnalysis(session, noteStorage, aiService)
 	case Settings:
@@ -84,11 +84,11 @@ func handleSession(session *Session) {
 	case Version:
 		handleVersion(session)
 	case SleepAnalysis:
-		handleSleepAnalysis(session)
+		handleSleepAnalysis(session, noteStorage, aiService)
 	case WeeklyAnalysis:
-		handleWeeklyAnalysis(session)
+		handleWeeklyAnalysis(session, noteStorage, aiService)
 	case NoteCount:
-		handleNoteCount(session)
+		handleNoteCount(session, noteStorage)
 	case DownloadData:
 		handleDownloadData(session, noteStorage, fileStorage)
 	case DeleteAccount:
@@ -102,7 +102,7 @@ func handleSession(session *Session) {
 	case TotalNoteCount:
 		handleTotalNoteCount(session, adminStorage)
 	case Stats:
-		handleStats(session)
+		handleStats(session, adminStorage, feedbackStorage)
 	case FeedbackLastWeek:
 		handleFeedbackLastWeek(session, feedbackStorage)
 	case None:
@@ -110,9 +110,9 @@ func handleSession(session *Session) {
 		if session.User.IsTyping && session.Job.Input != nil {
 			switch session.Job.LastCommand {
 			case Note:
-				finishNote(*session.Job.Input, session)
+				finishNote(*session.Job.Input, session, noteStorage)
 			case Support:
-				finishFeedback(session)
+				finishFeedback(session, feedbackStorage)
 			default:
 				// If the user is typing and the last command is not recognized
 				handleHelp(session)
@@ -133,9 +133,11 @@ func handleSession(session *Session) {
 }
 
 // Finish the session. Send the output to the user
+//
+//coverage:ignore
 func finishSession(session *Session) {
 	// Save the user's data
-	session.SaveUser()
+	session.SaveUser(userStorage)
 	// Prepare the messages, localize and send it
 	sendOutputMessages(session)
 }

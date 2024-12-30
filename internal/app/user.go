@@ -22,7 +22,7 @@ func createUser(message botservice.BotMessage) *database.User {
 }
 
 // Update the user's data in the database if necessary
-func updateUser(user *database.User, ctx *context.Context) *database.User {
+func updateUser(user *database.User, ctx *context.Context, userStorage database.UserStorage) *database.User {
 	if user == nil {
 		return nil
 	}
@@ -55,8 +55,8 @@ func updateUser(user *database.User, ctx *context.Context) *database.User {
 	return fetchedUser
 }
 
-// Save a user to the database
-func saveUser(user *database.User, ctx *context.Context) {
+//coverage:ignore
+func saveUser(user *database.User, ctx *context.Context, userStorage database.UserStorage) {
 	err := userStorage.SaveUser(ctx, *user)
 	if err != nil {
 		log.Printf("[User] Error saving user to firestore, %s", err.Error())

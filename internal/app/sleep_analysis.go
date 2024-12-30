@@ -4,13 +4,15 @@ import (
 	"log"
 	"strings"
 
+	"github.com/capymind/internal/aiservice"
 	"github.com/capymind/internal/analysis"
 	"github.com/capymind/internal/botservice"
+	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/translator"
 )
 
 // Handle the sleep analysis command
-func handleSleepAnalysis(session *Session) {
+func handleSleepAnalysis(session *Session, noteStorage database.NoteStorage, aiService aiservice.AIService) {
 	sendMessage("analysis_waiting", session)
 
 	userID := session.User.ID
@@ -51,7 +53,7 @@ func checkIfNoteADream(text string, locale translator.Locale) bool {
 	return false
 }
 
-func handleWeeklyAnalysis(session *Session) {
+func handleWeeklyAnalysis(session *Session, noteStorage database.NoteStorage, aiService aiservice.AIService) {
 	sendMessage("analysis_waiting", session)
 
 	userID := session.User.ID
