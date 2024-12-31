@@ -20,6 +20,7 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 	log.Printf("[Scheduler] Schedule a message for user: %s", user.ID)
 
 	userLocale := translator.Locale(*user.Locale)
+	settings, _ := settingsStorage.GetSettings(ctx, user.ID)
 
 	var localizedMessage *string
 	if messageType == taskservice.WeeklyAnalysis {
@@ -36,14 +37,41 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 			return
 		}
 		localizedMessage = prepareAdminStats(ctx, userLocale, adminStorage, feedbackStorage)
-	} else if messageType == taskservice.Feedback || messageType == taskservice.Morning || messageType == taskservice.Evening {
+	} else if messageType == taskservice.Feedback {
 		// Send only to active users
 		if user.IsNonActive() {
 			return
 		}
-
 		msg := translator.Translate(userLocale, message)
 		localizedMessage = &msg
+	} else if messageType == taskservice.Morning {
+		// Send only to active users
+		if user.IsNonActive() {
+			return
+		}
+		// Send only if the morning reminder is enabled
+		if !settings.IsMorningReminderEnabled() {
+			return
+		}
+		msg := translator.Translate(userLocale, message)
+		localizedMessage = &msg
+		if settings.MorningReminderOffset != nil {
+			offset = *settings.MorningReminderOffset
+		}
+	} else if messageType == taskservice.Evening {
+		// Send only to active users
+		if user.IsNonActive() {
+			return
+		}
+		// Send only if the evening reminder is enabled
+		if !settings.IsEveningReminderEnabled() {
+			return
+		}
+		msg := translator.Translate(userLocale, message)
+		localizedMessage = &msg
+		if settings.EveningReminderOffset != nil {
+			offset = *settings.EveningReminderOffset
+		}
 	} else {
 		msg := translator.Translate(userLocale, message)
 		localizedMessage = &msg

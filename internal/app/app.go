@@ -28,11 +28,14 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	// Update the user's data in the database if necessary
 	updatedUser := updateUser(user, &ctx, userStorage)
 
+	// Fetch the user's settings
+	settings := getSettings(&ctx, updatedUser.ID, settingsStorage)
+
 	// Create a job
 	job := createJob(update.Text, updatedUser)
 
 	// Create and start a session
-	session := createSession(job, updatedUser, &ctx)
+	session := createSession(job, updatedUser, settings, &ctx)
 	// Execute the job
 	handleSession(session)
 	// Send the response

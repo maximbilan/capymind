@@ -5,26 +5,28 @@ import (
 	"strconv"
 
 	"github.com/capymind/internal/botservice"
+	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/utils"
 )
 
 // Handle the timezone command
-func handleTimezone(session *Session) {
+func handleTimezone(session *Session, settingsStorage database.SettingsStorage) {
 	if len(session.Job.Parameters) == 0 {
 		requestTimezone(session)
 	} else {
-		setupTimezone(session)
+		setupTimezone(session, settingsStorage)
 	}
 }
 
 // Set the timezone
-func setupTimezone(session *Session) {
+func setupTimezone(session *Session, settingsStorage database.SettingsStorage) {
 	secondsFromUTC, err := strconv.Atoi(session.Job.Parameters[0])
 	if err != nil {
 		log.Printf("[Bot] Error parsing timezone: %v", err)
 		return
 	}
 	session.User.SecondsFromUTC = &secondsFromUTC
+	session.Settings.SecondsFromUTC = &secondsFromUTC
 
 	if !session.User.IsOnboarded {
 		session.User.IsOnboarded = true
@@ -34,6 +36,8 @@ func setupTimezone(session *Session) {
 	} else {
 		setOutputText("timezone_set", session)
 	}
+
+	session.SaveSettings(*session.Settings, settingsStorage)
 }
 
 // Set the timezone

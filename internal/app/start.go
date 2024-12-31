@@ -1,6 +1,8 @@
 package app
 
-import "github.com/capymind/internal/botservice"
+import (
+	"github.com/capymind/internal/botservice"
+)
 
 // handleStart is the entry point for the bot. It checks if the user has a locale and timezone set and sends a welcome message
 func handleStart(session *Session) {
@@ -8,9 +10,9 @@ func handleStart(session *Session) {
 		// Go onboarding
 		setOutputText("welcome_onboarding", session)
 		handleLanguage(session)
-	} else if session.User.SecondsFromUTC == nil {
+	} else if session.User.SecondsFromUTC == nil || session.Settings.SecondsFromUTC == nil {
 		// Go onboarding
-		handleTimezone(session)
+		askForReminders(session)
 	} else {
 		sendWelcome(session)
 	}

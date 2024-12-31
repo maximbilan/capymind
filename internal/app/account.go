@@ -86,7 +86,7 @@ func handleDeleteAccount(session *Session) {
 	setOutputTextWithButtons("delete_account_are_you_sure", []botservice.BotResultTextButton{deleteButton}, session)
 }
 
-func handleForceDeleteAccount(session *Session, noteStorage database.NoteStorage, userStorage database.UserStorage) {
+func handleForceDeleteAccount(session *Session, noteStorage database.NoteStorage, userStorage database.UserStorage, settingsStorage database.SettingsStorage) {
 	sendMessage("delete_account_waiting", session)
 
 	// Delete all notes
@@ -94,6 +94,14 @@ func handleForceDeleteAccount(session *Session, noteStorage database.NoteStorage
 	err := noteStorage.DeleteAllNotes(session.Context, userID)
 	if err != nil {
 		log.Printf("[Bot] Error deleting all notes from firestore, %s", err.Error())
+		setOutputText("delete_account_error", session)
+		return
+	}
+
+	// Delete settings
+	err = settingsStorage.DeleteSettings(session.Context, userID)
+	if err != nil {
+		log.Printf("[Bot] Error deleting settings from firestore, %s", err.Error())
 		setOutputText("delete_account_error", session)
 		return
 	}

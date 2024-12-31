@@ -13,7 +13,7 @@ func TestSessionLocale(t *testing.T) {
 
 	ctx := context.Background()
 
-	session := createSession(&Job{}, user, &ctx)
+	session := createSession(&Job{}, user, nil, &ctx)
 	if session.Locale() != "en" {
 		t.Fatalf("Expected 'en', got %s", session.Locale())
 	}
@@ -21,7 +21,7 @@ func TestSessionLocale(t *testing.T) {
 	locale := "uk"
 	user.Locale = &locale
 
-	session = createSession(&Job{}, user, &ctx)
+	session = createSession(&Job{}, user, nil, &ctx)
 	if session.Locale() != "uk" {
 		t.Fatalf("Expected 'uk', got %s", session.Locale())
 	}
@@ -34,14 +34,14 @@ func TestIsAdmin(t *testing.T) {
 
 	ctx := context.Background()
 
-	session := createSession(&Job{}, user, &ctx)
+	session := createSession(&Job{}, user, nil, &ctx)
 	if session.isAdmin() {
 		t.Fatalf("Expected false, got true")
 	}
 
 	user.Role = &admin
 
-	session = createSession(&Job{}, user, &ctx)
+	session = createSession(&Job{}, user, nil, &ctx)
 	if !session.isAdmin() {
 		t.Fatalf("Expected true, got false")
 	}
@@ -57,7 +57,7 @@ func TestCommandExecution(t *testing.T) {
 
 	ctx := context.Background()
 
-	session := createSession(job, user, &ctx)
+	session := createSession(job, user, nil, &ctx)
 	handleSession(session)
 
 	if session.Job.Output[0].TextID != "commands_hint" {

@@ -8,7 +8,7 @@ import (
 )
 
 func TestFeedbackHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/feedback"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/feedback"}, &database.User{}, nil, nil)
 	feedbackStorage := mocks.FeedbackStorageMock{}
 
 	handleFeedbackLastWeek(session, feedbackStorage)

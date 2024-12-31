@@ -9,9 +9,10 @@ import (
 )
 
 type Session struct {
-	Job     *Job
-	User    *database.User
-	Context *context.Context
+	Job      *Job
+	User     *database.User
+	Settings *database.Settings
+	Context  *context.Context
 }
 
 // Return the locale of the current user
@@ -31,12 +32,19 @@ func (session *Session) SaveUser(userStorage database.UserStorage) {
 	saveUser(session.User, session.Context, userStorage)
 }
 
+// Save the user's settings
+func (session *Session) SaveSettings(settings database.Settings, settingsStorage database.SettingsStorage) {
+	//coverage:ignore
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+}
+
 // Create a session
-func createSession(job *Job, user *database.User, context *context.Context) *Session {
+func createSession(job *Job, user *database.User, settings *database.Settings, context *context.Context) *Session {
 	session := Session{
-		Job:     job,
-		User:    user,
-		Context: context,
+		Job:      job,
+		User:     user,
+		Settings: settings,
+		Context:  context,
 	}
 	return &session
 }
@@ -76,7 +84,31 @@ func handleSession(session *Session) {
 	case Language:
 		handleLanguage(session)
 	case Timezone:
-		handleTimezone(session)
+		handleTimezone(session, settingsStorage)
+	case Reminders:
+		handleReminders(session)
+	case MorningReminder:
+		handleMorningReminder(session)
+	case EveningReminder:
+		handleEveningReminder(session)
+	case EnableAllReminders:
+		enableAllReminders(session, settingsStorage)
+	case DisableAllReminders:
+		disableAllReminders(session, settingsStorage)
+	case EnableMorningReminder:
+		enableMorningReminder(session, settingsStorage)
+	case DisableMorningReminder:
+		disableMorningReminder(session, settingsStorage)
+	case EnableEveningReminder:
+		enableEveningReminder(session, settingsStorage)
+	case DisableEveningReminder:
+		disableEveningReminder(session, settingsStorage)
+	case SetMorningReminderTime:
+		setMorningReminderOffset(session, settingsStorage)
+	case SetEveningReminderTime:
+		setEveningReminderOffset(session, settingsStorage)
+	case SkipReminders:
+		skipReminders(session, settingsStorage)
 	case Support:
 		startFeedback(session)
 	case Help:
@@ -94,7 +126,7 @@ func handleSession(session *Session) {
 	case DeleteAccount:
 		handleDeleteAccount(session)
 	case ForceDeleteAccount:
-		handleForceDeleteAccount(session, noteStorage, userStorage)
+		handleForceDeleteAccount(session, noteStorage, userStorage, settingsStorage)
 	case TotalUserCount:
 		handleTotalUserCount(session, adminStorage)
 	case TotalActiveUserCount:

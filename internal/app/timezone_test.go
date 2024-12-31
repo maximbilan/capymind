@@ -4,11 +4,13 @@ import (
 	"testing"
 
 	"github.com/capymind/internal/database"
+	"github.com/capymind/internal/mocks"
 )
 
 func TestTimezoneHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/timezone"}, &database.User{}, nil)
-	handleTimezone(session)
+	session := createSession(&Job{Command: "/timezone"}, &database.User{}, nil, nil)
+	settingsStorage := &mocks.EmptySettingsStorageMock{}
+	handleTimezone(session, settingsStorage)
 
 	if session.Job.Output[0].TextID != "timezone_select" {
 		t.Error("Expected 'timezone_select', got", session.Job.Output[0].TextID)
@@ -19,8 +21,9 @@ func TestTimezoneHandler(t *testing.T) {
 }
 
 func TestTimezoneHandlerWithParam(t *testing.T) {
-	session := createSession(&Job{Command: "/timezone 7200", Parameters: []string{"7200"}}, &database.User{}, nil)
-	handleTimezone(session)
+	session := createSession(&Job{Command: "/timezone 7200", Parameters: []string{"7200"}}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := &mocks.EmptySettingsStorageMock{}
+	handleTimezone(session, settingsStorage)
 
 	if session.Job.Output[0].TextID != "timezone_set" {
 		t.Error("Expected 'timezone_set', got", session.Job.Output[0].TextID)
@@ -34,8 +37,9 @@ func TestTimezoneHandlerWithParam(t *testing.T) {
 }
 
 func TestTimezoneHandlerWithParamOnboarded(t *testing.T) {
-	session := createSession(&Job{Command: "/timezone 0", Parameters: []string{"0"}}, &database.User{IsOnboarded: true}, nil)
-	handleTimezone(session)
+	session := createSession(&Job{Command: "/timezone 0", Parameters: []string{"0"}}, &database.User{IsOnboarded: true}, &database.Settings{}, nil)
+	settingsStorage := &mocks.EmptySettingsStorageMock{}
+	handleTimezone(session, settingsStorage)
 
 	if session.Job.Output[0].TextID != "timezone_set" {
 		t.Error("Expected 'timezone_set', got", session.Job.Output[0].TextID)

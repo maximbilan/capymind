@@ -35,7 +35,7 @@ func setupLanguage(session *Session) {
 
 	if session.User.SecondsFromUTC == nil {
 		setOutputText("locale_set", session)
-		requestTimezone(session)
+		askForReminders(session)
 	} else {
 		setOutputText("locale_set", session)
 	}

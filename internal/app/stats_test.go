@@ -8,7 +8,7 @@ import (
 )
 
 func TestStatsHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/stats"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/stats"}, &database.User{}, nil, nil)
 	adminStorage := mocks.AdminStorageMock{}
 	feedbackStorage := mocks.FeedbackStorageMock{}
 
