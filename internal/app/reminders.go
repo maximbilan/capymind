@@ -1,6 +1,10 @@
 package app
 
-import "github.com/capymind/internal/botservice"
+import (
+	"fmt"
+
+	"github.com/capymind/internal/botservice"
+)
 
 func handleReminders(session *Session) {
 	user := *session.User
@@ -42,6 +46,8 @@ func handleReminders(session *Session) {
 func handleMorningReminder(session *Session) {
 	user := *session.User
 
+	var buttons []botservice.BotResultTextButton
+
 	var switchButton botservice.BotResultTextButton
 	if user.IsMorningReminderEnabled() {
 		switchButton = botservice.BotResultTextButton{
@@ -56,12 +62,29 @@ func handleMorningReminder(session *Session) {
 			Callback: string(EnableMorningReminder),
 		}
 	}
+	buttons = append(buttons, switchButton)
 
-	setOutputTextWithButtons("morning_reminder_button", []botservice.BotResultTextButton{switchButton}, session)
+	var timeOffsets []int
+	for i := 6; i < 11; i++ {
+		timeOffsets = append(timeOffsets, i)
+	}
+
+	for _, offset := range timeOffsets {
+		time := fmt.Sprintf("%d:00", offset)
+		buttons = append(buttons, botservice.BotResultTextButton{
+			TextID:   time,
+			Locale:   session.Locale(),
+			Callback: string(SetMorningReminderTime) + " " + fmt.Sprintf("%d", offset),
+		})
+	}
+
+	setOutputTextWithButtons("morning_reminder_button", buttons, session)
 }
 
 func handleEveningReminder(session *Session) {
 	user := *session.User
+
+	var buttons []botservice.BotResultTextButton
 
 	var switchButton botservice.BotResultTextButton
 	if user.IsEveningReminderEnabled() {
@@ -77,6 +100,21 @@ func handleEveningReminder(session *Session) {
 			Callback: string(EnableEveningReminder),
 		}
 	}
+	buttons = append(buttons, switchButton)
 
-	setOutputTextWithButtons("evening_reminder_button", []botservice.BotResultTextButton{switchButton}, session)
+	var timeOffsets []int
+	for i := 19; i < 24; i++ {
+		timeOffsets = append(timeOffsets, i)
+	}
+
+	for _, offset := range timeOffsets {
+		time := fmt.Sprintf("%d:00", offset)
+		buttons = append(buttons, botservice.BotResultTextButton{
+			TextID:   time,
+			Locale:   session.Locale(),
+			Callback: string(SetEveningReminderTime) + " " + fmt.Sprintf("%d", offset),
+		})
+	}
+
+	setOutputTextWithButtons("evening_reminder_button", buttons, session)
 }
