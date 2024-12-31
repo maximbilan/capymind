@@ -129,7 +129,7 @@ func handleEveningReminder(session *Session) {
 		buttons = append(buttons, botservice.BotResultTextButton{
 			TextID:   time,
 			Locale:   session.Locale(),
-			Callback: string(SetEveningReminderTime) + " " + fmt.Sprintf("%d", 12-offset),
+			Callback: string(SetEveningReminderTime) + " " + fmt.Sprintf("%d", offset-12),
 		})
 	}
 
