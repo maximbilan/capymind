@@ -8,7 +8,7 @@ fi
 
 # Set the description
 
-DESCRIPTION_EN="CapyMind is a personal mental health journal designed to help you track your thoughts, emotions, and progress over time. By offering a simple and secure platform to make journal entries, set reminders, and receive personalized therapy insights, CapyMind empowers you to reflect on your mental well-being. With support for multiple languages and time zones, it fits seamlessly into your daily routine, providing a personalized space for self-reflection and growth."
+DESCRIPTION_EN="CapyMind is a personal mental health journal powered by AI, designed to help you track your thoughts, emotions, and progress over time. It provides a simple and secure platform for making journal entries, setting reminders, and gaining personalized therapy insights. Leveraging AI to analyze your notes and dreams, CapyMind empowers you to reflect deeply on your mental well-being. With support for multiple languages and time zones, it seamlessly integrates into your daily routine, offering a personalized space for self-reflection and growth."
 
 curl -X POST https://api.telegram.org/bot$CAPY_TELEGRAM_BOT_TOKEN/setMyDescription \
     -H "Content-Type: application/json" \
@@ -23,7 +23,7 @@ else
   echo "Failed to set EN description"
 fi
 
-SHORT_DESCRIPTION_EN="CapyMind is a personal mental health journal designed to help you track your thoughts, emotions, and progress over time."
+SHORT_DESCRIPTION_EN="CapyMind is an AI-powered mental health journal that helps you track emotions, analyze notes or dreams, and reflect on your well-being."
 
 curl -X POST https://api.telegram.org/bot$CAPY_TELEGRAM_BOT_TOKEN/setMyShortDescription \
     -H "Content-Type: application/json" \
@@ -38,7 +38,7 @@ else
   echo "Failed to set EN short description"
 fi
 
-DESCRIPTION_UK="CapyMind — це особистий щоденник для психічного здоров’я, що допомагає відстежувати ваші думки, емоції та прогрес з часом. Надаючи зручну та безпечну платформу для записів, встановлення нагадувань і отримання персоналізованих аналітик, CapyMind підтримує вас у рефлексії над вашим психічним станом. Завдяки підтримці кількох мов і часових поясів, він легко інтегрується у вашу щоденну рутину, забезпечуючи персоналізоване середовище для саморозуміння і зростання."
+DESCRIPTION_UK="CapyMind — це персональний щоденник для підтримки психічного здоров’я, що працює на основі штучного інтелекту. Він допомагає відстежувати ваші думки, емоції та прогрес з часом. Платформа забезпечує просте та безпечне місце для запису нотаток, встановлення нагадувань і отримання персоналізованих терапевтичних порад. Використовуючи штучний інтелект для аналізу ваших нотаток і снів, CapyMind допомагає вам глибше рефлексувати над своїм психічним станом. Завдяки підтримці кількох мов і часових зон, він легко інтегрується у ваш щоденний графік, надаючи особистий простір для саморозвитку."
 
 curl -X POST https://api.telegram.org/bot$CAPY_TELEGRAM_BOT_TOKEN/setMyDescription \
     -H "Content-Type: application/json" \
@@ -53,7 +53,7 @@ else
     echo "Failed to set UK description"
 fi
 
-SHORT_DESCRIPTION_UK="CapyMind - це особистий щоденник здоров'я розуму, призначений для відстеження ваших думок, емоцій та прогресу з часом."
+SHORT_DESCRIPTION_UK="CapyMind — це щоденник для психічного здоров’я з підтримкою ШІ, який допомагає відстежувати емоції, аналізувати нотатки чи сни та рефлексувати над своїм станом."
 
 curl -X POST https://api.telegram.org/bot$CAPY_TELEGRAM_BOT_TOKEN/setMyShortDescription \
     -H "Content-Type: application/json" \
