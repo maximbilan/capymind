@@ -8,19 +8,21 @@ import (
 )
 
 type User struct {
-	ID             string     `json:"id"`
-	ChatID         int64      `json:"chatId"`
-	UserName       *string    `json:"username"`
-	FirstName      *string    `json:"firstName"`
-	LastName       *string    `json:"lastName"`
-	Locale         *string    `json:"locale"`
-	SecondsFromUTC *int       `json:"secondsFromUTC"`
-	LastCommand    *string    `json:"lastCommand"`
-	IsTyping       bool       `json:"isTyping"`
-	IsOnboarded    bool       `json:"isOnboarded"`
-	Role           *Role      `json:"role"`
-	Timestamp      *time.Time `json:"timestamp"`
-	IsDeleted      bool       `json:"isDeleted"`
+	ID                       string     `json:"id"`
+	ChatID                   int64      `json:"chatId"`
+	UserName                 *string    `json:"username"`
+	FirstName                *string    `json:"firstName"`
+	LastName                 *string    `json:"lastName"`
+	Locale                   *string    `json:"locale"`
+	SecondsFromUTC           *int       `json:"secondsFromUTC"`
+	LastCommand              *string    `json:"lastCommand"`
+	IsTyping                 bool       `json:"isTyping"`
+	IsOnboarded              bool       `json:"isOnboarded"`
+	Role                     *Role      `json:"role"`
+	Timestamp                *time.Time `json:"timestamp"`
+	IsDeleted                bool       `json:"isDeleted"`
+	IsMorningReminderEnabled *bool      `json:"isMorningReminderEnabled"`
+	IsEveningReminderEnabled *bool      `json:"isEveningReminderEnabled"`
 }
 
 type UserStorage interface {
