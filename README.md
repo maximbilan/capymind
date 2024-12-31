@@ -45,6 +45,18 @@ CapyMind is a personal mental health journal designed to help you track your tho
 /note_count - Count of the current user notes
 /sleep_analysis - Sleep analysis of last note
 /weekly_analysis - Weekly analysis of the user's journal entries for last week
+/reminders - Set reminders
+/enable_all_reminders - Enable all reminders
+/disable_all_reminders - Disable all reminders
+/morning_reminder - Set morning reminder
+/enable_morning_reminder - Enable morning reminder
+/disable_morning_reminder - Disable morning
+/set_morning_reminder_time - Set morning reminder time
+/evening_reminder - Set evening reminder
+/enable_evening_reminder - Enable evening reminder
+/disable_evening_reminder - Disable evening reminder
+/set_evening_reminder_time - Set evening reminder time
+/skip_reminders - Skip the reminders (during onboarding)
 ```
 
 ## Admin commands
