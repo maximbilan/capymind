@@ -32,6 +32,11 @@ func (session *Session) SaveUser(userStorage database.UserStorage) {
 	saveUser(session.User, session.Context, userStorage)
 }
 
+// Save the user's settings
+func (session *Session) SaveSettings(settings database.Settings, settingsStorage database.SettingsStorage) {
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+}
+
 // Create a session
 func createSession(job *Job, user *database.User, settings *database.Settings, context *context.Context) *Session {
 	session := Session{
@@ -62,7 +67,7 @@ func handleSession(session *Session) {
 
 	switch command {
 	case Start:
-		handleStart(session)
+		handleStart(session, settingsStorage)
 	case Why:
 		handleWhy(session)
 	case Note:
@@ -78,7 +83,7 @@ func handleSession(session *Session) {
 	case Language:
 		handleLanguage(session)
 	case Timezone:
-		handleTimezone(session)
+		handleTimezone(session, settingsStorage)
 	case Reminders:
 		handleReminders(session)
 	case MorningReminder:

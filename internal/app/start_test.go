@@ -4,11 +4,13 @@ import (
 	"testing"
 
 	"github.com/capymind/internal/database"
+	"github.com/capymind/internal/mocks"
 )
 
 func TestFirstStartHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/start"}, &database.User{}, nil, nil)
-	handleStart(session)
+	settingsStorage := &mocks.EmptySettingsStorageMock{}
+	handleStart(session, settingsStorage)
 
 	if session.Job.Output[0].TextID != "welcome_onboarding" {
 		t.Error("Expected 'welcome_onboarding', got", session.Job.Output[0].TextID)
@@ -22,7 +24,8 @@ func TestSecondStartHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/start"}, &database.User{
 		IsOnboarded: true,
 	}, nil, nil)
-	handleStart(session)
+	settingsStorage := &mocks.EmptySettingsStorageMock{}
+	handleStart(session, settingsStorage)
 
 	if session.Job.Output[0].TextID != "timezone_select" {
 		t.Error("Expected 'timezone_select', got", session.Job.Output[0].TextID)
@@ -35,7 +38,8 @@ func TestThirdStartHandler(t *testing.T) {
 		IsOnboarded:    true,
 		SecondsFromUTC: &secondsFromUTC,
 	}, nil, nil)
-	handleStart(session)
+	settingsStorage := &mocks.EmptySettingsStorageMock{}
+	handleStart(session, settingsStorage)
 
 	if session.Job.Output[0].TextID != "welcome" {
 		t.Error("Expected 'welcome', got", session.Job.Output[0].TextID)

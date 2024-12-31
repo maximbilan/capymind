@@ -17,6 +17,13 @@ func getSettings(ctx *context.Context, userId string, settingsStorage database.S
 	return settings
 }
 
+func saveSettings(ctx *context.Context, userId string, settings database.Settings, settingsStorage database.SettingsStorage) {
+	err := settingsStorage.SaveSettings(ctx, userId, settings)
+	if err != nil {
+		log.Printf("[Settings] Error saving settings to firestore, %s", err.Error())
+	}
+}
+
 func handleSettings(session *Session) {
 	var languageButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "language",
