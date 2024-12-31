@@ -36,6 +36,14 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 			return
 		}
 		localizedMessage = prepareAdminStats(ctx, userLocale, adminStorage, feedbackStorage)
+	} else if messageType == taskservice.Feedback || messageType == taskservice.Morning || messageType == taskservice.Evening {
+		// Send only to active users
+		if user.IsNonActive() {
+			return
+		}
+
+		msg := translator.Translate(userLocale, message)
+		localizedMessage = &msg
 	} else {
 		msg := translator.Translate(userLocale, message)
 		localizedMessage = &msg

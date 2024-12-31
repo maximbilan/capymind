@@ -30,7 +30,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	// Get the message type
 	messageType := taskservice.MessageType(*typeStr)
 	// Get the message
-	message := getTextMessage(messageType)
+	message := getTextMessage(messageType, time.Now().Weekday())
 	if message == nil {
 		log.Println("Missing message type parameter")
 		return
