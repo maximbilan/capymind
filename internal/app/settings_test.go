@@ -19,8 +19,8 @@ func TestSettingsHandler(t *testing.T) {
 	if session.Job.Output[0].Buttons[0].TextID != "language" {
 		t.Errorf("Expected button text to be 'language', got %s", session.Job.Output[0].Buttons[0].TextID)
 	}
-	if session.Job.Output[0].Buttons[1].TextID != "timezone" {
-		t.Errorf("Expected button text to be 'timezone', got %s", session.Job.Output[0].Buttons[1].TextID)
+	if session.Job.Output[0].Buttons[1].TextID != "reminders_button" {
+		t.Errorf("Expected button text to be 'reminders_button', got %s", session.Job.Output[0].Buttons[1].TextID)
 	}
 	if session.Job.Output[0].Buttons[2].TextID != "download_all_notes" {
 		t.Errorf("Expected button text to be 'download_all_notes', got %s", session.Job.Output[0].Buttons[2].TextID)

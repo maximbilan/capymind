@@ -8,11 +8,16 @@ func handleSettings(session *Session) {
 		Locale:   session.Locale(),
 		Callback: string(Language),
 	}
-	var timezoneButton botservice.BotResultTextButton = botservice.BotResultTextButton{
-		TextID:   "timezone",
+	var remindersButton botservice.BotResultTextButton = botservice.BotResultTextButton{
+		TextID:   "reminders_button",
 		Locale:   session.Locale(),
-		Callback: string(Timezone),
+		Callback: string(Reminders),
 	}
+	// var timezoneButton botservice.BotResultTextButton = botservice.BotResultTextButton{
+	// 	TextID:   "timezone",
+	// 	Locale:   session.Locale(),
+	// 	Callback: string(Timezone),
+	// }
 	var downloadDataButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "download_all_notes",
 		Locale:   session.Locale(),
@@ -24,5 +29,5 @@ func handleSettings(session *Session) {
 		Callback: string(DeleteAccount),
 	}
 
-	setOutputTextWithButtons("settings_descr", []botservice.BotResultTextButton{languageButton, timezoneButton, downloadDataButton, deleteAccountButton}, session)
+	setOutputTextWithButtons("settings_descr", []botservice.BotResultTextButton{languageButton, remindersButton, downloadDataButton, deleteAccountButton}, session)
 }
