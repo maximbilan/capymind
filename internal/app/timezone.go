@@ -25,6 +25,7 @@ func setupTimezone(session *Session) {
 		return
 	}
 	session.User.SecondsFromUTC = &secondsFromUTC
+	session.Settings.SecondsFromUTC = &secondsFromUTC
 
 	if !session.User.IsOnboarded {
 		session.User.IsOnboarded = true
