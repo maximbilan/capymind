@@ -67,7 +67,7 @@ func handleSession(session *Session) {
 
 	switch command {
 	case Start:
-		handleStart(session, settingsStorage)
+		handleStart(session)
 	case Why:
 		handleWhy(session)
 	case Note:
@@ -106,6 +106,8 @@ func handleSession(session *Session) {
 		setMorningReminderOffset(session, settingsStorage)
 	case SetEveningReminderTime:
 		setEveningReminderOffset(session, settingsStorage)
+	case SkipReminders:
+		skipReminders(session)
 	case Support:
 		startFeedback(session)
 	case Help:

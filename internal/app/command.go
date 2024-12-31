@@ -37,6 +37,7 @@ const (
 	EnableEveningReminder  Command = "/enable_evening_reminder"   // Enable evening reminder
 	DisableEveningReminder Command = "/disable_evening_reminder"  // Disable evening reminder
 	SetEveningReminderTime Command = "/set_evening_reminder_time" // Set evening reminder time
+	SkipReminders          Command = "/skip_reminders"            // Skip the reminders (during onboarding)
 
 	// Admin commands
 	TotalUserCount       Command = "/total_user_count"        // Get the total number of users

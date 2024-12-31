@@ -9,6 +9,20 @@ import (
 	"github.com/capymind/internal/database"
 )
 
+func askForReminders(session *Session) {
+	enableButton := botservice.BotResultTextButton{
+		TextID:   "reminders_enable_button",
+		Locale:   session.Locale(),
+		Callback: string(EnableAllReminders),
+	}
+	continueButton := botservice.BotResultTextButton{
+		TextID:   "continue",
+		Locale:   session.Locale(),
+		Callback: string(SkipReminders),
+	}
+	setOutputTextWithButtons("onboarding_reminders", []botservice.BotResultTextButton{enableButton, continueButton}, session)
+}
+
 func handleReminders(session *Session) {
 	settings := *session.Settings
 
@@ -123,6 +137,7 @@ func handleEveningReminder(session *Session) {
 }
 
 func enableAllReminders(session *Session, settingsStorage database.SettingsStorage) {
+	user := *session.User
 	settings := *session.Settings
 
 	settings.HasMorningReminder = new(bool)
@@ -132,6 +147,10 @@ func enableAllReminders(session *Session, settingsStorage database.SettingsStora
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminders_enabled", session)
+
+	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+		handleTimezone(session, settingsStorage)
+	}
 }
 
 func disableAllReminders(session *Session, settingsStorage database.SettingsStorage) {
@@ -221,4 +240,9 @@ func setEveningReminderOffset(session *Session, settingsStorage database.Setting
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_set", session)
+}
+
+func skipReminders(session *Session) {
+	session.User.IsOnboarded = true
+	sendWelcome(session)
 }

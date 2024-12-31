@@ -78,7 +78,9 @@ const translationsJSON = `{
         "reminder_enable": "Enable reminder 🔔",
         "reminder_disable": "Disable reminder 🔕",
         "morning_reminder_descr": "Set a reminder to make a note in the journal every morning 🌅",
-        "evening_reminder_descr": "Set a reminder to make a note in the journal every evening 🌙"
+        "evening_reminder_descr": "Set a reminder to make a note in the journal every evening 🌙",
+        "onboarding_reminders": "Would you like to turn on reminders to make journal entries in the morning and evening? 🌅🌙",
+        "continue": "Continue ➡️"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -155,6 +157,8 @@ const translationsJSON = `{
         "reminder_enable": "Увімкнути нагадування 🔔",
         "reminder_disable": "Вимкнути нагадування 🔕",
         "morning_reminder_descr": "Встановіть нагадування зробити запис у журнал кожного ранку 🌅",
-        "evening_reminder_descr": "Встановіть нагадування зробити запис у журнал кожного вечора 🌙"
+        "evening_reminder_descr": "Встановіть нагадування зробити запис у журнал кожного вечора 🌙",
+        "onboarding_reminders": "Бажаєте увімкнути нагадування для ведення записів у журналі вранці та ввечері? 🌅🌙",
+        "continue": "Продовжити ➡️"
     }
 }`
