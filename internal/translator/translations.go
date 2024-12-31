@@ -65,7 +65,19 @@ const translationsJSON = `{
         "missing_note": "Do you want to save these thoughts to your journal? 💭",
         "missing_note_confirm": "Yes, save",
         "ask_write_review_about_bot": "Enjoying CapyMind? Share your experience with others by writing a review! 🚀",
-        "feedback_button": "Write a review ✍️"
+        "feedback_button": "Write a review ✍️",
+        "reminders_button": "Reminders ⏰",
+        "morning_reminder_button": "Morning reminder 🌅",
+        "evening_reminder_button": "Evening reminder 🌙",
+        "reminders_enable_button": "Enable all reminders 🔔",
+        "reminders_disable_button": "Disable all reminders 🔕",
+        "reminders_enabled": "Reminders have been enabled for morning and evening 🌅🌙",
+        "reminders_disabled": "Reminders have been disabled 🌅🌙",
+        "reminder_set": "Your reminder has been set successfully ⏰",
+        "reminder_enable": "Enable reminder 🔔",
+        "reminder_disable": "Disable reminder 🔕",
+        "morning_reminder_descr": "Set a reminder to make a note in the journal every morning 🌅",
+        "evening_reminder_descr": "Set a reminder to make a note in the journal every evening 🌙"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -129,6 +141,18 @@ const translationsJSON = `{
         "missing_note": "Бажаєте зберегти ці думки у свій журнал? 💭",
         "missing_note_confirm": "Так, зберегти",
         "ask_write_review_about_bot": "Вам подобається CapyMind? Поділіться своїм досвідом з іншими, написавши відгук! 🚀",
-        "feedback_button": "Написати відгук ✍️"
+        "feedback_button": "Написати відгук ✍️",
+        "reminders_button": "Нагадування ⏰",
+        "morning_reminder_button": "Ранкове нагадування 🌅",
+        "evening_reminder_button": "Вечірнє нагадування 🌙",
+        "reminders_enable_button": "Увімкнути всі нагадування 🔔",
+        "reminders_disable_button": "Вимкнути всі нагадування 🔕",
+        "reminders_enabled": "Нагадування увімкнено для ранку та вечора 🌅🌙",
+        "reminders_disabled": "Нагадування вимкнено 🌅🌙",
+        "reminder_set": "Ваше нагадування успішно встановлено ⏰",
+        "reminder_enable": "Увімкнути нагадування 🔔",
+        "reminder_disable": "Вимкнути нагадування 🔕",
+        "morning_reminder_descr": "Встановіть нагадування зробити запис у журнал кожного ранку 🌅",
+        "evening_reminder_descr": "Встановіть нагадування зробити запис у журнал кожного вечора 🌙"
     }
 }`
