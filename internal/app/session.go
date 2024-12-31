@@ -77,6 +77,12 @@ func handleSession(session *Session) {
 		handleLanguage(session)
 	case Timezone:
 		handleTimezone(session)
+	case Reminders:
+		handleReminders(session)
+	case MorningReminder:
+		handleMorningReminder(session)
+	case EveningReminder:
+		handleEveningReminder(session)
 	case Support:
 		startFeedback(session)
 	case Help:
