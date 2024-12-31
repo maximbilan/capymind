@@ -115,7 +115,7 @@ func handleEveningReminder(session *Session) {
 		buttons = append(buttons, botservice.BotResultTextButton{
 			TextID:   time,
 			Locale:   session.Locale(),
-			Callback: string(SetEveningReminderTime) + " " + fmt.Sprintf("%d", offset),
+			Callback: string(SetEveningReminderTime) + " " + fmt.Sprintf("%d", 12-offset),
 		})
 	}
 
@@ -187,35 +187,37 @@ func disableEveningReminder(session *Session, settingsStorage database.SettingsS
 }
 
 func parseReminderTime(param string) *int {
-	secondsFromUTC, err := strconv.Atoi(param)
+	offset, err := strconv.Atoi(param)
 	if err != nil {
 		log.Printf("[Bot] Error parsing timezone: %v", err)
 		return nil
 	}
-	return &secondsFromUTC
+	return &offset
 }
 
 func setMorningReminderOffset(session *Session, settingsStorage database.SettingsStorage) {
-	secondsFromUTC := parseReminderTime(session.Job.Parameters[0])
-	if secondsFromUTC == nil {
+	offset := parseReminderTime(session.Job.Parameters[0])
+	if offset == nil {
 		return
 	}
 
 	settings := *session.Settings
-	*settings.MorningReminderOffset = *secondsFromUTC
+	settings.MorningReminderOffset = new(int)
+	*settings.MorningReminderOffset = *offset
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_set", session)
 }
 
 func setEveningReminderOffset(session *Session, settingsStorage database.SettingsStorage) {
-	secondsFromUTC := parseReminderTime(session.Job.Parameters[0])
-	if secondsFromUTC == nil {
+	offset := parseReminderTime(session.Job.Parameters[0])
+	if offset == nil {
 		return
 	}
 
 	settings := *session.Settings
-	*settings.EveningReminderOffset = *secondsFromUTC
+	settings.EveningReminderOffset = new(int)
+	*settings.EveningReminderOffset = *offset
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_set", session)
