@@ -140,6 +140,21 @@ func TestMorningReminderHandler(t *testing.T) {
 	}
 }
 
+func TestMorningReminderActiveHandler(t *testing.T) {
+	enabled := true
+	session := createSession(&Job{Command: "/morning_reminder"}, &database.User{}, &database.Settings{
+		HasMorningReminder: &enabled,
+	}, nil)
+	handleMorningReminder(session)
+
+	if len(session.Job.Output[0].Buttons) != 6 {
+		t.Errorf("Expected 6 buttons, got %d", len(session.Job.Output[0].Buttons))
+	}
+	if session.Job.Output[0].Buttons[0].TextID != "reminder_disable" {
+		t.Error("Expected 'reminder_disable', got", session.Job.Output[0].Buttons[0].TextID)
+	}
+}
+
 func TestEveningReminderHandler(t *testing.T) {
 	enabled := false
 	session := createSession(&Job{Command: "/evening_reminder"}, &database.User{}, &database.Settings{
@@ -188,5 +203,20 @@ func TestEveningReminderHandler(t *testing.T) {
 	}
 	if session.Job.Output[0].Buttons[5].Callback != "/set_evening_reminder_time 11" {
 		t.Error("Expected '/set_evening_reminder_time 11', got", session.Job.Output[0].Buttons[5].Callback)
+	}
+}
+
+func TestEveningReminderActiveHandler(t *testing.T) {
+	enabled := true
+	session := createSession(&Job{Command: "/evening_reminder"}, &database.User{}, &database.Settings{
+		HasEveningReminder: &enabled,
+	}, nil)
+	handleEveningReminder(session)
+
+	if len(session.Job.Output[0].Buttons) != 6 {
+		t.Errorf("Expected 6 buttons, got %d", len(session.Job.Output[0].Buttons))
+	}
+	if session.Job.Output[0].Buttons[0].TextID != "reminder_disable" {
+		t.Error("Expected 'reminder_disable', got", session.Job.Output[0].Buttons[0].TextID)
 	}
 }
