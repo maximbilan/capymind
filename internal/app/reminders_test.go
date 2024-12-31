@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/capymind/internal/database"
+	"github.com/capymind/internal/mocks"
 )
 
 func TestAskForReminders(t *testing.T) {
@@ -218,5 +219,31 @@ func TestEveningReminderActiveHandler(t *testing.T) {
 	}
 	if session.Job.Output[0].Buttons[0].TextID != "reminder_disable" {
 		t.Error("Expected 'reminder_disable', got", session.Job.Output[0].Buttons[0].TextID)
+	}
+}
+
+func TestAllRemindersEnabler(t *testing.T) {
+	session := createSession(&Job{Command: "/enable_all_reminders"}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.EmptySettingsStorageMock{}
+	enableAllReminders(session, settingsStorage)
+
+	if *session.Settings.HasMorningReminder != true {
+		t.Error("Expected true, got", *session.Settings.HasMorningReminder)
+	}
+	if *session.Settings.HasEveningReminder != true {
+		t.Error("Expected true, got", *session.Settings.HasEveningReminder)
+	}
+}
+
+func TestAllRemindersDisabled(t *testing.T) {
+	session := createSession(&Job{Command: "/disable_all_reminders"}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.SettingsStorageMock{}
+	disableAllReminders(session, settingsStorage)
+
+	if *session.Settings.HasMorningReminder != false {
+		t.Error("Expected false, got", *session.Settings.HasMorningReminder)
+	}
+	if *session.Settings.HasEveningReminder != false {
+		t.Error("Expected false, got", *session.Settings.HasEveningReminder)
 	}
 }
