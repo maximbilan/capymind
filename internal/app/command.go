@@ -26,6 +26,9 @@ const (
 	NoteCount          Command = "/note_count"           // Count of the current user notes
 	SleepAnalysis      Command = "/sleep_analysis"       // Sleep analysis of last note
 	WeeklyAnalysis     Command = "/weekly_analysis"      // Weekly analysis of the user's journal entries for last week
+	Reminders          Command = "/reminders"            // Set reminders
+	MorningReminder    Command = "/morning_reminder"     // Set morning reminder
+	EveningReminder    Command = "/evening_reminder"     // Set evening reminder
 
 	// Admin commands
 	TotalUserCount       Command = "/total_user_count"        // Get the total number of users
