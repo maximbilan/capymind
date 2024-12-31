@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/capymind/internal/botservice"
+	"github.com/capymind/internal/database"
 )
 
 func handleReminders(session *Session) {
@@ -78,7 +79,7 @@ func handleMorningReminder(session *Session) {
 		})
 	}
 
-	setOutputTextWithButtons("morning_reminder_button", buttons, session)
+	setOutputTextWithButtons("morning_reminder_descr", buttons, session)
 }
 
 func handleEveningReminder(session *Session) {
@@ -116,5 +117,69 @@ func handleEveningReminder(session *Session) {
 		})
 	}
 
-	setOutputTextWithButtons("evening_reminder_button", buttons, session)
+	setOutputTextWithButtons("evening_reminder_descr", buttons, session)
+}
+
+func enableAllReminders(session *Session, settingsStorage database.SettingsStorage) {
+	settings := *session.Settings
+
+	settings.HasMorningReminder = new(bool)
+	*settings.HasMorningReminder = true
+	settings.HasEveningReminder = new(bool)
+	*settings.HasEveningReminder = true
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminders_enabled", session)
+}
+
+func disableAllReminders(session *Session, settingsStorage database.SettingsStorage) {
+	settings := *session.Settings
+
+	settings.HasMorningReminder = new(bool)
+	*settings.HasMorningReminder = false
+	settings.HasEveningReminder = new(bool)
+	*settings.HasEveningReminder = false
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminders_disabled", session)
+}
+
+func enableMorningReminder(session *Session, settingsStorage database.SettingsStorage) {
+	settings := *session.Settings
+
+	settings.HasMorningReminder = new(bool)
+	*settings.HasMorningReminder = true
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminder_set", session)
+}
+
+func disableMorningReminder(session *Session, settingsStorage database.SettingsStorage) {
+	settings := *session.Settings
+
+	settings.HasMorningReminder = new(bool)
+	*settings.HasMorningReminder = false
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminder_unset", session)
+}
+
+func enableEveningReminder(session *Session, settingsStorage database.SettingsStorage) {
+	settings := *session.Settings
+
+	settings.HasEveningReminder = new(bool)
+	*settings.HasEveningReminder = true
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminder_set", session)
+}
+
+func disableEveningReminder(session *Session, settingsStorage database.SettingsStorage) {
+	settings := *session.Settings
+
+	settings.HasEveningReminder = new(bool)
+	*settings.HasEveningReminder = false
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminder_unset", session)
 }

@@ -90,6 +90,18 @@ func handleSession(session *Session) {
 		handleMorningReminder(session)
 	case EveningReminder:
 		handleEveningReminder(session)
+	case EnableAllReminders:
+		enableAllReminders(session, settingsStorage)
+	case DisableAllReminders:
+		disableAllReminders(session, settingsStorage)
+	case EnableMorningReminder:
+		enableMorningReminder(session, settingsStorage)
+	case DisableMorningReminder:
+		disableMorningReminder(session, settingsStorage)
+	case EnableEveningReminder:
+		enableEveningReminder(session, settingsStorage)
+	case DisableEveningReminder:
+		disableEveningReminder(session, settingsStorage)
 	case Support:
 		startFeedback(session)
 	case Help:
