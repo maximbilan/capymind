@@ -9,7 +9,7 @@ import (
 )
 
 func TestSleepAnalysisHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 	aiService := mocks.ValidAIServiceMock{}
 
@@ -21,7 +21,7 @@ func TestSleepAnalysisHandler(t *testing.T) {
 }
 
 func TestSleepAnalysisNoNotesHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil, nil)
 	noteStorage := mocks.EmptyNoteStorageMock{}
 	aiService := mocks.ValidAIServiceMock{}
 
@@ -33,7 +33,7 @@ func TestSleepAnalysisNoNotesHandler(t *testing.T) {
 }
 
 func TestNoSleepAnalysisHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 	aiService := mocks.InvalidAIServiceMock{}
 
@@ -45,7 +45,7 @@ func TestNoSleepAnalysisHandler(t *testing.T) {
 }
 
 func TestAskForSleepAnalysisHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/sleep_analysis"}, &database.User{}, nil, nil)
 	askForSleepAnalysis(session)
 
 	if session.Job.Output[0].TextID != "do_you_want_sleep_analysis" {
@@ -75,7 +75,7 @@ func TestHandleWeeklyAnalysisHandler(t *testing.T) {
 		ID: "test",
 	}
 	job := createJob("/weekly_analysis", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 	aiService := mocks.ValidAIServiceMock{}
 
@@ -91,7 +91,7 @@ func TestHandleWeeklyAnalysisEmptyNotesHandler(t *testing.T) {
 		ID: "test",
 	}
 	job := createJob("/weekly_analysis", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	noteStorage := mocks.EmptyNoteStorageMock{}
 	aiService := mocks.ValidAIServiceMock{}
 
@@ -107,7 +107,7 @@ func TestHandleWeeklyAnalysisEmptyAnalysisHandler(t *testing.T) {
 		ID: "test",
 	}
 	job := createJob("/weekly_analysis", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 	aiService := mocks.InvalidAIServiceMock{}
 

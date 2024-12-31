@@ -7,7 +7,7 @@ import (
 )
 
 func TestSettingsHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/settings"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/settings"}, &database.User{}, nil, nil)
 	handleSettings(session)
 
 	if session.Job.Output[0].TextID != "settings_descr" {

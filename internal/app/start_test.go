@@ -7,7 +7,7 @@ import (
 )
 
 func TestFirstStartHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/start"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/start"}, &database.User{}, nil, nil)
 	handleStart(session)
 
 	if session.Job.Output[0].TextID != "welcome_onboarding" {
@@ -21,7 +21,7 @@ func TestFirstStartHandler(t *testing.T) {
 func TestSecondStartHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/start"}, &database.User{
 		IsOnboarded: true,
-	}, nil)
+	}, nil, nil)
 	handleStart(session)
 
 	if session.Job.Output[0].TextID != "timezone_select" {
@@ -34,7 +34,7 @@ func TestThirdStartHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/start"}, &database.User{
 		IsOnboarded:    true,
 		SecondsFromUTC: &secondsFromUTC,
-	}, nil)
+	}, nil, nil)
 	handleStart(session)
 
 	if session.Job.Output[0].TextID != "welcome" {

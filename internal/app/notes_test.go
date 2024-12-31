@@ -10,7 +10,7 @@ import (
 func TestStartNoteHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/note"}, &database.User{
 		IsTyping: false,
-	}, nil)
+	}, nil, nil)
 	startNote(session)
 
 	if session.User.IsTyping != true {
@@ -21,7 +21,7 @@ func TestStartNoteHandler(t *testing.T) {
 func TestFinishNoteHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/note"}, &database.User{
 		IsTyping: true,
-	}, nil)
+	}, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 
 	finishNote("dream", session, noteStorage)
@@ -45,7 +45,7 @@ func TestHandleMissingNoteHandler(t *testing.T) {
 		IsTyping: false,
 	}
 	job := createJob("/missing_note potential message", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 
 	handleMissingNote(session, noteStorage)
@@ -63,7 +63,7 @@ func TestHandleInputWithoutCommandHandler(t *testing.T) {
 		IsTyping: false,
 	}
 	job := createJob("potential message", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 
 	handleInputWithoutCommand(session)
 
@@ -80,7 +80,7 @@ func TestHandleLastNoteHandler(t *testing.T) {
 		IsTyping: false,
 	}
 	job := createJob("/last_note", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 
 	handleLastNote(session, noteStorage)
@@ -101,7 +101,7 @@ func TestHandleLastEmptyNoteHandler(t *testing.T) {
 		IsTyping: false,
 	}
 	job := createJob("/last_note", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	noteStorage := mocks.EmptyNoteStorageMock{}
 
 	handleLastNote(session, noteStorage)
@@ -114,7 +114,7 @@ func TestHandleLastEmptyNoteHandler(t *testing.T) {
 func TestNoteCountHandler(t *testing.T) {
 	user := &database.User{}
 	job := createJob("/note_count", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 
 	handleNoteCount(session, noteStorage)

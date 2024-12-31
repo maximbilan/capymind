@@ -8,21 +8,19 @@ import (
 )
 
 type User struct {
-	ID                 string     `json:"id"`
-	ChatID             int64      `json:"chatId"`
-	UserName           *string    `json:"username"`
-	FirstName          *string    `json:"firstName"`
-	LastName           *string    `json:"lastName"`
-	Locale             *string    `json:"locale"`
-	SecondsFromUTC     *int       `json:"secondsFromUTC"`
-	LastCommand        *string    `json:"lastCommand"`
-	IsTyping           bool       `json:"isTyping"`
-	IsOnboarded        bool       `json:"isOnboarded"`
-	Role               *Role      `json:"role"`
-	Timestamp          *time.Time `json:"timestamp"`
-	IsDeleted          bool       `json:"isDeleted"`
-	HasMorningReminder *bool      `json:"hasMorningReminder"`
-	HasEveningReminder *bool      `json:"hasEveningReminder"`
+	ID             string     `json:"id"`
+	ChatID         int64      `json:"chatId"`
+	UserName       *string    `json:"username"`
+	FirstName      *string    `json:"firstName"`
+	LastName       *string    `json:"lastName"`
+	Locale         *string    `json:"locale"`
+	SecondsFromUTC *int       `json:"secondsFromUTC"`
+	LastCommand    *string    `json:"lastCommand"`
+	IsTyping       bool       `json:"isTyping"`
+	IsOnboarded    bool       `json:"isOnboarded"`
+	Role           *Role      `json:"role"`
+	Timestamp      *time.Time `json:"timestamp"`
+	IsDeleted      bool       `json:"isDeleted"`
 }
 
 type UserStorage interface {
@@ -50,22 +48,4 @@ func (u User) IsNonActive() bool {
 	}
 	fourteenDaysAgo := time.Now().AddDate(0, 0, -14)
 	return u.Timestamp.Before(fourteenDaysAgo)
-}
-
-func (u User) IsMorningReminderEnabled() bool {
-	if u.HasMorningReminder == nil {
-		return true
-	}
-	return *u.HasMorningReminder
-}
-
-func (u User) IsEveningReminderEnabled() bool {
-	if u.HasEveningReminder == nil {
-		return true
-	}
-	return *u.HasEveningReminder
-}
-
-func (u User) AreRemindersEnabled() bool {
-	return u.IsMorningReminderEnabled() && u.IsEveningReminderEnabled()
 }

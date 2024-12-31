@@ -8,7 +8,7 @@ import (
 )
 
 func TestAnalysisHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/analysis"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/analysis"}, &database.User{}, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 	aiService := mocks.ValidAIServiceMock{}
 
@@ -20,7 +20,7 @@ func TestAnalysisHandler(t *testing.T) {
 }
 
 func TestAnalysisHandlerNoNotes(t *testing.T) {
-	session := createSession(&Job{Command: "/analysis"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/analysis"}, &database.User{}, nil, nil)
 	noteStorage := mocks.EmptyNoteStorageMock{}
 	aiService := mocks.ValidAIServiceMock{}
 
@@ -32,7 +32,7 @@ func TestAnalysisHandlerNoNotes(t *testing.T) {
 }
 
 func TestAnalysisHandlerNoAIService(t *testing.T) {
-	session := createSession(&Job{Command: "/analysis"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/analysis"}, &database.User{}, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 	aiService := mocks.InvalidAIServiceMock{}
 

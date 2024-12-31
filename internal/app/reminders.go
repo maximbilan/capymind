@@ -7,10 +7,10 @@ import (
 )
 
 func handleReminders(session *Session) {
-	user := *session.User
+	settings := *session.Settings
 
 	var switchButton botservice.BotResultTextButton
-	if user.AreRemindersEnabled() {
+	if settings.AreRemindersEnabled() {
 		switchButton = botservice.BotResultTextButton{
 			TextID:   "reminders_disable_button",
 			Locale:   session.Locale(),
@@ -44,12 +44,12 @@ func handleReminders(session *Session) {
 }
 
 func handleMorningReminder(session *Session) {
-	user := *session.User
+	settings := *session.Settings
 
 	var buttons []botservice.BotResultTextButton
 
 	var switchButton botservice.BotResultTextButton
-	if user.IsMorningReminderEnabled() {
+	if settings.IsMorningReminderEnabled() {
 		switchButton = botservice.BotResultTextButton{
 			TextID:   "reminder_disable",
 			Locale:   session.Locale(),
@@ -82,12 +82,12 @@ func handleMorningReminder(session *Session) {
 }
 
 func handleEveningReminder(session *Session) {
-	user := *session.User
+	settings := *session.Settings
 
 	var buttons []botservice.BotResultTextButton
 
 	var switchButton botservice.BotResultTextButton
-	if user.IsEveningReminderEnabled() {
+	if settings.IsEveningReminderEnabled() {
 		switchButton = botservice.BotResultTextButton{
 			TextID:   "reminder_disable",
 			Locale:   session.Locale(),

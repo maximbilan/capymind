@@ -7,7 +7,7 @@ import (
 )
 
 func TestWhyHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/why"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/why"}, &database.User{}, nil, nil)
 	handleWhy(session)
 
 	if session.Job.Output[0].TextID != "why_descr" {

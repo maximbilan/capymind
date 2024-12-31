@@ -8,7 +8,7 @@ import (
 )
 
 func TestTotalUserCountHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/total_user_count"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/total_user_count"}, &database.User{}, nil, nil)
 	adminStorage := mocks.AdminStorageMock{}
 
 	handleTotalUserCount(session, adminStorage)
@@ -19,7 +19,7 @@ func TestTotalUserCountHandler(t *testing.T) {
 }
 
 func TestTotalActiveUserCountHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/total_active_user_count"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/total_active_user_count"}, &database.User{}, nil, nil)
 	adminStorage := mocks.AdminStorageMock{}
 
 	handleTotalActiveUserCount(session, adminStorage)
@@ -30,7 +30,7 @@ func TestTotalActiveUserCountHandler(t *testing.T) {
 }
 
 func TestTotalNoteCountHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/total_note_count"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/total_note_count"}, &database.User{}, nil, nil)
 	adminStorage := mocks.AdminStorageMock{}
 
 	handleTotalNoteCount(session, adminStorage)

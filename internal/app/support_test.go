@@ -12,7 +12,7 @@ func TestSupportHandler(t *testing.T) {
 		IsTyping: false,
 	}
 	job := createJob("/support", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 
 	startFeedback(session)
 
@@ -26,7 +26,7 @@ func TestFinishFeedbackHandler(t *testing.T) {
 		IsTyping: true,
 	}
 	job := createJob("/support", user)
-	session := createSession(job, user, nil)
+	session := createSession(job, user, nil, nil)
 	feedbackStorage := mocks.FeedbackStorageMock{}
 
 	finishFeedback(session, feedbackStorage)

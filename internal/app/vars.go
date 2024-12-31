@@ -14,6 +14,7 @@ var aiService openai.OpenAI
 
 var db firestore.Firestore
 var userStorage firestore.UserStorage
+var settingsStorage firestore.SettingsStorage
 var noteStorage firestore.NoteStorage
 var adminStorage firestore.AdminStorage
 var feedbackStorage firestore.FeedbackStorage

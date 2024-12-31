@@ -40,37 +40,3 @@ func TestIsNonActive(t *testing.T) {
 		t.Error("Expected user to be inactive, got active")
 	}
 }
-
-func TestReminders(t *testing.T) {
-	user := User{
-		HasMorningReminder: nil,
-	}
-
-	if !user.IsMorningReminderEnabled() {
-		t.Error("Expected morning reminder to be enabled, got disabled")
-	}
-
-	user.HasMorningReminder = new(bool)
-	*user.HasMorningReminder = false
-
-	if user.IsMorningReminderEnabled() {
-		t.Error("Expected morning reminder to be disabled, got enabled")
-	}
-
-	user.HasEveningReminder = nil
-
-	if !user.IsEveningReminderEnabled() {
-		t.Error("Expected evening reminder to be enabled, got disabled")
-	}
-
-	if user.AreRemindersEnabled() {
-		t.Error("Expected reminders to be enabled, got disabled")
-	}
-
-	user.HasEveningReminder = new(bool)
-	*user.HasEveningReminder = false
-
-	if user.IsEveningReminderEnabled() {
-		t.Error("Expected evening reminder to be disabled, got enabled")
-	}
-}

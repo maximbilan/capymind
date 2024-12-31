@@ -7,7 +7,7 @@ import (
 )
 
 func TestLanguageHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/language"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/language"}, &database.User{}, nil, nil)
 	handleLanguage(session)
 
 	if session.Job.Output[0].TextID != "language_select" {
@@ -22,7 +22,7 @@ func TestLanguageHandler(t *testing.T) {
 }
 
 func TestLanguageHandlerWithParameters(t *testing.T) {
-	session := createSession(&Job{Command: "/language", Parameters: []string{"uk"}}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/language", Parameters: []string{"uk"}}, &database.User{}, nil, nil)
 	handleLanguage(session)
 
 	if session.Job.Parameters[0] != "uk" {
@@ -42,7 +42,7 @@ func TestLanguageHandlerWithParameters(t *testing.T) {
 
 func TestLanguageHandlerWithParametersAndTimezone(t *testing.T) {
 	time := 123456789
-	session := createSession(&Job{Command: "/language", Parameters: []string{"en"}}, &database.User{SecondsFromUTC: &time}, nil)
+	session := createSession(&Job{Command: "/language", Parameters: []string{"en"}}, &database.User{SecondsFromUTC: &time}, nil, nil)
 	handleLanguage(session)
 
 	if session.Job.Parameters[0] != "en" {

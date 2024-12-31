@@ -38,7 +38,7 @@ func TestCreateZipFile(t *testing.T) {
 }
 
 func TestDownloadDataHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/download"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/download"}, &database.User{}, nil, nil)
 	noteStorage := mocks.NoteStorageMock{}
 	fileStorage := mocks.ValidFileStorageMock{}
 
@@ -50,7 +50,7 @@ func TestDownloadDataHandler(t *testing.T) {
 }
 
 func TestDeleteAccountHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/delete"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/delete"}, &database.User{}, nil, nil)
 	handleDeleteAccount(session)
 
 	if session.Job.Output[0].TextID != "delete_account_are_you_sure" {
@@ -62,7 +62,7 @@ func TestDeleteAccountHandler(t *testing.T) {
 }
 
 func TestForceDeleteAccountHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/force_delete"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/force_delete"}, &database.User{}, nil, nil)
 	userStorage := mocks.UserStorageMock{}
 	noteStorage := mocks.NoteStorageMock{}
 

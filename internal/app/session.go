@@ -9,9 +9,10 @@ import (
 )
 
 type Session struct {
-	Job     *Job
-	User    *database.User
-	Context *context.Context
+	Job      *Job
+	User     *database.User
+	Settings *database.Settings
+	Context  *context.Context
 }
 
 // Return the locale of the current user
@@ -32,11 +33,12 @@ func (session *Session) SaveUser(userStorage database.UserStorage) {
 }
 
 // Create a session
-func createSession(job *Job, user *database.User, context *context.Context) *Session {
+func createSession(job *Job, user *database.User, settings *database.Settings, context *context.Context) *Session {
 	session := Session{
-		Job:     job,
-		User:    user,
-		Context: context,
+		Job:      job,
+		User:     user,
+		Settings: settings,
+		Context:  context,
 	}
 	return &session
 }

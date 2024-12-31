@@ -7,7 +7,7 @@ import (
 )
 
 func TestTimezoneHandler(t *testing.T) {
-	session := createSession(&Job{Command: "/timezone"}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/timezone"}, &database.User{}, nil, nil)
 	handleTimezone(session)
 
 	if session.Job.Output[0].TextID != "timezone_select" {
@@ -19,7 +19,7 @@ func TestTimezoneHandler(t *testing.T) {
 }
 
 func TestTimezoneHandlerWithParam(t *testing.T) {
-	session := createSession(&Job{Command: "/timezone 7200", Parameters: []string{"7200"}}, &database.User{}, nil)
+	session := createSession(&Job{Command: "/timezone 7200", Parameters: []string{"7200"}}, &database.User{}, nil, nil)
 	handleTimezone(session)
 
 	if session.Job.Output[0].TextID != "timezone_set" {
@@ -34,7 +34,7 @@ func TestTimezoneHandlerWithParam(t *testing.T) {
 }
 
 func TestTimezoneHandlerWithParamOnboarded(t *testing.T) {
-	session := createSession(&Job{Command: "/timezone 0", Parameters: []string{"0"}}, &database.User{IsOnboarded: true}, nil)
+	session := createSession(&Job{Command: "/timezone 0", Parameters: []string{"0"}}, &database.User{IsOnboarded: true}, nil, nil)
 	handleTimezone(session)
 
 	if session.Job.Output[0].TextID != "timezone_set" {
