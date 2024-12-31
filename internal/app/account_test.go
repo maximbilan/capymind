@@ -65,8 +65,9 @@ func TestForceDeleteAccountHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/force_delete"}, &database.User{}, nil, nil)
 	userStorage := mocks.UserStorageMock{}
 	noteStorage := mocks.NoteStorageMock{}
+	settingsStorage := mocks.SettingsStorageMock{}
 
-	handleForceDeleteAccount(session, noteStorage, userStorage)
+	handleForceDeleteAccount(session, noteStorage, userStorage, settingsStorage)
 
 	if session.Job.Output[0].TextID != "delete_account_success" {
 		t.Error("Expected delete_account_success, got nil")

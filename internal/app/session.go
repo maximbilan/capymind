@@ -107,7 +107,7 @@ func handleSession(session *Session) {
 	case DeleteAccount:
 		handleDeleteAccount(session)
 	case ForceDeleteAccount:
-		handleForceDeleteAccount(session, noteStorage, userStorage)
+		handleForceDeleteAccount(session, noteStorage, userStorage, settingsStorage)
 	case TotalUserCount:
 		handleTotalUserCount(session, adminStorage)
 	case TotalActiveUserCount:
