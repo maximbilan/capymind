@@ -233,6 +233,13 @@ func TestAllRemindersEnabler(t *testing.T) {
 	if *session.Settings.HasEveningReminder != true {
 		t.Error("Expected true, got", *session.Settings.HasEveningReminder)
 	}
+
+	if session.Job.Output[0].TextID != "reminders_enabled" {
+		t.Error("Expected 'reminders_enabled', got", session.Job.Output[0].TextID)
+	}
+	if session.Job.Output[1].TextID != "timezone_select" {
+		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	}
 }
 
 func TestAllRemindersDisabled(t *testing.T) {
@@ -245,5 +252,66 @@ func TestAllRemindersDisabled(t *testing.T) {
 	}
 	if *session.Settings.HasEveningReminder != false {
 		t.Error("Expected false, got", *session.Settings.HasEveningReminder)
+	}
+	if session.Job.Output[0].TextID != "reminders_disabled" {
+		t.Error("Expected 'reminders_disabled', got", session.Job.Output[0].TextID)
+	}
+}
+
+func TestMorningReminderEnabled(t *testing.T) {
+	session := createSession(&Job{Command: "/enable_morning_reminder"}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.EmptySettingsStorageMock{}
+	enableMorningReminder(session, settingsStorage)
+
+	if *session.Settings.HasMorningReminder != true {
+		t.Error("Expected true, got", *session.Settings.HasMorningReminder)
+	}
+	if session.Job.Output[0].TextID != "reminder_set" {
+		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
+	}
+	if session.Job.Output[1].TextID != "timezone_select" {
+		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	}
+}
+
+func TestMorningReminderDisabler(t *testing.T) {
+	session := createSession(&Job{Command: "/disable_morning_reminder"}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.SettingsStorageMock{}
+	disableMorningReminder(session, settingsStorage)
+
+	if *session.Settings.HasMorningReminder != false {
+		t.Error("Expected false, got", *session.Settings.HasMorningReminder)
+	}
+	if session.Job.Output[0].TextID != "reminder_unset" {
+		t.Error("Expected 'reminder_unset', got", session.Job.Output[0].TextID)
+	}
+}
+
+func TestEveningReminderEnabler(t *testing.T) {
+	session := createSession(&Job{Command: "/enable_evening_reminder"}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.EmptySettingsStorageMock{}
+	enableEveningReminder(session, settingsStorage)
+
+	if *session.Settings.HasEveningReminder != true {
+		t.Error("Expected true, got", *session.Settings.HasEveningReminder)
+	}
+	if session.Job.Output[0].TextID != "reminder_set" {
+		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
+	}
+	if session.Job.Output[1].TextID != "timezone_select" {
+		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	}
+}
+
+func TestEveningReminderDisabler(t *testing.T) {
+	session := createSession(&Job{Command: "/disable_evening_reminder"}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.SettingsStorageMock{}
+	disableEveningReminder(session, settingsStorage)
+
+	if *session.Settings.HasEveningReminder != false {
+		t.Error("Expected false, got", *session.Settings.HasEveningReminder)
+	}
+	if session.Job.Output[0].TextID != "reminder_unset" {
+		t.Error("Expected 'reminder_unset', got", session.Job.Output[0].TextID)
 	}
 }

@@ -161,52 +161,42 @@ func disableAllReminders(session *Session, settingsStorage database.SettingsStor
 }
 
 func enableMorningReminder(session *Session, settingsStorage database.SettingsStorage) {
-	user := *session.User
-	settings := *session.Settings
+	session.Settings.HasMorningReminder = new(bool)
+	*session.Settings.HasMorningReminder = true
 
-	settings.HasMorningReminder = new(bool)
-	*settings.HasMorningReminder = true
-
-	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	saveSettings(session.Context, session.User.ID, *session.Settings, settingsStorage)
 	setOutputText("reminder_set", session)
 
-	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+	if session.User.SecondsFromUTC == nil || session.Settings.SecondsFromUTC == nil {
 		requestTimezone(session)
 	}
 }
 
 func disableMorningReminder(session *Session, settingsStorage database.SettingsStorage) {
-	settings := *session.Settings
+	session.Settings.HasMorningReminder = new(bool)
+	*session.Settings.HasMorningReminder = false
 
-	settings.HasMorningReminder = new(bool)
-	*settings.HasMorningReminder = false
-
-	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	saveSettings(session.Context, session.User.ID, *session.Settings, settingsStorage)
 	setOutputText("reminder_unset", session)
 }
 
 func enableEveningReminder(session *Session, settingsStorage database.SettingsStorage) {
-	user := *session.User
-	settings := *session.Settings
+	session.Settings.HasEveningReminder = new(bool)
+	*session.Settings.HasEveningReminder = true
 
-	settings.HasEveningReminder = new(bool)
-	*settings.HasEveningReminder = true
-
-	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	saveSettings(session.Context, session.User.ID, *session.Settings, settingsStorage)
 	setOutputText("reminder_set", session)
 
-	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+	if session.User.SecondsFromUTC == nil || session.Settings.SecondsFromUTC == nil {
 		requestTimezone(session)
 	}
 }
 
 func disableEveningReminder(session *Session, settingsStorage database.SettingsStorage) {
-	settings := *session.Settings
+	session.Settings.HasEveningReminder = new(bool)
+	*session.Settings.HasEveningReminder = false
 
-	settings.HasEveningReminder = new(bool)
-	*settings.HasEveningReminder = false
-
-	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	saveSettings(session.Context, session.User.ID, *session.Settings, settingsStorage)
 	setOutputText("reminder_unset", session)
 }
 
