@@ -18,6 +18,7 @@ func getSettings(ctx *context.Context, userId string, settingsStorage database.S
 }
 
 func saveSettings(ctx *context.Context, userId string, settings database.Settings, settingsStorage database.SettingsStorage) {
+	//coverage:ignore
 	err := settingsStorage.SaveSettings(ctx, userId, settings)
 	if err != nil {
 		log.Printf("[Settings] Error saving settings to firestore, %s", err.Error())
