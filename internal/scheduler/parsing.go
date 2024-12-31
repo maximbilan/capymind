@@ -23,11 +23,11 @@ func parse(url *url.URL) (*string, int) {
 	return &typeStr, offset
 }
 
-func getTextMessage(messageType taskservice.MessageType) *string {
+func getTextMessage(messageType taskservice.MessageType, weekday time.Weekday) *string {
 	var message string
 	switch messageType {
 	case taskservice.Morning, taskservice.Evening:
-		message = taskservice.GetMessage(messageType, time.Now().Weekday())
+		message = taskservice.GetMessage(messageType, weekday)
 	case taskservice.Feedback:
 		message = "ask_write_review_about_bot"
 	case taskservice.WeeklyAnalysis, taskservice.UserStats, taskservice.AdminStats:

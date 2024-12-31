@@ -3,6 +3,7 @@ package scheduler
 import (
 	"net/url"
 	"testing"
+	"time"
 
 	"github.com/capymind/internal/taskservice"
 )
@@ -70,37 +71,37 @@ func TestParse(t *testing.T) {
 }
 
 func TestGetTextMessage(t *testing.T) {
-	message := getTextMessage(taskservice.Morning)
+	message := getTextMessage(taskservice.Morning, time.Monday)
 	if *message != "how_are_you_morning_monday" {
 		t.Errorf("Expected how_are_you_morning_monday, got %s", *message)
 	}
 
-	message = getTextMessage(taskservice.Evening)
+	message = getTextMessage(taskservice.Evening, time.Monday)
 	if *message != "how_are_you_evening_monday" {
 		t.Errorf("Expected how_are_you_evening_monday, got %s", *message)
 	}
 
-	message = getTextMessage(taskservice.Feedback)
+	message = getTextMessage(taskservice.Feedback, time.Monday)
 	if *message != "ask_write_review_about_bot" {
 		t.Errorf("Expected ask_write_review_about_bot, got %s", *message)
 	}
 
-	message = getTextMessage(taskservice.WeeklyAnalysis)
+	message = getTextMessage(taskservice.WeeklyAnalysis, time.Monday)
 	if *message != "" {
 		t.Errorf("Expected empty string, got %s", *message)
 	}
 
-	message = getTextMessage(taskservice.UserStats)
+	message = getTextMessage(taskservice.UserStats, time.Monday)
 	if *message != "" {
 		t.Errorf("Expected empty string, got %s", *message)
 	}
 
-	message = getTextMessage(taskservice.AdminStats)
+	message = getTextMessage(taskservice.AdminStats, time.Monday)
 	if *message != "" {
 		t.Errorf("Expected empty string, got %s", *message)
 	}
 
-	message = getTextMessage("")
+	message = getTextMessage("", time.Monday)
 	if message != nil {
 		t.Errorf("Expected nil, got %s", *message)
 	}
