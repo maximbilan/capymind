@@ -233,9 +233,16 @@ func setMorningReminderOffset(session *Session, settingsStorage database.Setting
 	settings := *session.Settings
 	settings.MorningReminderOffset = new(int)
 	*settings.MorningReminderOffset = *offset
+	settings.HasMorningReminder = new(bool)
+	*settings.HasMorningReminder = true
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_set", session)
+
+	user := *session.User
+	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+		requestTimezone(session)
+	}
 }
 
 func setEveningReminderOffset(session *Session, settingsStorage database.SettingsStorage) {
@@ -247,12 +254,19 @@ func setEveningReminderOffset(session *Session, settingsStorage database.Setting
 	settings := *session.Settings
 	settings.EveningReminderOffset = new(int)
 	*settings.EveningReminderOffset = *offset
+	settings.HasEveningReminder = new(bool)
+	*settings.HasEveningReminder = true
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_set", session)
+
+	user := *session.User
+	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+		requestTimezone(session)
+	}
 }
 
-func skipReminders(session *Session) {
+func skipReminders(session *Session, settingsStorage database.SettingsStorage) {
 	session.User.IsOnboarded = true
 
 	settings := *session.Settings
@@ -261,5 +275,6 @@ func skipReminders(session *Session) {
 	settings.HasEveningReminder = new(bool)
 	*settings.HasEveningReminder = false
 
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	sendWelcome(session)
 }
