@@ -166,6 +166,7 @@ func disableAllReminders(session *Session, settingsStorage database.SettingsStor
 }
 
 func enableMorningReminder(session *Session, settingsStorage database.SettingsStorage) {
+	user := *session.User
 	settings := *session.Settings
 
 	settings.HasMorningReminder = new(bool)
@@ -173,6 +174,10 @@ func enableMorningReminder(session *Session, settingsStorage database.SettingsSt
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_set", session)
+
+	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+		requestTimezone(session)
+	}
 }
 
 func disableMorningReminder(session *Session, settingsStorage database.SettingsStorage) {
@@ -186,6 +191,7 @@ func disableMorningReminder(session *Session, settingsStorage database.SettingsS
 }
 
 func enableEveningReminder(session *Session, settingsStorage database.SettingsStorage) {
+	user := *session.User
 	settings := *session.Settings
 
 	settings.HasEveningReminder = new(bool)
@@ -193,6 +199,10 @@ func enableEveningReminder(session *Session, settingsStorage database.SettingsSt
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_set", session)
+
+	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+		requestTimezone(session)
+	}
 }
 
 func disableEveningReminder(session *Session, settingsStorage database.SettingsStorage) {
@@ -244,5 +254,12 @@ func setEveningReminderOffset(session *Session, settingsStorage database.Setting
 
 func skipReminders(session *Session) {
 	session.User.IsOnboarded = true
+
+	settings := *session.Settings
+	settings.HasMorningReminder = new(bool)
+	*settings.HasMorningReminder = false
+	settings.HasEveningReminder = new(bool)
+	*settings.HasEveningReminder = false
+
 	sendWelcome(session)
 }

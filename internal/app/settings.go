@@ -11,7 +11,7 @@ import (
 func getSettings(ctx *context.Context, userId string, settingsStorage database.SettingsStorage) *database.Settings {
 	settings, err := settingsStorage.GetSettings(ctx, userId)
 	if err != nil {
-		log.Printf("[Settings] Error fetching settings from firestore, %s", err.Error())
+		// First time user settings
 		settings = &database.Settings{}
 	}
 	return settings
