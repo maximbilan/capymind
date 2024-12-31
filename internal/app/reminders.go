@@ -215,17 +215,15 @@ func setMorningReminderOffset(session *Session, settingsStorage database.Setting
 		return
 	}
 
-	settings := *session.Settings
-	settings.MorningReminderOffset = new(int)
-	*settings.MorningReminderOffset = *offset
-	settings.HasMorningReminder = new(bool)
-	*settings.HasMorningReminder = true
+	session.Settings.MorningReminderOffset = new(int)
+	*session.Settings.MorningReminderOffset = *offset
+	session.Settings.HasMorningReminder = new(bool)
+	*session.Settings.HasMorningReminder = true
 
-	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	saveSettings(session.Context, session.User.ID, *session.Settings, settingsStorage)
 	setOutputText("reminder_set", session)
 
-	user := *session.User
-	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+	if session.User.SecondsFromUTC == nil || session.Settings.SecondsFromUTC == nil {
 		requestTimezone(session)
 	}
 }
@@ -236,17 +234,15 @@ func setEveningReminderOffset(session *Session, settingsStorage database.Setting
 		return
 	}
 
-	settings := *session.Settings
-	settings.EveningReminderOffset = new(int)
-	*settings.EveningReminderOffset = *offset
-	settings.HasEveningReminder = new(bool)
-	*settings.HasEveningReminder = true
+	session.Settings.EveningReminderOffset = new(int)
+	*session.Settings.EveningReminderOffset = *offset
+	session.Settings.HasEveningReminder = new(bool)
+	*session.Settings.HasEveningReminder = true
 
-	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	saveSettings(session.Context, session.User.ID, *session.Settings, settingsStorage)
 	setOutputText("reminder_set", session)
 
-	user := *session.User
-	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
+	if session.User.SecondsFromUTC == nil || session.Settings.SecondsFromUTC == nil {
 		requestTimezone(session)
 	}
 }
@@ -254,12 +250,11 @@ func setEveningReminderOffset(session *Session, settingsStorage database.Setting
 func skipReminders(session *Session, settingsStorage database.SettingsStorage) {
 	session.User.IsOnboarded = true
 
-	settings := *session.Settings
-	settings.HasMorningReminder = new(bool)
-	*settings.HasMorningReminder = false
-	settings.HasEveningReminder = new(bool)
-	*settings.HasEveningReminder = false
+	session.Settings.HasMorningReminder = new(bool)
+	*session.Settings.HasMorningReminder = false
+	session.Settings.HasEveningReminder = new(bool)
+	*session.Settings.HasEveningReminder = false
 
-	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	saveSettings(session.Context, session.User.ID, *session.Settings, settingsStorage)
 	sendWelcome(session)
 }

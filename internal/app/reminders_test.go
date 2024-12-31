@@ -315,3 +315,70 @@ func TestEveningReminderDisabler(t *testing.T) {
 		t.Error("Expected 'reminder_unset', got", session.Job.Output[0].TextID)
 	}
 }
+
+func TestMorningReminderOffset(t *testing.T) {
+	session := createSession(&Job{Command: "/set_morning_reminder_time", Parameters: []string{"6"}}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.EmptySettingsStorageMock{}
+	setMorningReminderOffset(session, settingsStorage)
+
+	if *session.Settings.MorningReminderOffset != 6 {
+		t.Error("Expected 6, got", *session.Settings.MorningReminderOffset)
+	}
+	if *session.Settings.HasMorningReminder != true {
+		t.Error("Expected true, got", *session.Settings.HasMorningReminder)
+	}
+	if session.Job.Output[0].TextID != "reminder_set" {
+		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
+	}
+	if session.Job.Output[1].TextID != "timezone_select" {
+		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	}
+}
+
+func TestEveningReminderOffset(t *testing.T) {
+	session := createSession(&Job{Command: "/set_evening_reminder_time", Parameters: []string{"7"}}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.EmptySettingsStorageMock{}
+	setEveningReminderOffset(session, settingsStorage)
+
+	if *session.Settings.EveningReminderOffset != 7 {
+		t.Error("Expected 7, got", *session.Settings.EveningReminderOffset)
+	}
+	if *session.Settings.HasEveningReminder != true {
+		t.Error("Expected true, got", *session.Settings.HasEveningReminder)
+	}
+	if session.Job.Output[0].TextID != "reminder_set" {
+		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
+	}
+	if session.Job.Output[1].TextID != "timezone_select" {
+		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	}
+}
+
+func TestReminderTimeParser(t *testing.T) {
+	offset := parseReminderTime("6")
+	if *offset != 6 {
+		t.Error("Expected 6, got", *offset)
+	}
+
+	offset = parseReminderTime("abc")
+	if offset != nil {
+		t.Error("Expected nil, got", *offset)
+	}
+}
+
+func TestSkipReminders(t *testing.T) {
+	session := createSession(&Job{Command: "/skip_reminders"}, &database.User{}, &database.Settings{}, nil)
+	settingsStorage := mocks.EmptySettingsStorageMock{}
+	skipReminders(session, settingsStorage)
+
+	if *session.Settings.HasMorningReminder != false {
+		t.Error("Expected false, got", *session.Settings.HasMorningReminder)
+	}
+	if *session.Settings.HasEveningReminder != false {
+		t.Error("Expected false, got", *session.Settings.HasEveningReminder)
+	}
+
+	if session.Job.Output[0].TextID != "welcome" {
+		t.Error("Expected 'welcome', got", session.Job.Output[0].TextID)
+	}
+}
