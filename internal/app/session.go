@@ -102,6 +102,10 @@ func handleSession(session *Session) {
 		enableEveningReminder(session, settingsStorage)
 	case DisableEveningReminder:
 		disableEveningReminder(session, settingsStorage)
+	case SetMorningReminderTime:
+		setMorningReminderOffset(session, settingsStorage)
+	case SetEveningReminderTime:
+		setEveningReminderOffset(session, settingsStorage)
 	case Support:
 		startFeedback(session)
 	case Help:

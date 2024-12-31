@@ -2,6 +2,8 @@ package app
 
 import (
 	"fmt"
+	"log"
+	"strconv"
 
 	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
@@ -182,4 +184,39 @@ func disableEveningReminder(session *Session, settingsStorage database.SettingsS
 
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 	setOutputText("reminder_unset", session)
+}
+
+func parseReminderTime(param string) *int {
+	secondsFromUTC, err := strconv.Atoi(param)
+	if err != nil {
+		log.Printf("[Bot] Error parsing timezone: %v", err)
+		return nil
+	}
+	return &secondsFromUTC
+}
+
+func setMorningReminderOffset(session *Session, settingsStorage database.SettingsStorage) {
+	secondsFromUTC := parseReminderTime(session.Job.Parameters[0])
+	if secondsFromUTC == nil {
+		return
+	}
+
+	settings := *session.Settings
+	*settings.MorningReminderOffset = *secondsFromUTC
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminder_set", session)
+}
+
+func setEveningReminderOffset(session *Session, settingsStorage database.SettingsStorage) {
+	secondsFromUTC := parseReminderTime(session.Job.Parameters[0])
+	if secondsFromUTC == nil {
+		return
+	}
+
+	settings := *session.Settings
+	*settings.EveningReminderOffset = *secondsFromUTC
+
+	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
+	setOutputText("reminder_set", session)
 }
