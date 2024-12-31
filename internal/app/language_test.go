@@ -35,8 +35,8 @@ func TestLanguageHandlerWithParameters(t *testing.T) {
 	if session.Job.Output[0].TextID != "locale_set" {
 		t.Errorf("Expected locale_set, got %s", session.Job.Output[0].TextID)
 	}
-	if session.Job.Output[1].TextID != "timezone_select" {
-		t.Errorf("Expected timezone_select, got %d", len(session.Job.Output))
+	if session.Job.Output[1].TextID != "onboarding_reminders" {
+		t.Errorf("Expected onboarding_reminders, got %d", len(session.Job.Output))
 	}
 }
 

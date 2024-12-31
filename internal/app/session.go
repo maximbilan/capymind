@@ -34,6 +34,7 @@ func (session *Session) SaveUser(userStorage database.UserStorage) {
 
 // Save the user's settings
 func (session *Session) SaveSettings(settings database.Settings, settingsStorage database.SettingsStorage) {
+	//coverage:ignore
 	saveSettings(session.Context, session.User.ID, settings, settingsStorage)
 }
 

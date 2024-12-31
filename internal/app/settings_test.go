@@ -37,11 +37,8 @@ func TestGetSettings(t *testing.T) {
 	userId := "123"
 	settingsStorage := mocks.SettingsStorageMock{}
 
-	settings := getSettings(&ctx, userId, settingsStorage)
+	settings := *getSettings(&ctx, userId, settingsStorage)
 
-	if settings == nil {
-		t.Error("Expected settings, got nil")
-	}
 	if *settings.SecondsFromUTC != 7200 {
 		t.Errorf("Expected 7200, got %d", settings.SecondsFromUTC)
 	}

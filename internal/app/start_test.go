@@ -24,8 +24,8 @@ func TestSecondStartHandler(t *testing.T) {
 	}, nil, nil)
 	handleStart(session)
 
-	if session.Job.Output[0].TextID != "timezone_select" {
-		t.Error("Expected 'timezone_select', got", session.Job.Output[0].TextID)
+	if session.Job.Output[0].TextID != "onboarding_reminders" {
+		t.Error("Expected 'onboarding_reminders', got", session.Job.Output[0].TextID)
 	}
 }
 
@@ -34,7 +34,9 @@ func TestThirdStartHandler(t *testing.T) {
 	session := createSession(&Job{Command: "/start"}, &database.User{
 		IsOnboarded:    true,
 		SecondsFromUTC: &secondsFromUTC,
-	}, nil, nil)
+	}, &database.Settings{
+		SecondsFromUTC: &secondsFromUTC,
+	}, nil)
 	handleStart(session)
 
 	if session.Job.Output[0].TextID != "welcome" {
