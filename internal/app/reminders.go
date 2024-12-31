@@ -149,7 +149,7 @@ func enableAllReminders(session *Session, settingsStorage database.SettingsStora
 	setOutputText("reminders_enabled", session)
 
 	if user.SecondsFromUTC == nil || settings.SecondsFromUTC == nil {
-		handleTimezone(session, settingsStorage)
+		requestTimezone(session)
 	}
 }
 
