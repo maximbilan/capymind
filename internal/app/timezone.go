@@ -86,7 +86,7 @@ func finishCityRequest(session *Session, mapsService mapsservice.MapsService, se
 	var yesButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "yes",
 		Locale:   session.Locale(),
-		Callback: string(Timezone) + fmt.Sprintf("%d", secondsFromUTC),
+		Callback: string(Timezone) + fmt.Sprintf(" %d", *secondsFromUTC),
 	}
 	var noButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "no",
