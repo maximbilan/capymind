@@ -21,6 +21,11 @@ func prepareMessage(user *database.User, ctx *context.Context, offset int, messa
 
 	userLocale := translator.Locale(*user.Locale)
 	settings, _ := settingsStorage.GetSettings(ctx, user.ID)
+	if settings == nil {
+		// Create an empty settings object if it does not exist
+		emptySettings := database.Settings{}
+		settings = &emptySettings
+	}
 
 	var localizedMessage *string
 	if messageType == taskservice.WeeklyAnalysis {
