@@ -12,6 +12,7 @@ require (
 	github.com/openai/openai-go v0.1.0-alpha.41
 	google.golang.org/api v0.214.0
 	google.golang.org/protobuf v1.36.1
+	googlemaps.github.io/maps v1.7.0
 )
 
 require (
@@ -41,6 +42,7 @@ require (
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
+	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.58.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.58.0 // indirect

@@ -80,7 +80,12 @@ const translationsJSON = `{
         "morning_reminder_descr": "Set a reminder to make a note in the journal every morning 🌅",
         "evening_reminder_descr": "Set a reminder to make a note in the journal every evening 🌙",
         "onboarding_reminders": "Would you like to turn on reminders to make journal entries in the morning and evening? 🌅🌙",
-        "continue": "Continue ➡️"
+        "continue": "Continue ➡️",
+        "ask_for_city": "Please enter the name of the city you are currently in 🌍",
+        "timezone_not_found": "The time zone for the city you entered could not be found. Please set up your time zone manually.",
+        "is_this_your_time": "Is this your current time? 🕒\n",
+        "yes": "Yes",
+        "no": "No"
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -159,6 +164,11 @@ const translationsJSON = `{
         "morning_reminder_descr": "Встановіть нагадування зробити запис у журнал кожного ранку 🌅",
         "evening_reminder_descr": "Встановіть нагадування зробити запис у журнал кожного вечора 🌙",
         "onboarding_reminders": "Бажаєте увімкнути нагадування для ведення записів у журналі вранці та ввечері? 🌅🌙",
-        "continue": "Продовжити ➡️"
+        "continue": "Продовжити ➡️",
+        "ask_for_city": "Будь ласка, введіть назву міста, в якому ви знаходитесь 🌍",
+        "timezone_not_found": "Часовий пояс для введеного вами міста не вдалося знайти. Будь ласка, встановіть свій часовий пояс вручну.",
+        "is_this_your_time": "Це ваш поточний час? 🕒\n",
+        "yes": "Так",
+        "no": "Ні"
     }
 }`

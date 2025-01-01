@@ -25,7 +25,7 @@ done
 ENV_VARS=${ENV_VARS%,}
 
 # Set the secret environment variables
-SECRET_PARAMS=("CAPY_TELEGRAM_BOT_TOKEN=telegram_bot_token" "CAPY_AI_KEY=ai_key")
+SECRET_PARAMS=("CAPY_TELEGRAM_BOT_TOKEN=telegram_bot_token" "CAPY_AI_KEY=ai_key" "CAPY_GOOGLE_MAPS_API_KEY=maps_key")
 SECRETS=""
 for PARAM in "${SECRET_PARAMS[@]}"; do
   SECRETS+="$PARAM:latest,"

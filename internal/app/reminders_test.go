@@ -51,8 +51,8 @@ func TestRemindersOnHandler(t *testing.T) {
 	if session.Job.Output[0].Buttons[1].TextID != "timezone" {
 		t.Error("Expected 'timezone', got", session.Job.Output[0].Buttons[1].TextID)
 	}
-	if session.Job.Output[0].Buttons[1].Callback != "/timezone" {
-		t.Error("Expected '/timezone', got", session.Job.Output[0].Buttons[1].Callback)
+	if session.Job.Output[0].Buttons[1].Callback != "/ask_for_city" {
+		t.Error("Expected '/ask_for_city', got", session.Job.Output[0].Buttons[1].Callback)
 	}
 	if session.Job.Output[0].Buttons[2].TextID != "morning_reminder_button" {
 		t.Error("Expected 'morning_reminder_button', got", session.Job.Output[0].Buttons[2].TextID)
@@ -237,8 +237,8 @@ func TestAllRemindersEnabler(t *testing.T) {
 	if session.Job.Output[0].TextID != "reminders_enabled" {
 		t.Error("Expected 'reminders_enabled', got", session.Job.Output[0].TextID)
 	}
-	if session.Job.Output[1].TextID != "timezone_select" {
-		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	if session.Job.Output[1].TextID != "ask_for_city" {
+		t.Error("Expected 'ask_for_city', got", session.Job.Output[1].TextID)
 	}
 }
 
@@ -269,8 +269,8 @@ func TestMorningReminderEnabled(t *testing.T) {
 	if session.Job.Output[0].TextID != "reminder_set" {
 		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
 	}
-	if session.Job.Output[1].TextID != "timezone_select" {
-		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	if session.Job.Output[1].TextID != "ask_for_city" {
+		t.Error("Expected 'ask_for_city', got", session.Job.Output[1].TextID)
 	}
 }
 
@@ -298,8 +298,8 @@ func TestEveningReminderEnabler(t *testing.T) {
 	if session.Job.Output[0].TextID != "reminder_set" {
 		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
 	}
-	if session.Job.Output[1].TextID != "timezone_select" {
-		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	if session.Job.Output[1].TextID != "ask_for_city" {
+		t.Error("Expected 'ask_for_city', got", session.Job.Output[1].TextID)
 	}
 }
 
@@ -330,8 +330,8 @@ func TestMorningReminderOffset(t *testing.T) {
 	if session.Job.Output[0].TextID != "reminder_set" {
 		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
 	}
-	if session.Job.Output[1].TextID != "timezone_select" {
-		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	if session.Job.Output[1].TextID != "ask_for_city" {
+		t.Error("Expected 'ask_for_city', got", session.Job.Output[1].TextID)
 	}
 }
 
@@ -349,8 +349,8 @@ func TestEveningReminderOffset(t *testing.T) {
 	if session.Job.Output[0].TextID != "reminder_set" {
 		t.Error("Expected 'reminder_set', got", session.Job.Output[0].TextID)
 	}
-	if session.Job.Output[1].TextID != "timezone_select" {
-		t.Error("Expected 'timezone_select', got", session.Job.Output[1].TextID)
+	if session.Job.Output[1].TextID != "ask_for_city" {
+		t.Error("Expected 'ask_for_city', got", session.Job.Output[1].TextID)
 	}
 }
 

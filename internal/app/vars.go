@@ -5,6 +5,7 @@ package app
 import (
 	"github.com/capymind/third_party/firestore"
 	"github.com/capymind/third_party/googledrive"
+	"github.com/capymind/third_party/googlemaps"
 	"github.com/capymind/third_party/openai"
 	"github.com/capymind/third_party/telegram"
 )
@@ -20,3 +21,5 @@ var adminStorage firestore.AdminStorage
 var feedbackStorage firestore.FeedbackStorage
 
 var fileStorage googledrive.GoogleDrive
+
+var mapsService googlemaps.GoogleMapsService

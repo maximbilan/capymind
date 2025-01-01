@@ -44,7 +44,7 @@ func handleReminders(session *Session) {
 	var timezoneButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "timezone",
 		Locale:   session.Locale(),
-		Callback: string(Timezone),
+		Callback: string(AskForCity),
 	}
 	var morningReminderButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "morning_reminder_button",

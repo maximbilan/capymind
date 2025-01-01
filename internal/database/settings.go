@@ -3,11 +3,12 @@ package database
 import "context"
 
 type Settings struct {
-	SecondsFromUTC        *int  `json:"secondsFromUTC"`
-	HasMorningReminder    *bool `json:"hasMorningReminder"`
-	HasEveningReminder    *bool `json:"hasEveningReminder"`
-	MorningReminderOffset *int  `json:"morningReminderOffset"`
-	EveningReminderOffset *int  `json:"eveningReminderOffset"`
+	SecondsFromUTC        *int    `json:"secondsFromUTC"`
+	HasMorningReminder    *bool   `json:"hasMorningReminder"`
+	HasEveningReminder    *bool   `json:"hasEveningReminder"`
+	MorningReminderOffset *int    `json:"morningReminderOffset"`
+	EveningReminderOffset *int    `json:"eveningReminderOffset"`
+	Location              *string `json:"location"`
 }
 
 type SettingsStorage interface {
