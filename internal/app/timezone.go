@@ -72,6 +72,7 @@ func finishCityRequest(session *Session, mapsService mapsservice.MapsService, se
 	secondsFromUTC := mapsService.GetTimezone(city)
 	if secondsFromUTC == nil {
 		setOutputText("timezone_not_found", session)
+		requestTimezoneManually(session)
 		return
 	}
 
