@@ -37,7 +37,8 @@ CapyMind is a personal mental health journal powered by AI, designed to help you
 ## Hidden user commands
 ```
 /missing_note - Ask to put a note from the previous text
-/timezone - Change the timezone
+/timezone - Change the timezone (manually)
+/ask_for_city" - Ask for the city to set the timezone
 /download_data - Download the user data (all notes)
 /delete_account - Ask to delete the account
 /force_delete_account - Force delete the account
@@ -46,6 +47,10 @@ CapyMind is a personal mental health journal powered by AI, designed to help you
 /sleep_analysis - Sleep analysis of last note
 /weekly_analysis - Weekly analysis of the user's journal entries for last week
 /reminders - Set reminders
+```
+
+## Reminder commands
+```
 /enable_all_reminders - Enable all reminders
 /disable_all_reminders - Disable all reminders
 /morning_reminder - Set morning reminder
