@@ -6,6 +6,7 @@ import (
 
 	"github.com/capymind/internal/botservice"
 	"github.com/capymind/internal/database"
+	"github.com/capymind/internal/mapsservice"
 	"github.com/capymind/internal/utils"
 )
 
@@ -54,4 +55,14 @@ func requestTimezone(session *Session) {
 		buttons = append(buttons, button)
 	}
 	setOutputTextWithButtons("timezone_select", buttons, session)
+}
+
+func handleTimezoneByLocation(session *Session, mapsService mapsservice.MapsService) {
+	result := mapsService.GetTimezone("Kyiv")
+	if result == nil {
+		log.Printf("[Bot] Error getting timezone")
+		return
+	}
+
+	log.Print("[Bot] Timezone: ", *result)
 }

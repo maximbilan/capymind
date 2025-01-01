@@ -14,23 +14,13 @@ type GoogleMapsService struct{}
 
 var client *maps.Client
 
-func credentialsPath() string {
-	var path = "credentials.json"
-	if os.Getenv("DEBUG_MODE") == "true" {
-		path = "./../" + path
-	} else {
-		path = "./" + path
-	}
-	return path
-}
-
 func createClient() {
 	if client != nil {
 		return
 	}
 
 	var err error
-	client, err = maps.NewClient()
+	client, err = maps.NewClient(maps.WithAPIKey(os.Getenv("CAPY_GOOGLE_MAPS_API_KEY")))
 	if err != nil {
 		fmt.Println("Error creating client: ", err)
 	}

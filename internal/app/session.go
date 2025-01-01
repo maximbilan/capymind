@@ -85,6 +85,8 @@ func handleSession(session *Session) {
 		handleLanguage(session)
 	case Timezone:
 		handleTimezone(session, settingsStorage)
+	case TimezoneByLocation:
+		handleTimezoneByLocation(session, mapsService)
 	case Reminders:
 		handleReminders(session)
 	case MorningReminder:
