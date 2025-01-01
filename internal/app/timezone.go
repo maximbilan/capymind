@@ -80,9 +80,7 @@ func finishCityRequest(session *Session, mapsService mapsservice.MapsService, se
 	session.SaveSettings(*session.Settings, settingsStorage)
 
 	text := translator.Translate(session.Locale(), "is_this_your_time")
-	utcTime := time.Now().UTC().Add(time.Duration(*secondsFromUTC) * time.Second)
-	currentTimeStr := utcTime.Format("15:04")
-	text = text + currentTimeStr
+	text = text + currentTimeString(time.Now(), *secondsFromUTC)
 
 	var yesButton botservice.BotResultTextButton = botservice.BotResultTextButton{
 		TextID:   "yes",
@@ -96,4 +94,9 @@ func finishCityRequest(session *Session, mapsService mapsservice.MapsService, se
 	}
 
 	setOutputTextWithButtons(text, []botservice.BotResultTextButton{yesButton, noButton}, session)
+}
+
+func currentTimeString(currentTime time.Time, offset int) string {
+	utcTime := currentTime.UTC().Add(time.Duration(offset) * time.Second)
+	return utcTime.Format("15:04")
 }

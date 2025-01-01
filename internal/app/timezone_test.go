@@ -2,6 +2,7 @@ package app
 
 import (
 	"testing"
+	"time"
 
 	"github.com/capymind/internal/database"
 	"github.com/capymind/internal/mocks"
@@ -89,9 +90,8 @@ func TestFinishCityRequestHandler(t *testing.T) {
 	if session.User.IsTyping != false {
 		t.Error("Expected 'false', got", session.User.IsTyping)
 	}
-	secondsFromUTC := 7200
-	if session.Settings.SecondsFromUTC == &secondsFromUTC {
-		t.Error("Expected '7200', got", session.Settings.SecondsFromUTC)
+	if *session.Settings.Location != city {
+		t.Error("Expected 'portland', got", *session.Settings.Location)
 	}
 	if len(session.Job.Output[0].Buttons) != 2 {
 		t.Error("Expected '2', got", len(session.Job.Output[0].Buttons))
@@ -107,5 +107,14 @@ func TestFinishCityRequestHandler(t *testing.T) {
 	}
 	if session.Job.Output[0].Buttons[1].Callback != "/timezone" {
 		t.Error("Expected '/timezone', got", session.Job.Output[0].Buttons[1].Callback)
+	}
+}
+
+func TestCurrentTimeString(t *testing.T) {
+	time := time.Date(2021, 1, 1, 9, 35, 0, 0, time.UTC)
+
+	timeString := currentTimeString(time, 7200)
+	if timeString != "11:35" {
+		t.Error("Expected '11:35', got", timeString)
 	}
 }
