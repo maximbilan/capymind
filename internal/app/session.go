@@ -85,8 +85,8 @@ func handleSession(session *Session) {
 		handleLanguage(session)
 	case Timezone:
 		handleTimezone(session, settingsStorage)
-	case TimezoneByLocation:
-		handleTimezoneByLocation(session, mapsService)
+	case AskForCity:
+		handleCityRequest(session)
 	case Reminders:
 		handleReminders(session)
 	case MorningReminder:
@@ -147,6 +147,8 @@ func handleSession(session *Session) {
 				finishNote(*session.Job.Input, session, noteStorage)
 			case Support:
 				finishFeedback(session, feedbackStorage)
+			case AskForCity:
+				finishCityRequest(session, mapsService, settingsStorage)
 			default:
 				// If the user is typing and the last command is not recognized
 				handleHelp(session)

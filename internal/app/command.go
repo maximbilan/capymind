@@ -41,8 +41,8 @@ const (
 	SkipReminders          Command = "/skip_reminders"            // Skip the reminders (during onboarding)
 
 	// Timezone commands
-	Timezone           Command = "/timezone"             // Change the timezone (manually)
-	TimezoneByLocation Command = "/timezone_by_location" // Change the timezone by location
+	Timezone   Command = "/timezone"     // Change the timezone (manually)
+	AskForCity Command = "/ask_for_city" // Ask for the city to set the timezone
 
 	// Admin commands
 	TotalUserCount       Command = "/total_user_count"        // Get the total number of users
