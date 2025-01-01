@@ -147,7 +147,7 @@ func handleSession(session *Session) {
 				finishNote(*session.Job.Input, session, noteStorage)
 			case Support:
 				finishFeedback(session, feedbackStorage)
-			case AskForCity:
+			case AskForCity, EnableAllReminders, EnableMorningReminder, EnableEveningReminder, SetMorningReminderTime, SetEveningReminderTime:
 				finishCityRequest(session, mapsService, settingsStorage)
 			default:
 				// If the user is typing and the last command is not recognized
