@@ -16,7 +16,7 @@ import (
 // Handle the timezone command
 func handleTimezone(session *Session, settingsStorage database.SettingsStorage) {
 	if len(session.Job.Parameters) == 0 {
-		requestTimezone(session)
+		requestTimezoneManually(session)
 	} else {
 		setupTimezone(session, settingsStorage)
 	}
@@ -44,8 +44,8 @@ func setupTimezone(session *Session, settingsStorage database.SettingsStorage) {
 	session.SaveSettings(*session.Settings, settingsStorage)
 }
 
-// Set the timezone
-func requestTimezone(session *Session) {
+// Set the timezone manually
+func requestTimezoneManually(session *Session) {
 	var buttons []botservice.BotResultTextButton
 	timeZones := utils.GetTimeZones()
 	for _, tz := range timeZones {
@@ -60,7 +60,7 @@ func requestTimezone(session *Session) {
 	setOutputTextWithButtons("timezone_select", buttons, session)
 }
 
-func handleCityRequest(session *Session) {
+func requestTimezone(session *Session) {
 	session.User.IsTyping = true
 	setOutputText("ask_for_city", session)
 }

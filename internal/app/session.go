@@ -86,7 +86,7 @@ func handleSession(session *Session) {
 	case Timezone:
 		handleTimezone(session, settingsStorage)
 	case AskForCity:
-		handleCityRequest(session)
+		requestTimezone(session)
 	case Reminders:
 		handleReminders(session)
 	case MorningReminder:
