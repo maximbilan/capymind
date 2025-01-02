@@ -8,8 +8,8 @@ require (
 	cloud.google.com/go/cloudtasks v1.13.2
 	cloud.google.com/go/firestore v1.17.0
 	github.com/GoogleCloudPlatform/functions-framework-go v1.9.0
-	github.com/invopop/jsonschema v0.12.0
-	github.com/openai/openai-go v0.1.0-alpha.41
+	github.com/invopop/jsonschema v0.13.0
+	github.com/openai/openai-go v0.1.0-alpha.42
 	google.golang.org/api v0.214.0
 	google.golang.org/protobuf v1.36.1
 	googlemaps.github.io/maps v1.7.0
@@ -58,9 +58,9 @@ require (
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
-	google.golang.org/genproto v0.0.0-20241223144023-3abc09e42ca8 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20241223144023-3abc09e42ca8 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241223144023-3abc09e42ca8 // indirect
+	google.golang.org/genproto v0.0.0-20241230172942-26aa7a208def // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20241230172942-26aa7a208def // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241230172942-26aa7a208def // indirect
 	google.golang.org/grpc v1.69.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
