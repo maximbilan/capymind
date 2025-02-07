@@ -9,14 +9,14 @@ require (
 	cloud.google.com/go/firestore v1.18.0
 	github.com/GoogleCloudPlatform/functions-framework-go v1.9.1
 	github.com/invopop/jsonschema v0.13.0
-	github.com/openai/openai-go v0.1.0-alpha.52
-	google.golang.org/api v0.219.0
-	google.golang.org/protobuf v1.36.4
+	github.com/openai/openai-go v0.1.0-alpha.56
+	google.golang.org/api v0.220.0
+	google.golang.org/protobuf v1.36.5
 	googlemaps.github.io/maps v1.7.0
 )
 
 require (
-	cloud.google.com/go v0.118.1 // indirect
+	cloud.google.com/go v0.118.2 // indirect
 	cloud.google.com/go/auth v0.14.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.7 // indirect
 	cloud.google.com/go/compute/metadata v0.6.0 // indirect
