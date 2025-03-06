@@ -62,7 +62,7 @@ func (service OpenAI) Request(name string, description string, systemPrompt stri
 				JSONSchema: openai.F(schemaParam),
 			},
 		),
-		Model: openai.F(openai.ChatModelGPT4o),
+		Model: openai.F(openai.ChatModelO3Mini),
 	})
 
 	response := Response{}
