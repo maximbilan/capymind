@@ -5,12 +5,12 @@ go 1.23.0
 toolchain go1.24.0
 
 require (
-	cloud.google.com/go/cloudtasks v1.13.3
+	cloud.google.com/go/cloudtasks v1.13.4
 	cloud.google.com/go/firestore v1.18.0
 	github.com/GoogleCloudPlatform/functions-framework-go v1.9.1
 	github.com/invopop/jsonschema v0.13.0
 	github.com/openai/openai-go v0.1.0-alpha.62
-	google.golang.org/api v0.223.0
+	google.golang.org/api v0.224.0
 	google.golang.org/protobuf v1.36.5
 	googlemaps.github.io/maps v1.7.0
 )
@@ -20,8 +20,8 @@ require (
 	cloud.google.com/go/auth v0.15.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.7 // indirect
 	cloud.google.com/go/compute/metadata v0.6.0 // indirect
-	cloud.google.com/go/iam v1.4.0 // indirect
-	cloud.google.com/go/longrunning v0.6.4 // indirect
+	cloud.google.com/go/iam v1.4.1 // indirect
+	cloud.google.com/go/longrunning v0.6.5 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cloudevents/sdk-go/v2 v2.15.2 // indirect
