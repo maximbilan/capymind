@@ -24,7 +24,7 @@ func createAI() *openai.Client {
 	client := openai.NewClient(
 		option.WithAPIKey(os.Getenv("CAPY_AI_KEY")),
 	)
-	return client
+	return &client
 }
 
 // Generate a JSON schema for a given type
@@ -45,24 +45,23 @@ func (service OpenAI) Request(name string, description string, systemPrompt stri
 	var responseSchema = generateSchema[Response]()
 
 	schemaParam := openai.ResponseFormatJSONSchemaJSONSchemaParam{
-		Name:        openai.F(name),
-		Description: openai.F(description),
-		Schema:      openai.F(responseSchema),
+		Name:        name,
+		Description: openai.String(description),
+		Schema:      responseSchema,
 		Strict:      openai.Bool(true),
 	}
 
 	chat, err := ai.Chat.Completions.New(*ctx, openai.ChatCompletionNewParams{
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
+		Messages: []openai.ChatCompletionMessageParamUnion{
 			openai.SystemMessage(systemPrompt),
 			openai.UserMessage(userPrompt),
-		}),
-		ResponseFormat: openai.F[openai.ChatCompletionNewParamsResponseFormatUnion](
-			openai.ResponseFormatJSONSchemaParam{
-				Type:       openai.F(openai.ResponseFormatJSONSchemaTypeJSONSchema),
-				JSONSchema: openai.F(schemaParam),
+		},
+		ResponseFormat: openai.ChatCompletionNewParamsResponseFormatUnion{
+			OfJSONSchema: &openai.ResponseFormatJSONSchemaParam{
+				JSONSchema: schemaParam,
 			},
-		),
-		Model: openai.F(openai.ChatModelO3Mini),
+		},
+		Model: openai.ChatModelO3Mini,
 	})
 
 	response := Response{}
