@@ -9,7 +9,7 @@ require (
 	cloud.google.com/go/firestore v1.18.0
 	github.com/GoogleCloudPlatform/functions-framework-go v1.9.2
 	github.com/invopop/jsonschema v0.13.0
-	github.com/openai/openai-go v0.1.0-beta.3
+	github.com/openai/openai-go v0.1.0-beta.6
 	google.golang.org/api v0.228.0
 	google.golang.org/protobuf v1.36.6
 	googlemaps.github.io/maps v1.7.0
