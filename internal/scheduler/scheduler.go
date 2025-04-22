@@ -25,6 +25,8 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	typeStr, offset := parse(r.URL)
 	if typeStr == nil {
 		log.Println("Missing type parameter")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Missing type parameter"))
 		return
 	}
 	// Get the message type
@@ -33,6 +35,8 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	message := getTextMessage(messageType, time.Now().Weekday())
 	if message == nil {
 		log.Println("Missing message type parameter")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Missing message type parameter"))
 		return
 	}
 
@@ -76,4 +80,6 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	// Calculate how seconds this function takes to execute
 	elapsed := time.Since(start)
 	log.Printf("[Scheduler] Execution time for %s: %s", messageType, elapsed)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Scheduled messages for all users"))
 }

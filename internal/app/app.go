@@ -13,6 +13,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	update := bot.Parse(r.Body)
 	if update == nil {
 		log.Printf("[Bot] No update to process")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("No update to process"))
 		return
 	}
 
@@ -42,4 +44,8 @@ func Parse(w http.ResponseWriter, r *http.Request) {
 	finishSession(session)
 	// Close the database connection
 	db.CloseClient()
+
+	// Send the response
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }

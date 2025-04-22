@@ -111,12 +111,16 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	var msg taskservice.ScheduledTask
 	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {
 		log.Printf("[Scheduler] Could not parse message %s", err.Error())
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Could not parse message"))
 		return
 	}
 
 	result := prepareBotResult(msg)
 	bot.SendResult(msg.ChatID, result)
 	log.Printf("[Scheduler] Message sent to user: %d", msg.ChatID)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }
 
 func prepareBotResult(scheduledTask taskservice.ScheduledTask) botservice.BotResult {
