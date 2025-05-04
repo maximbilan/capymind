@@ -10,7 +10,7 @@ require (
 	github.com/GoogleCloudPlatform/functions-framework-go v1.9.2
 	github.com/invopop/jsonschema v0.13.0
 	github.com/openai/openai-go v0.1.0-beta.10
-	google.golang.org/api v0.230.0
+	google.golang.org/api v0.231.0
 	google.golang.org/protobuf v1.36.6
 	googlemaps.github.io/maps v1.7.0
 )
