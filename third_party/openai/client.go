@@ -9,8 +9,8 @@ import (
 	"os"
 
 	"github.com/invopop/jsonschema"
-	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/option"
+	"github.com/openai/openai-go/v2"
+	"github.com/openai/openai-go/v2/option"
 )
 
 type Response struct {
@@ -61,7 +61,7 @@ func (service OpenAI) Request(name string, description string, systemPrompt stri
 				JSONSchema: schemaParam,
 			},
 		},
-		Model: openai.ChatModelO3Mini,
+		Model: openai.ChatModelGPT5Mini,
 	})
 
 	response := Response{}
