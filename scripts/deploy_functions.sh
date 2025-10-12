@@ -8,7 +8,7 @@ SCHEDULER_FUNC_NAME="schedule"
 SEND_MESSAGE_FUNC_NAME="sendMessage"
 
 # Set the runtime
-RUNTIME="go124"
+RUNTIME="go125"
 # Set the project ID
 PROJECT_ID=$CAPY_PROJECT_ID
 
