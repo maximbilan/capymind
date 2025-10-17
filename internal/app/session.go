@@ -58,6 +58,10 @@ func handleSession(session *Session) {
 	now := time.Now()
 	command := session.Job.Command
 	commandStr := string(command)
+	// Keep therapy session as the effective last command during active window
+	if command == None && session.User.TherapySessionEndAt != nil && now.Before(*session.User.TherapySessionEndAt) && session.Job.LastCommand == TherapySession {
+		commandStr = string(TherapySession)
+	}
 	session.User.LastCommand = &commandStr
 	session.User.Timestamp = &now
 
@@ -169,9 +173,10 @@ func handleSession(session *Session) {
 			}
 		} else {
 			if session.Job.Input != nil && len(*session.Job.Input) > 1 && (*session.Job.Input)[0] != '/' {
-				// If the user is not typing and the input is not a command
-				// If a therapy session is active but not expired, forward to agent
-				if session.User.TherapySessionEndAt != nil && now.Before(*session.User.TherapySessionEndAt) && session.Job.LastCommand == TherapySession {
+				// If the user is not in typing mode but therapy session is active, keep the session alive and forward
+				if session.User.TherapySessionEndAt != nil && now.Before(*session.User.TherapySessionEndAt) {
+					session.User.IsTyping = true
+					session.Job.LastCommand = TherapySession
 					relayTherapyMessage(*session.Job.Input, session)
 				} else {
 					handleInputWithoutCommand(session)
