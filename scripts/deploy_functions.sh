@@ -33,7 +33,7 @@ done
 SECRETS=${SECRETS%,}
 
 # Set memory parameter
-MEMORY="1GB"
+MEMORY="256MB"
 
 # Timeout for scheduling 10 minutes
 SCHEDULER_TIMEOUT=600
