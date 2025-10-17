@@ -61,6 +61,16 @@ func handleSession(session *Session) {
 	session.User.LastCommand = &commandStr
 	session.User.Timestamp = &now
 
+	// Auto-end therapy session if expired
+	if session.User.TherapySessionEndAt != nil && now.After(*session.User.TherapySessionEndAt) {
+		endTherapySession(session)
+	}
+
+	// If another command is called while therapy is active, end therapy
+	if command != None && command != TherapySession && session.User.TherapySessionEndAt != nil {
+		endTherapySession(session)
+	}
+
 	if command.IsAdmin() && !session.isAdmin() {
 		handleHelp(session)
 		return
@@ -73,6 +83,8 @@ func handleSession(session *Session) {
 		handleWhy(session)
 	case Note:
 		startNote(session)
+	case TherapySession:
+		startTherapySession(session)
 	case MissingNote:
 		handleMissingNote(session, noteStorage)
 	case Last:
@@ -145,6 +157,8 @@ func handleSession(session *Session) {
 			switch session.Job.LastCommand {
 			case Note:
 				finishNote(*session.Job.Input, session, noteStorage)
+			case TherapySession:
+				relayTherapyMessage(*session.Job.Input, session)
 			case Support:
 				finishFeedback(session, feedbackStorage)
 			case AskForCity, EnableAllReminders, EnableMorningReminder, EnableEveningReminder, SetMorningReminderTime, SetEveningReminderTime:
@@ -156,7 +170,12 @@ func handleSession(session *Session) {
 		} else {
 			if session.Job.Input != nil && len(*session.Job.Input) > 1 && (*session.Job.Input)[0] != '/' {
 				// If the user is not typing and the input is not a command
-				handleInputWithoutCommand(session)
+				// If a therapy session is active but not expired, forward to agent
+				if session.User.TherapySessionEndAt != nil && now.Before(*session.User.TherapySessionEndAt) && session.Job.LastCommand == TherapySession {
+					relayTherapyMessage(*session.Job.Input, session)
+				} else {
+					handleInputWithoutCommand(session)
+				}
 			} else {
 				// If the user is not typing and the input is not recognized
 				handleHelp(session)

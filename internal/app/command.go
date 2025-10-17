@@ -6,15 +6,16 @@ type Command string
 
 const (
 	// User commands
-	Start    Command = "/start"    // Start the bot
-	Why      Command = "/why"      // Tells the purpose of the bot
-	Note     Command = "/note"     // Add a new note
-	Last     Command = "/last"     // Get the last note
-	Analysis Command = "/analysis" // Get the analysis of the last notes
-	Language Command = "/language" // Change the language
-	Settings Command = "/settings" // Show the settings
-	Help     Command = "/help"     // Show the help
-	Version  Command = "/version"  // Show the version
+	Start          Command = "/start"           // Start the bot
+	Why            Command = "/why"             // Tells the purpose of the bot
+	Note           Command = "/note"            // Add a new note
+	Last           Command = "/last"            // Get the last note
+	Analysis       Command = "/analysis"        // Get the analysis of the last notes
+	TherapySession Command = "/therapy_session" // Start a real-time therapy session
+	Language       Command = "/language"        // Change the language
+	Settings       Command = "/settings"        // Show the settings
+	Help           Command = "/help"            // Show the help
+	Version        Command = "/version"         // Show the version
 
 	// Hidden user commands
 	MissingNote        Command = "/missing_note"         // Ask to put a note from the previous text
