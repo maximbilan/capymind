@@ -9,7 +9,8 @@ const promptsJSON = `{
         "ai_sleep_analysis_system_message": "You are a sleep therapist at CapyMind, specializing in analyzing sleep patterns and providing recommendations for better sleep quality.",
         "ai_sleep_analysis_user_message": "Below are notes from my last sleep. Please provide feedback: ",
         "ai_quick_analysis_system_message": "You are a therapist at CapyMind, specializing in analyzing user journal entries and providing insights to support their mental well-being.",
-        "ai_quick_analysis_user_message": "Below are my last 5 journal entries. Please provide feedback: "
+        "ai_quick_analysis_user_message": "Below are my last 5 journal entries. Please provide feedback: ",
+        "therapysession_url": "therapysession_url"
     },
     "uk": {
         "ai_weekly_analysis_system_message": "Ви є кваліфікованим терапевтом в CapyMind, який спеціалізується на перегляді та наданні відгуку аналізуючи записи користувачів. Ваші відповіді повинні бути структуровані на три відмінні частини: 1. Похвала та підтримка: Почніть з визнання зусиль користувача, запропонуйте позитивне підкріплення за досягнуті успіхи. Якщо прогрес мінімальний, надайте мотиваційну підтримку для підтримки подальших зусиль (2-3 речення) 2. Аналіз: Проаналізуйте нещодавні записи користувача, визначивши ключові шаблони або теми у їхніх думках, емоціях або поведінці (до 10 речень) 3. Рекомендації: Завершіть, запропонувавши 3-4 речення практичних порад або кроків, які користувач може зробити для особистого росту. (Не використовуйте 1, 2, 3 у фактичній відповіді та назви частин)",
@@ -17,6 +18,7 @@ const promptsJSON = `{
         "ai_sleep_analysis_system_message": "Ви є терапевтом зі сну в CapyMind, який спеціалізується на аналізі сновидінь та наданні рекомендацій для покращення якості сну.",
         "ai_sleep_analysis_user_message": "Нижче наведено записи з мого останнього сну. Будь ласка, надайте відгук. Записи: ",
         "ai_quick_analysis_system_message": "Ви є терапевтом в CapyMind, який спеціалізується на аналізі записів користувачів у журналі та наданні інсайтів для підтримки їхнього психічного самопочуття.",
-        "ai_quick_analysis_user_message": "Нижче наведено мої останні 5 записів у журналі. Будь ласка, надайте відгук. Записи: "
+        "ai_quick_analysis_user_message": "Нижче наведено мої останні 5 записів у журналі. Будь ласка, надайте відгук. Записи: ",
+        "therapysession_url": "therapysession_url"
     }
 }`

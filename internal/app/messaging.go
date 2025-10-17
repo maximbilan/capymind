@@ -19,6 +19,15 @@ func setOutputText(textID string, session *Session) {
 	appendJobResult(jobResult, session)
 }
 
+// Set raw text (no translation key), useful for backend-generated answers
+func setOutputRawText(text string, session *Session) {
+	jobResult := botservice.BotResult{
+		TextID: text,
+		Locale: session.Locale(),
+	}
+	appendJobResult(jobResult, session)
+}
+
 // Set the text of the output with buttons
 func setOutputTextWithButtons(textID string, buttons []botservice.BotResultTextButton, session *Session) {
 	jobResult := botservice.BotResult{

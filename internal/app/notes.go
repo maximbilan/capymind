@@ -1,13 +1,13 @@
 package app
 
 import (
-	"fmt"
-	"log"
-	"time"
+    "fmt"
+    "log"
+    "time"
 
-	"github.com/capymind/internal/botservice"
-	"github.com/capymind/internal/database"
-	"github.com/capymind/internal/translator"
+    "github.com/capymind/internal/botservice"
+    "github.com/capymind/internal/database"
+    "github.com/capymind/internal/translator"
 )
 
 // Start typing a note
@@ -91,6 +91,8 @@ func getNotes(session *Session, noteStorage database.NoteStorage, count int) []d
 	}
 	return notes
 }
+
+// moved therapy-related functions to therapy.go
 
 // Send a message that says there are no notes
 func sendNoNotes(session *Session) {
