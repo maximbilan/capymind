@@ -22,6 +22,7 @@ jobs:
         project_id: ${{ secrets.CAPY_PROJECT_ID }}
         workload_identity_provider: ${{ secrets.CAPY_WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.CAPY_SERVICE_ACCOUNT }}
+        token_format: 'id_token'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
