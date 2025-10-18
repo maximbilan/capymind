@@ -16,12 +16,14 @@ PROJECT_ID=$CAPY_PROJECT_ID
 source ./scripts/get_version.sh
 APP_VERSION=$(get_version)
 
-# Generate agent token and export into CAPY_AGENT_TOKEN
-# Use bash to avoid relying on executable bit in CI
-CAPY_AGENT_TOKEN="$(bash ./scripts/generate_agent_token.sh | tr -d '\n')"
-if [ -z "$CAPY_AGENT_TOKEN" ]; then
-  echo "Failed to generate CAPY_AGENT_TOKEN" >&2
-  exit 1
+# Ensure CAPY_AGENT_TOKEN is set; generate if missing
+if [ -z "${CAPY_AGENT_TOKEN:-}" ]; then
+  # Use bash to avoid relying on executable bit in CI
+  CAPY_AGENT_TOKEN="$(bash ./scripts/generate_agent_token.sh | tr -d '\n')"
+  if [ -z "$CAPY_AGENT_TOKEN" ]; then
+    echo "Failed to generate CAPY_AGENT_TOKEN" >&2
+    exit 1
+  fi
 fi
 
 # Set environment variables
