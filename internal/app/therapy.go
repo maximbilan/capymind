@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+    "strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -119,11 +120,50 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 		log.Printf("[TherapySession] run non-2xx: %d body=%s", runResp.StatusCode, string(runRespBody))
 		return nil
 	}
-	respStr := string(runRespBody)
-	if respStr == "" {
-		return nil
-	}
-	return &respStr
+    respStr := string(runRespBody)
+    if respStr == "" {
+        return nil
+    }
+
+    // Try to extract plain text from JSON response
+    // Support responses that are either raw JSON or lines prefixed with "data: "
+    extractJSON := func(s string) string {
+        s = strings.TrimSpace(s)
+        if strings.HasPrefix(s, "data:") {
+            // If multiple lines, pick the last data line
+            lines := strings.Split(s, "\n")
+            for i := len(lines) - 1; i >= 0; i-- {
+                line := strings.TrimSpace(lines[i])
+                if strings.HasPrefix(line, "data:") {
+                    return strings.TrimSpace(strings.TrimPrefix(line, "data:"))
+                }
+            }
+            return strings.TrimSpace(strings.TrimPrefix(lines[len(lines)-1], "data:"))
+        }
+        return s
+    }
+
+    type runSseContentPart struct {
+        Text string `json:"text"`
+    }
+    type runSseContent struct {
+        Parts []runSseContentPart `json:"parts"`
+    }
+    type runSseResponse struct {
+        Content runSseContent `json:"content"`
+    }
+
+    jsonCandidate := extractJSON(respStr)
+    var parsed runSseResponse
+    if err := json.Unmarshal([]byte(jsonCandidate), &parsed); err == nil {
+        if len(parsed.Content.Parts) > 0 && parsed.Content.Parts[0].Text != "" {
+            onlyText := parsed.Content.Parts[0].Text
+            return &onlyText
+        }
+    }
+
+    // Fallback: return body as-is
+    return &respStr
 }
 
 func httpPostJSON(url string, payload string) (string, error) {

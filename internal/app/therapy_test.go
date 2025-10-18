@@ -55,7 +55,7 @@ func TestEndTherapySession(t *testing.T) {
 
 func TestRelayTherapyMessage(t *testing.T) {
 	// Create a fake therapy session backend implementing both init and run endpoints
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("Authorization")
 		if token != "Bearer test-token" {
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
@@ -69,8 +69,9 @@ func TestRelayTherapyMessage(t *testing.T) {
 			return
 		case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
 			// Message sending endpoint
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte("Hello, I'm here for you."))
+            w.Header().Set("Content-Type", "text/event-stream")
+            w.WriteHeader(http.StatusOK)
+            _, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Hello, I'm here for you.\"}],\"role\":\"model\"}}\n\n"))
 			return
 		default:
 			http.NotFound(w, r)
@@ -114,7 +115,7 @@ func TestHandleSession_AutoEndWhenExpired(t *testing.T) {
 
 func TestHandleSession_ForwardDuringActive(t *testing.T) {
 	// Fake backend implementing both init and run endpoints
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("Authorization")
 		if token != "Bearer test-token" {
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
@@ -126,8 +127,9 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 			_, _ = w.Write([]byte(`{"ok":true}`))
 			return
 		case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte("Therapist reply"))
+            w.Header().Set("Content-Type", "text/event-stream")
+            w.WriteHeader(http.StatusOK)
+            _, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Therapist reply\"}],\"role\":\"model\"}}\n\n"))
 			return
 		default:
 			http.NotFound(w, r)
