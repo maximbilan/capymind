@@ -22,6 +22,7 @@ type User struct {
 	Timestamp           *time.Time `json:"timestamp"`
 	IsDeleted           bool       `json:"isDeleted"`
 	TherapySessionEndAt *time.Time `json:"therapySessionEndAt"`
+	TherapySessionId    *string    `json:"therapySessionId"`
 }
 
 type UserStorage interface {
