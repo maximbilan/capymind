@@ -16,16 +16,6 @@ PROJECT_ID=$CAPY_PROJECT_ID
 source ./scripts/get_version.sh
 APP_VERSION=$(get_version)
 
-# Ensure CAPY_AGENT_TOKEN is set; generate if missing
-if [ -z "${CAPY_AGENT_TOKEN:-}" ]; then
-  # Use bash to avoid relying on executable bit in CI
-  CAPY_AGENT_TOKEN="$(bash ./scripts/generate_agent_token.sh | tr -d '\n')"
-  if [ -z "$CAPY_AGENT_TOKEN" ]; then
-    echo "Failed to generate CAPY_AGENT_TOKEN" >&2
-    exit 1
-  fi
-fi
-
 # Set environment variables
 ENV_PARAMS=("CAPY_PROJECT_ID=$CAPY_PROJECT_ID" "CAPY_SERVER_REGION=$CAPY_SERVER_REGION" "CLOUD=true" "APP_VERSION=$APP_VERSION" "CAPY_THERAPY_SESSION_URL=$CAPY_THERAPY_SESSION_URL" "CAPY_AGENT_TOKEN=$CAPY_AGENT_TOKEN")
 ENV_VARS=""
