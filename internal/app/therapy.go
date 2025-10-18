@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+    "strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -64,22 +65,28 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 	initReq.Header.Set("Authorization", "Bearer "+token)
 	initReq.Header.Set("Content-Type", "application/json")
 
-	initResp, err := client.Do(initReq)
-	if err != nil {
-		log.Printf("[TherapySession] init request error: %v", err)
-		return nil
-	}
-	func() {
-		defer initResp.Body.Close()
-		// Drain body for logging on non-2xx
-		if initResp.StatusCode < 200 || initResp.StatusCode >= 300 {
-			body, _ := io.ReadAll(initResp.Body)
-			log.Printf("[TherapySession] init non-2xx: %d body=%s", initResp.StatusCode, string(body))
-		}
-	}()
-	if initResp.StatusCode < 200 || initResp.StatusCode >= 300 {
-		return nil
-	}
+    initResp, err := client.Do(initReq)
+    if err != nil {
+        log.Printf("[TherapySession] init request error: %v", err)
+        return nil
+    }
+    defer initResp.Body.Close()
+    proceed := false
+    if initResp.StatusCode >= 200 && initResp.StatusCode < 300 {
+        proceed = true
+    } else {
+        body, _ := io.ReadAll(initResp.Body)
+        // Allow existing session scenario to proceed
+        if initResp.StatusCode == 400 && strings.Contains(string(body), "Session already exists") {
+            log.Printf("[TherapySession] init session exists, proceeding: %s", therapySessionID)
+            proceed = true
+        } else {
+            log.Printf("[TherapySession] init non-2xx: %d body=%s", initResp.StatusCode, string(body))
+        }
+    }
+    if !proceed {
+        return nil
+    }
 
 	// 2) Send user message via run_sse
 	runURL := fmt.Sprintf("%s/run_sse", baseURL)
@@ -119,31 +126,50 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 		log.Printf("[TherapySession] run non-2xx: %d body=%s", runResp.StatusCode, string(runRespBody))
 		return nil
 	}
-	respStr := string(runRespBody)
-	if respStr == "" {
-		return nil
-	}
-	return &respStr
-}
+    respStr := string(runRespBody)
+    if respStr == "" {
+        return nil
+    }
 
-func httpPostJSON(url string, payload string) (string, error) {
-	//coverage:ignore
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(payload)))
-	if err != nil {
-		return "", err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	client := &http.Client{Timeout: 15 * time.Second}
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	return string(body), nil
+    // Try to extract plain text from JSON response
+    // Support responses that are either raw JSON or lines prefixed with "data: "
+    extractJSON := func(s string) string {
+        s = strings.TrimSpace(s)
+        if strings.HasPrefix(s, "data:") {
+            // If multiple lines, pick the last data line
+            lines := strings.Split(s, "\n")
+            for i := len(lines) - 1; i >= 0; i-- {
+                line := strings.TrimSpace(lines[i])
+                if strings.HasPrefix(line, "data:") {
+                    return strings.TrimSpace(strings.TrimPrefix(line, "data:"))
+                }
+            }
+            return strings.TrimSpace(strings.TrimPrefix(lines[len(lines)-1], "data:"))
+        }
+        return s
+    }
+
+    type runSseContentPart struct {
+        Text string `json:"text"`
+    }
+    type runSseContent struct {
+        Parts []runSseContentPart `json:"parts"`
+    }
+    type runSseResponse struct {
+        Content runSseContent `json:"content"`
+    }
+
+    jsonCandidate := extractJSON(respStr)
+    var parsed runSseResponse
+    if err := json.Unmarshal([]byte(jsonCandidate), &parsed); err == nil {
+        if len(parsed.Content.Parts) > 0 && parsed.Content.Parts[0].Text != "" {
+            onlyText := parsed.Content.Parts[0].Text
+            return &onlyText
+        }
+    }
+
+    // Fallback: return body as-is
+    return &respStr
 }
 
 // Relay a user message to the therapy session backend and append the reply
