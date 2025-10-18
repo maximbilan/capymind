@@ -35,6 +35,9 @@ SECRETS=${SECRETS%,}
 # Set memory parameter
 MEMORY="256MB"
 
+# Timeout for handler and send message functions 3 minutes (to handle long responses like AI therapy)
+TIMEOUT=180
+
 # Timeout for scheduling 10 minutes
 SCHEDULER_TIMEOUT=600
 
@@ -49,7 +52,8 @@ gcloud functions deploy $HANDLER_FUNC_NAME \
     --region $CAPY_SERVER_REGION \
     --set-env-vars $ENV_VARS \
     --set-secrets $SECRETS \
-    --memory $MEMORY
+    --memory $MEMORY \
+    --timeout $TIMEOUT
 
 # Print the deployment status
 if [ $? -eq 0 ]; then

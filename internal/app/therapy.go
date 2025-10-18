@@ -47,7 +47,7 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 	therapySessionID := *session.User.TherapySessionId
 	locale := session.Locale().String()
 
-	client := &http.Client{Timeout: 15 * time.Second}
+    client := &http.Client{Timeout: 120 * time.Second}
 
 	// 1) Create/init the therapy session
 	initURL := fmt.Sprintf("%s/apps/capymind_agent/users/%s/sessions/%s", baseURL, userID, therapySessionID)
