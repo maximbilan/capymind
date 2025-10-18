@@ -65,22 +65,28 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 	initReq.Header.Set("Authorization", "Bearer "+token)
 	initReq.Header.Set("Content-Type", "application/json")
 
-	initResp, err := client.Do(initReq)
-	if err != nil {
-		log.Printf("[TherapySession] init request error: %v", err)
-		return nil
-	}
-	func() {
-		defer initResp.Body.Close()
-		// Drain body for logging on non-2xx
-		if initResp.StatusCode < 200 || initResp.StatusCode >= 300 {
-			body, _ := io.ReadAll(initResp.Body)
-			log.Printf("[TherapySession] init non-2xx: %d body=%s", initResp.StatusCode, string(body))
-		}
-	}()
-	if initResp.StatusCode < 200 || initResp.StatusCode >= 300 {
-		return nil
-	}
+    initResp, err := client.Do(initReq)
+    if err != nil {
+        log.Printf("[TherapySession] init request error: %v", err)
+        return nil
+    }
+    defer initResp.Body.Close()
+    proceed := false
+    if initResp.StatusCode >= 200 && initResp.StatusCode < 300 {
+        proceed = true
+    } else {
+        body, _ := io.ReadAll(initResp.Body)
+        // Allow existing session scenario to proceed
+        if initResp.StatusCode == 400 && strings.Contains(string(body), "Session already exists") {
+            log.Printf("[TherapySession] init session exists, proceeding: %s", therapySessionID)
+            proceed = true
+        } else {
+            log.Printf("[TherapySession] init non-2xx: %d body=%s", initResp.StatusCode, string(body))
+        }
+    }
+    if !proceed {
+        return nil
+    }
 
 	// 2) Send user message via run_sse
 	runURL := fmt.Sprintf("%s/run_sse", baseURL)
