@@ -38,6 +38,7 @@ jobs:
         CAPY_PROJECT_ID: ${{ secrets.CAPY_PROJECT_ID }}
         CAPY_SERVER_REGION: ${{ secrets.CAPY_SERVER_REGION }}
         CAPY_THERAPY_SESSION_URL: ${{ secrets.CAPY_THERAPY_SESSION_URL }}
+        CAPY_AGENT_TOKEN: ${{ secrets.CAPY_AGENT_TOKEN }}
       shell: bash
 
   create-tag:
