@@ -1,3 +1,4 @@
 #!/bin/bash
 
-gcloud auth print-identity-token $CAPY_SERVICE_ACCOUNT --audiences=$CAPY_THERAPY_SESSION_URL
+# Use the active credentials (set by CI auth) to mint an identity token
+gcloud auth print-identity-token --audiences="$CAPY_THERAPY_SESSION_URL"
