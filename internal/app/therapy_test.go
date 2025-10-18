@@ -157,6 +157,50 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 	}
 }
 
+func TestRelayTherapyMessage_ExistingSessionContinues(t *testing.T) {
+    // Fake backend: init returns 400 Session already exists; run_sse returns a reply
+    ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        token := r.Header.Get("Authorization")
+        if token != "Bearer test-token" {
+            http.Error(w, "unauthorized", http.StatusUnauthorized)
+            return
+        }
+        switch {
+        case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
+            w.WriteHeader(http.StatusBadRequest)
+            _, _ = w.Write([]byte(`{"detail":"Session already exists: abc-123"}`))
+            return
+        case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
+            w.Header().Set("Content-Type", "text/event-stream")
+            w.WriteHeader(http.StatusOK)
+            _, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Hello again\"}],\"role\":\"model\"}}\n\n"))
+            return
+        default:
+            http.NotFound(w, r)
+            return
+        }
+    }))
+    defer ts.Close()
+    os.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+    os.Setenv("CAPY_AGENT_TOKEN", "test-token")
+    defer os.Unsetenv("CAPY_THERAPY_SESSION_URL")
+    defer os.Unsetenv("CAPY_AGENT_TOKEN")
+
+    ctx := context.Background()
+    locale := "en"
+    user := &database.User{ID: "u1", Locale: &locale}
+    session := createSession(&Job{Command: None}, user, nil, &ctx)
+
+    relayTherapyMessage("hi", session)
+
+    if len(session.Job.Output) == 0 {
+        t.Fatalf("expected at least one output")
+    }
+    if session.Job.Output[0].TextID != "Hello again" {
+        t.Fatalf("unexpected relay text: %s", session.Job.Output[0].TextID)
+    }
+}
+
 func TestHandleSession_EndOnOtherCommand(t *testing.T) {
 	ctx := context.Background()
 	future := time.Now().Add(5 * time.Minute)
