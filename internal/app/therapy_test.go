@@ -8,6 +8,8 @@ import (
 	"testing"
 	"time"
 
+	"strings"
+
 	"github.com/capymind/internal/database"
 )
 
@@ -52,18 +54,38 @@ func TestEndTherapySession(t *testing.T) {
 }
 
 func TestRelayTherapyMessage(t *testing.T) {
-	// Create a fake therapysession endpoint
+	// Create a fake therapy session backend implementing both init and run endpoints
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Hello, I'm here for you."))
+		token := r.Header.Get("Authorization")
+		if token != "Bearer test-token" {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
+		switch {
+		case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
+			// Session init endpoint
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte(`{"ok":true}`))
+			return
+		case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
+			// Message sending endpoint
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("Hello, I'm here for you."))
+			return
+		default:
+			http.NotFound(w, r)
+			return
+		}
 	}))
 	defer ts.Close()
-	os.Setenv("CAPY_THERAPYSESSION_URL", ts.URL)
-	defer os.Unsetenv("CAPY_THERAPYSESSION_URL")
+	os.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+	os.Setenv("CAPY_AGENT_TOKEN", "test-token")
+	defer os.Unsetenv("CAPY_THERAPY_SESSION_URL")
+	defer os.Unsetenv("CAPY_AGENT_TOKEN")
 
 	ctx := context.Background()
 	locale := "en"
-	user := &database.User{Locale: &locale}
+	user := &database.User{ID: "u1", Locale: &locale}
 	session := createSession(&Job{Command: None}, user, nil, &ctx)
 
 	relayTherapyMessage("hi", session)
@@ -91,19 +113,37 @@ func TestHandleSession_AutoEndWhenExpired(t *testing.T) {
 }
 
 func TestHandleSession_ForwardDuringActive(t *testing.T) {
-	// Fake endpoint
+	// Fake backend implementing both init and run endpoints
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Therapist reply"))
+		token := r.Header.Get("Authorization")
+		if token != "Bearer test-token" {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
+		switch {
+		case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte(`{"ok":true}`))
+			return
+		case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("Therapist reply"))
+			return
+		default:
+			http.NotFound(w, r)
+			return
+		}
 	}))
 	defer ts.Close()
-	os.Setenv("CAPY_THERAPYSESSION_URL", ts.URL)
-	defer os.Unsetenv("CAPY_THERAPYSESSION_URL")
+	os.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+	os.Setenv("CAPY_AGENT_TOKEN", "test-token")
+	defer os.Unsetenv("CAPY_THERAPY_SESSION_URL")
+	defer os.Unsetenv("CAPY_AGENT_TOKEN")
 
 	ctx := context.Background()
 	future := time.Now().Add(5 * time.Minute)
 	locale := "en"
-	user := &database.User{TherapySessionEndAt: &future, IsTyping: true, Locale: &locale}
+	user := &database.User{ID: "u1", TherapySessionEndAt: &future, IsTyping: true, Locale: &locale}
 	input := "some text"
 	job := &Job{Command: None, LastCommand: TherapySession, Input: &input}
 	session := createSession(job, user, nil, &ctx)
