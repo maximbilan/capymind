@@ -172,26 +172,6 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
     return &respStr
 }
 
-func httpPostJSON(url string, payload string) (string, error) {
-	//coverage:ignore
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(payload)))
-	if err != nil {
-		return "", err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	client := &http.Client{Timeout: 15 * time.Second}
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	return string(body), nil
-}
-
 // Relay a user message to the therapy session backend and append the reply
 func relayTherapyMessage(text string, session *Session) {
 	//coverage:ignore
