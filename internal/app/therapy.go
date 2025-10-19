@@ -26,6 +26,7 @@ type therapyConfig struct {
 	sessionID string
 	locale    string
 	ctx       context.Context
+	token     string
 }
 
 // Start therapy session
@@ -69,13 +70,19 @@ func relayTherapyMessage(text string, session *Session) {
 
 // Build an HTTP client configured with ID token authentication for therapy session calls
 func buildTherapyHTTPClient(ctx context.Context, targetURL string) (*http.Client, error) {
-    client, err := idtoken.NewClient(ctx, targetURL)
-    if err != nil {
-        return nil, fmt.Errorf("failed to create ID token client: %w", err)
-    }
-    // Set timeout on the client
-    client.Timeout = 120 * time.Second
-    return client, nil
+	// Local development path: plain HTTP client; per-request header is set using cfg.token
+	if os.Getenv("CLOUD") == "false" {
+		return &http.Client{Timeout: 120 * time.Second}, nil
+	}
+
+	// Cloud path (default): use Google ID token auth
+	client, err := idtoken.NewClient(ctx, targetURL)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create ID token client: %w", err)
+	}
+	// Set timeout on the client
+	client.Timeout = 120 * time.Second
+	return client, nil
 }
 
 // Build configuration from environment and session; ensures a session ID exists
@@ -94,6 +101,10 @@ func buildTherapyConfig(session *Session) *therapyConfig {
 	userID := session.User.ID
 	sessionID := *session.User.TherapySessionId
 	locale := session.Locale().String()
+	var token string
+	if os.Getenv("CLOUD") == "false" {
+		token = strings.TrimSpace(os.Getenv("CAPY_AGENT_TOKEN"))
+	}
 
 	return &therapyConfig{
 		baseURL:   baseURL,
@@ -101,6 +112,7 @@ func buildTherapyConfig(session *Session) *therapyConfig {
 		sessionID: sessionID,
 		locale:    locale,
 		ctx:       context.Background(),
+		token:     token,
 	}
 }
 
@@ -121,6 +133,9 @@ func initTherapySession(client *http.Client, cfg *therapyConfig) bool {
 	}
 	// ID token client automatically adds Authorization header
 	req.Header.Set("Content-Type", "application/json")
+	if cfg.token != "" {
+		req.Header.Set("Authorization", "Bearer "+cfg.token)
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -166,6 +181,9 @@ func sendTherapyMessage(client *http.Client, cfg *therapyConfig, text string) *s
 		return nil
 	}
 	req.Header.Set("Content-Type", "application/json")
+	if cfg.token != "" {
+		req.Header.Set("Authorization", "Bearer "+cfg.token)
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {
