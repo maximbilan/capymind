@@ -16,6 +16,9 @@ import (
 	"google.golang.org/api/idtoken"
 )
 
+// Allow tests to inject a custom HTTP client builder.
+var newTherapyHTTPClient = buildTherapyHTTPClient
+
 // Internal configuration for therapy session calls
 type therapyConfig struct {
 	baseURL   string
@@ -41,7 +44,7 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 		return nil
 	}
 
-	client, err := buildTherapyHTTPClient(cfg.ctx, cfg.baseURL)
+	client, err := newTherapyHTTPClient(cfg.ctx, cfg.baseURL)
 	if err != nil {
 		log.Printf("[TherapySession] failed to create authenticated client: %v", err)
 		return nil
@@ -66,13 +69,13 @@ func relayTherapyMessage(text string, session *Session) {
 
 // Build an HTTP client configured with ID token authentication for therapy session calls
 func buildTherapyHTTPClient(ctx context.Context, targetURL string) (*http.Client, error) {
-	client, err := idtoken.NewClient(ctx, targetURL)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create ID token client: %w", err)
-	}
-	// Set timeout on the client
-	client.Timeout = 120 * time.Second
-	return client, nil
+    client, err := idtoken.NewClient(ctx, targetURL)
+    if err != nil {
+        return nil, fmt.Errorf("failed to create ID token client: %w", err)
+    }
+    // Set timeout on the client
+    client.Timeout = 120 * time.Second
+    return client, nil
 }
 
 // Build configuration from environment and session; ensures a session ID exists

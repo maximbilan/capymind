@@ -1,16 +1,15 @@
 package app
 
 import (
-	"context"
-	"net/http"
-	"net/http/httptest"
-	"os"
-	"testing"
-	"time"
+    "context"
+    "net/http"
+    "net/http/httptest"
+    "testing"
+    "time"
 
-	"strings"
+    "strings"
 
-	"github.com/capymind/internal/database"
+    "github.com/capymind/internal/database"
 )
 
 func TestStartTherapySession(t *testing.T) {
@@ -56,11 +55,6 @@ func TestEndTherapySession(t *testing.T) {
 func TestRelayTherapyMessage(t *testing.T) {
 	// Create a fake therapy session backend implementing both init and run endpoints
     ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("Authorization")
-		if token != "Bearer test-token" {
-			http.Error(w, "unauthorized", http.StatusUnauthorized)
-			return
-		}
 		switch {
 		case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
 			// Session init endpoint
@@ -79,10 +73,14 @@ func TestRelayTherapyMessage(t *testing.T) {
 		}
 	}))
 	defer ts.Close()
-	os.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
-	os.Setenv("CAPY_AGENT_TOKEN", "test-token")
-	defer os.Unsetenv("CAPY_THERAPY_SESSION_URL")
-	defer os.Unsetenv("CAPY_AGENT_TOKEN")
+    t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+
+    // Inject simple HTTP client without Google auth for tests
+    originalBuilder := newTherapyHTTPClient
+    newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
+        return &http.Client{Timeout: 5 * time.Second}, nil
+    }
+    defer func() { newTherapyHTTPClient = originalBuilder }()
 
 	ctx := context.Background()
 	locale := "en"
@@ -91,7 +89,7 @@ func TestRelayTherapyMessage(t *testing.T) {
 
 	relayTherapyMessage("hi", session)
 
-	if len(session.Job.Output) == 0 {
+    if len(session.Job.Output) == 0 {
 		t.Fatalf("expected at least one output")
 	}
 	if session.Job.Output[0].TextID != "Hello, I'm here for you." {
@@ -116,11 +114,6 @@ func TestHandleSession_AutoEndWhenExpired(t *testing.T) {
 func TestHandleSession_ForwardDuringActive(t *testing.T) {
 	// Fake backend implementing both init and run endpoints
     ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("Authorization")
-		if token != "Bearer test-token" {
-			http.Error(w, "unauthorized", http.StatusUnauthorized)
-			return
-		}
 		switch {
 		case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
 			w.WriteHeader(http.StatusOK)
@@ -137,10 +130,13 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 		}
 	}))
 	defer ts.Close()
-	os.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
-	os.Setenv("CAPY_AGENT_TOKEN", "test-token")
-	defer os.Unsetenv("CAPY_THERAPY_SESSION_URL")
-	defer os.Unsetenv("CAPY_AGENT_TOKEN")
+    t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+
+    originalBuilder := newTherapyHTTPClient
+    newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
+        return &http.Client{Timeout: 5 * time.Second}, nil
+    }
+    defer func() { newTherapyHTTPClient = originalBuilder }()
 
 	ctx := context.Background()
 	future := time.Now().Add(5 * time.Minute)
@@ -160,11 +156,6 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 func TestRelayTherapyMessage_ExistingSessionContinues(t *testing.T) {
     // Fake backend: init returns 400 Session already exists; run_sse returns a reply
     ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        token := r.Header.Get("Authorization")
-        if token != "Bearer test-token" {
-            http.Error(w, "unauthorized", http.StatusUnauthorized)
-            return
-        }
         switch {
         case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
             w.WriteHeader(http.StatusBadRequest)
@@ -181,10 +172,13 @@ func TestRelayTherapyMessage_ExistingSessionContinues(t *testing.T) {
         }
     }))
     defer ts.Close()
-    os.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
-    os.Setenv("CAPY_AGENT_TOKEN", "test-token")
-    defer os.Unsetenv("CAPY_THERAPY_SESSION_URL")
-    defer os.Unsetenv("CAPY_AGENT_TOKEN")
+    t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+
+    originalBuilder := newTherapyHTTPClient
+    newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
+        return &http.Client{Timeout: 5 * time.Second}, nil
+    }
+    defer func() { newTherapyHTTPClient = originalBuilder }()
 
     ctx := context.Background()
     locale := "en"
