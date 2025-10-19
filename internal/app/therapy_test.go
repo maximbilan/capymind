@@ -1,15 +1,15 @@
 package app
 
 import (
-    "context"
-    "net/http"
-    "net/http/httptest"
-    "testing"
-    "time"
+	"context"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+	"time"
 
-    "strings"
+	"strings"
 
-    "github.com/capymind/internal/database"
+	"github.com/capymind/internal/database"
 )
 
 func TestStartTherapySession(t *testing.T) {
@@ -54,7 +54,7 @@ func TestEndTherapySession(t *testing.T) {
 
 func TestRelayTherapyMessage(t *testing.T) {
 	// Create a fake therapy session backend implementing both init and run endpoints
-    ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
 			// Session init endpoint
@@ -63,9 +63,9 @@ func TestRelayTherapyMessage(t *testing.T) {
 			return
 		case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
 			// Message sending endpoint
-            w.Header().Set("Content-Type", "text/event-stream")
-            w.WriteHeader(http.StatusOK)
-            _, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Hello, I'm here for you.\"}],\"role\":\"model\"}}\n\n"))
+			w.Header().Set("Content-Type", "text/event-stream")
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Hello, I'm here for you.\"}],\"role\":\"model\"}}\n\n"))
 			return
 		default:
 			http.NotFound(w, r)
@@ -73,14 +73,14 @@ func TestRelayTherapyMessage(t *testing.T) {
 		}
 	}))
 	defer ts.Close()
-    t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+	t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
 
-    // Inject simple HTTP client without Google auth for tests
-    originalBuilder := newTherapyHTTPClient
-    newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
-        return &http.Client{Timeout: 5 * time.Second}, nil
-    }
-    defer func() { newTherapyHTTPClient = originalBuilder }()
+	// Inject simple HTTP client without Google auth for tests
+	originalBuilder := newTherapyHTTPClient
+	newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
+		return &http.Client{Timeout: 5 * time.Second}, nil
+	}
+	defer func() { newTherapyHTTPClient = originalBuilder }()
 
 	ctx := context.Background()
 	locale := "en"
@@ -89,7 +89,7 @@ func TestRelayTherapyMessage(t *testing.T) {
 
 	relayTherapyMessage("hi", session)
 
-    if len(session.Job.Output) == 0 {
+	if len(session.Job.Output) == 0 {
 		t.Fatalf("expected at least one output")
 	}
 	if session.Job.Output[0].TextID != "Hello, I'm here for you." {
@@ -113,16 +113,16 @@ func TestHandleSession_AutoEndWhenExpired(t *testing.T) {
 
 func TestHandleSession_ForwardDuringActive(t *testing.T) {
 	// Fake backend implementing both init and run endpoints
-    ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte(`{"ok":true}`))
 			return
 		case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
-            w.Header().Set("Content-Type", "text/event-stream")
-            w.WriteHeader(http.StatusOK)
-            _, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Therapist reply\"}],\"role\":\"model\"}}\n\n"))
+			w.Header().Set("Content-Type", "text/event-stream")
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Therapist reply\"}],\"role\":\"model\"}}\n\n"))
 			return
 		default:
 			http.NotFound(w, r)
@@ -130,13 +130,13 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 		}
 	}))
 	defer ts.Close()
-    t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+	t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
 
-    originalBuilder := newTherapyHTTPClient
-    newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
-        return &http.Client{Timeout: 5 * time.Second}, nil
-    }
-    defer func() { newTherapyHTTPClient = originalBuilder }()
+	originalBuilder := newTherapyHTTPClient
+	newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
+		return &http.Client{Timeout: 5 * time.Second}, nil
+	}
+	defer func() { newTherapyHTTPClient = originalBuilder }()
 
 	ctx := context.Background()
 	future := time.Now().Add(5 * time.Minute)
@@ -154,45 +154,45 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 }
 
 func TestRelayTherapyMessage_ExistingSessionContinues(t *testing.T) {
-    // Fake backend: init returns 400 Session already exists; run_sse returns a reply
-    ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        switch {
-        case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
-            w.WriteHeader(http.StatusBadRequest)
-            _, _ = w.Write([]byte(`{"detail":"Session already exists: abc-123"}`))
-            return
-        case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
-            w.Header().Set("Content-Type", "text/event-stream")
-            w.WriteHeader(http.StatusOK)
-            _, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Hello again\"}],\"role\":\"model\"}}\n\n"))
-            return
-        default:
-            http.NotFound(w, r)
-            return
-        }
-    }))
-    defer ts.Close()
-    t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
+	// Fake backend: init returns 400 Session already exists; run_sse returns a reply
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/apps/capymind_agent/users/u1/sessions/"):
+			w.WriteHeader(http.StatusBadRequest)
+			_, _ = w.Write([]byte(`{"detail":"Session already exists: abc-123"}`))
+			return
+		case r.Method == http.MethodPost && r.URL.Path == "/run_sse":
+			w.Header().Set("Content-Type", "text/event-stream")
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte("data: {\"content\":{\"parts\":[{\"text\":\"Hello again\"}],\"role\":\"model\"}}\n\n"))
+			return
+		default:
+			http.NotFound(w, r)
+			return
+		}
+	}))
+	defer ts.Close()
+	t.Setenv("CAPY_THERAPY_SESSION_URL", ts.URL)
 
-    originalBuilder := newTherapyHTTPClient
-    newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
-        return &http.Client{Timeout: 5 * time.Second}, nil
-    }
-    defer func() { newTherapyHTTPClient = originalBuilder }()
+	originalBuilder := newTherapyHTTPClient
+	newTherapyHTTPClient = func(ctx context.Context, targetURL string) (*http.Client, error) {
+		return &http.Client{Timeout: 5 * time.Second}, nil
+	}
+	defer func() { newTherapyHTTPClient = originalBuilder }()
 
-    ctx := context.Background()
-    locale := "en"
-    user := &database.User{ID: "u1", Locale: &locale}
-    session := createSession(&Job{Command: None}, user, nil, &ctx)
+	ctx := context.Background()
+	locale := "en"
+	user := &database.User{ID: "u1", Locale: &locale}
+	session := createSession(&Job{Command: None}, user, nil, &ctx)
 
-    relayTherapyMessage("hi", session)
+	relayTherapyMessage("hi", session)
 
-    if len(session.Job.Output) == 0 {
-        t.Fatalf("expected at least one output")
-    }
-    if session.Job.Output[0].TextID != "Hello again" {
-        t.Fatalf("unexpected relay text: %s", session.Job.Output[0].TextID)
-    }
+	if len(session.Job.Output) == 0 {
+		t.Fatalf("expected at least one output")
+	}
+	if session.Job.Output[0].TextID != "Hello again" {
+		t.Fatalf("unexpected relay text: %s", session.Job.Output[0].TextID)
+	}
 }
 
 func TestHandleSession_EndOnOtherCommand(t *testing.T) {
