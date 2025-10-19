@@ -2,6 +2,7 @@ package app
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -12,15 +13,16 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"google.golang.org/api/idtoken"
 )
 
 // Internal configuration for therapy session calls
 type therapyConfig struct {
 	baseURL   string
-	token     string
 	userID    string
 	sessionID string
 	locale    string
+	ctx       context.Context
 }
 
 // Start therapy session
@@ -39,7 +41,11 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 		return nil
 	}
 
-	client := buildTherapyHTTPClient()
+	client, err := buildTherapyHTTPClient(cfg.ctx, cfg.baseURL)
+	if err != nil {
+		log.Printf("[TherapySession] failed to create authenticated client: %v", err)
+		return nil
+	}
 
 	if !initTherapySession(client, cfg) {
 		return nil
@@ -58,9 +64,15 @@ func relayTherapyMessage(text string, session *Session) {
 	}
 }
 
-// Build an HTTP client configured for therapy session calls
-func buildTherapyHTTPClient() *http.Client {
-	return &http.Client{Timeout: 120 * time.Second}
+// Build an HTTP client configured with ID token authentication for therapy session calls
+func buildTherapyHTTPClient(ctx context.Context, targetURL string) (*http.Client, error) {
+	client, err := idtoken.NewClient(ctx, targetURL)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create ID token client: %w", err)
+	}
+	// Set timeout on the client
+	client.Timeout = 120 * time.Second
+	return client, nil
 }
 
 // Build configuration from environment and session; ensures a session ID exists
@@ -68,12 +80,6 @@ func buildTherapyConfig(session *Session) *therapyConfig {
 	baseURL := os.Getenv("CAPY_THERAPY_SESSION_URL")
 	if baseURL == "" {
 		log.Printf("[TherapySession] missing CAPY_THERAPY_SESSION_URL")
-		return nil
-	}
-
-	token := os.Getenv("CAPY_AGENT_TOKEN")
-	if token == "" {
-		log.Printf("[TherapySession] missing CAPY_AGENT_TOKEN")
 		return nil
 	}
 
@@ -88,10 +94,10 @@ func buildTherapyConfig(session *Session) *therapyConfig {
 
 	return &therapyConfig{
 		baseURL:   baseURL,
-		token:     token,
 		userID:    userID,
 		sessionID: sessionID,
 		locale:    locale,
+		ctx:       context.Background(),
 	}
 }
 
@@ -110,7 +116,7 @@ func initTherapySession(client *http.Client, cfg *therapyConfig) bool {
 		log.Printf("[TherapySession] init request build error: %v", err)
 		return false
 	}
-	req.Header.Set("Authorization", "Bearer "+cfg.token)
+	// ID token client automatically adds Authorization header
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := client.Do(req)
@@ -156,7 +162,6 @@ func sendTherapyMessage(client *http.Client, cfg *therapyConfig, text string) *s
 		log.Printf("[TherapySession] run request build error: %v", err)
 		return nil
 	}
-	req.Header.Set("Authorization", "Bearer "+cfg.token)
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := client.Do(req)
