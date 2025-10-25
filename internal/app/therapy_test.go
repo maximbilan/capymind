@@ -15,7 +15,7 @@ import (
 func TestStartTherapySession(t *testing.T) {
 	ctx := context.Background()
 	user := &database.User{IsTyping: false}
-	session := createSession(&Job{Command: TherapySession}, user, nil, &ctx)
+	session := createSession(&Job{Command: Therapy}, user, nil, &ctx)
 
 	startTherapySession(session)
 
@@ -37,7 +37,7 @@ func TestEndTherapySession(t *testing.T) {
 	ctx := context.Background()
 	endAt := time.Now().Add(10 * time.Minute)
 	user := &database.User{IsTyping: true, TherapySessionEndAt: &endAt}
-	session := createSession(&Job{Command: TherapySession}, user, nil, &ctx)
+	session := createSession(&Job{Command: Therapy}, user, nil, &ctx)
 
 	endTherapySession(session)
 
@@ -143,7 +143,7 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 	locale := "en"
 	user := &database.User{ID: "u1", TherapySessionEndAt: &future, IsTyping: true, Locale: &locale}
 	input := "some text"
-	job := &Job{Command: None, LastCommand: TherapySession, Input: &input}
+	job := &Job{Command: None, LastCommand: Therapy, Input: &input}
 	session := createSession(job, user, nil, &ctx)
 
 	handleSession(session)

@@ -59,8 +59,8 @@ func handleSession(session *Session) {
 	command := session.Job.Command
 	commandStr := string(command)
 	// Keep therapy session as the effective last command during active window
-	if command == None && session.User.TherapySessionEndAt != nil && now.Before(*session.User.TherapySessionEndAt) && session.Job.LastCommand == TherapySession {
-		commandStr = string(TherapySession)
+	if command == None && session.User.TherapySessionEndAt != nil && now.Before(*session.User.TherapySessionEndAt) && session.Job.LastCommand == Therapy {
+		commandStr = string(Therapy)
 	}
 	session.User.LastCommand = &commandStr
 	session.User.Timestamp = &now
@@ -71,7 +71,7 @@ func handleSession(session *Session) {
 	}
 
 	// If another command is called while therapy is active, end therapy
-	if command != None && command != TherapySession && session.User.TherapySessionEndAt != nil {
+	if command != None && command != Therapy && session.User.TherapySessionEndAt != nil {
 		endTherapySession(session)
 	}
 
@@ -87,7 +87,7 @@ func handleSession(session *Session) {
 		handleWhy(session)
 	case Note:
 		startNote(session)
-	case TherapySession:
+	case Therapy:
 		startTherapySession(session)
 	case MissingNote:
 		handleMissingNote(session, noteStorage)
@@ -161,7 +161,7 @@ func handleSession(session *Session) {
 			switch session.Job.LastCommand {
 			case Note:
 				finishNote(*session.Job.Input, session, noteStorage)
-			case TherapySession:
+			case Therapy:
 				relayTherapyMessage(*session.Job.Input, session)
 			case Support:
 				finishFeedback(session, feedbackStorage)
@@ -176,7 +176,7 @@ func handleSession(session *Session) {
 				// If the user is not in typing mode but therapy session is active, keep the session alive and forward
 				if session.User.TherapySessionEndAt != nil && now.Before(*session.User.TherapySessionEndAt) {
 					session.User.IsTyping = true
-					session.Job.LastCommand = TherapySession
+					session.Job.LastCommand = Therapy
 					relayTherapyMessage(*session.Job.Input, session)
 				} else {
 					handleInputWithoutCommand(session)
