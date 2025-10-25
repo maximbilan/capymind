@@ -3,7 +3,7 @@
 [![CI](https://github.com/maximbilan/capymind/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/maximbilan/capymind/actions/workflows/build_and_test.yml)
 ![Test coverage](./.badges/test_coverage.svg)
 
-CapyMind is a personal mental health journal powered by AI, designed to help you track your thoughts, emotions, and progress over time. It provides a simple and secure platform for making journal entries, setting reminders, and gaining personalized therapy insights. Leveraging AI to analyze your notes and dreams, CapyMind empowers you to reflect deeply on your mental well-being. With support for multiple languages and time zones, it seamlessly integrates into your daily routine, offering a personalized space for self-reflection and growth.
+CapyMind is a personal mental health journal powered by AI, designed to help you track your thoughts, emotions, and progress over time. It provides a simple and secure platform for making journal entries, setting reminders, gaining personalized therapy insights, and engaging in real-time AI therapy sessions. Leveraging AI to analyze your notes and dreams, CapyMind empowers you to reflect deeply on your mental well-being. With support for multiple languages and time zones, it seamlessly integrates into your daily routine, offering a personalized space for self-reflection, growth, and therapeutic support.
 
 # Screenshots
 
@@ -28,6 +28,7 @@ CapyMind is a personal mental health journal powered by AI, designed to help you
 /note - Add a new note
 /last - Get the last note
 /analysis - Get the analysis of the last notes
+/therapy - Start a real-time AI therapy session
 /language - Change the language
 /settings - Show the settings
 /help - Show the help
