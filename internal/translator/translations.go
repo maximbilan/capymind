@@ -89,7 +89,12 @@ const translationsJSON = `{
         "timezone_not_found": "The time zone for the city you entered could not be found. Please set up your time zone manually.",
         "is_this_your_time": "Is this your current time? 🕒\n",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "therapy_thinking_1": "I hear you. Let me think about this...",
+        "therapy_thinking_2": "Thank you for sharing that with me. I'm processing your thoughts...",
+        "therapy_thinking_3": "I understand. Give me a moment to reflect on what you've said...",
+        "therapy_thinking_4": "That's important. I'm taking time to consider your words carefully...",
+        "therapy_thinking_5": "I'm listening and thinking about your message..."
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -177,6 +182,11 @@ const translationsJSON = `{
         "timezone_not_found": "Часовий пояс для введеного вами міста не вдалося знайти. Будь ласка, встановіть свій часовий пояс вручну.",
         "is_this_your_time": "Це ваш поточний час? 🕒\n",
         "yes": "Так",
-        "no": "Ні"
+        "no": "Ні",
+        "therapy_thinking_1": "Я чую вас. Дозвольте мені подумати про це...",
+        "therapy_thinking_2": "Дякую, що поділилися цим зі мною. Я обробляю ваші думки...",
+        "therapy_thinking_3": "Я розумію. Дайте мені хвилинку, щоб обдумати те, що ви сказали...",
+        "therapy_thinking_4": "Це важливо. Я беру час, щоб ретельно обдумати ваші слова...",
+        "therapy_thinking_5": "Я слухаю та думаю про ваше повідомлення..."
     }
 }`

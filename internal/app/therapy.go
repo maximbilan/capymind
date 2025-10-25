@@ -61,7 +61,11 @@ func callTherapySessionEndpoint(text string, session *Session) *string {
 // Relay a user message to the therapy session backend and append the reply
 func relayTherapyMessage(text string, session *Session) {
 	//coverage:ignore
-	// Send immediate typing acknowledgement is already enabled via IsTyping
+	// Send immediate feedback message to let user know we're processing
+	thinkingMessageKey := getRandomThinkingMessage(session)
+	setOutputText(thinkingMessageKey, session)
+
+	// Send the actual request to the therapy endpoint
 	reply := callTherapySessionEndpoint(text, session)
 	if reply != nil && *reply != "" {
 		setOutputRawText(*reply, session)
@@ -248,6 +252,29 @@ func parseRunResponse(respStr string) *string {
 
 	// Fallback: return body as-is
 	return &respStr
+}
+
+// Get a random thinking message to show immediate feedback
+func getRandomThinkingMessage(session *Session) string {
+	thinkingMessages := []string{
+		"therapy_thinking_1",
+		"therapy_thinking_2",
+		"therapy_thinking_3",
+		"therapy_thinking_4",
+		"therapy_thinking_5",
+	}
+
+	// Use a simple hash of the user ID to get consistent randomness per user
+	userIDHash := 0
+	for _, char := range session.User.ID {
+		userIDHash += int(char)
+	}
+
+	// Add current time to make it more random
+	userIDHash += int(time.Now().Unix())
+
+	selectedIndex := userIDHash % len(thinkingMessages)
+	return thinkingMessages[selectedIndex]
 }
 
 // End the therapy session and notify the user
