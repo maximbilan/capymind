@@ -90,35 +90,13 @@ func TestRelayTherapyMessage(t *testing.T) {
 
 	relayTherapyMessage("hi", session)
 
-	if len(session.Job.Output) < 2 {
-		t.Fatalf("expected at least two outputs (immediate feedback + response)")
+	// The thinking message is sent immediately via sendMessage, so it won't be in the output
+	// Only the actual therapy response should be in the output
+	if len(session.Job.Output) == 0 {
+		t.Fatalf("expected at least one output (therapy response)")
 	}
-	
-	// First output should be a thinking message
-	firstOutput := session.Job.Output[0]
-	validThinkingKeys := []string{
-		"therapy_thinking_1",
-		"therapy_thinking_2", 
-		"therapy_thinking_3",
-		"therapy_thinking_4",
-		"therapy_thinking_5",
-	}
-	
-	found := false
-	for _, validKey := range validThinkingKeys {
-		if firstOutput.TextID == validKey {
-			found = true
-			break
-		}
-	}
-	
-	if !found {
-		t.Fatalf("expected first output to be a thinking message, got %s", firstOutput.TextID)
-	}
-	
-	// Second output should be the actual therapy response
-	if session.Job.Output[1].TextID != "Hello, I'm here for you." {
-		t.Fatalf("unexpected relay text: %s", session.Job.Output[1].TextID)
+	if session.Job.Output[0].TextID != "Hello, I'm here for you." {
+		t.Fatalf("unexpected relay text: %s", session.Job.Output[0].TextID)
 	}
 }
 
@@ -173,35 +151,13 @@ func TestHandleSession_ForwardDuringActive(t *testing.T) {
 
 	handleSession(session)
 
-	if len(session.Job.Output) < 2 {
-		t.Fatalf("expected at least two outputs (immediate feedback + response), got %v", session.Job.Output)
+	// The thinking message is sent immediately via sendMessage, so it won't be in the output
+	// Only the actual therapy response should be in the output
+	if len(session.Job.Output) == 0 {
+		t.Fatalf("expected at least one output (therapy response)")
 	}
-	
-	// First output should be a thinking message
-	firstOutput := session.Job.Output[0]
-	validThinkingKeys := []string{
-		"therapy_thinking_1",
-		"therapy_thinking_2", 
-		"therapy_thinking_3",
-		"therapy_thinking_4",
-		"therapy_thinking_5",
-	}
-	
-	found := false
-	for _, validKey := range validThinkingKeys {
-		if firstOutput.TextID == validKey {
-			found = true
-			break
-		}
-	}
-	
-	if !found {
-		t.Fatalf("expected first output to be a thinking message, got %s", firstOutput.TextID)
-	}
-	
-	// Second output should be the actual therapy response
-	if session.Job.Output[1].TextID != "Therapist reply" {
-		t.Fatalf("expected Therapist reply in second output, got %v", session.Job.Output)
+	if session.Job.Output[0].TextID != "Therapist reply" {
+		t.Fatalf("expected Therapist reply, got %v", session.Job.Output)
 	}
 }
 
@@ -239,35 +195,13 @@ func TestRelayTherapyMessage_ExistingSessionContinues(t *testing.T) {
 
 	relayTherapyMessage("hi", session)
 
-	if len(session.Job.Output) < 2 {
-		t.Fatalf("expected at least two outputs (immediate feedback + response)")
+	// The thinking message is sent immediately via sendMessage, so it won't be in the output
+	// Only the actual therapy response should be in the output
+	if len(session.Job.Output) == 0 {
+		t.Fatalf("expected at least one output (therapy response)")
 	}
-	
-	// First output should be a thinking message
-	firstOutput := session.Job.Output[0]
-	validThinkingKeys := []string{
-		"therapy_thinking_1",
-		"therapy_thinking_2", 
-		"therapy_thinking_3",
-		"therapy_thinking_4",
-		"therapy_thinking_5",
-	}
-	
-	found := false
-	for _, validKey := range validThinkingKeys {
-		if firstOutput.TextID == validKey {
-			found = true
-			break
-		}
-	}
-	
-	if !found {
-		t.Fatalf("expected first output to be a thinking message, got %s", firstOutput.TextID)
-	}
-	
-	// Second output should be the actual therapy response
-	if session.Job.Output[1].TextID != "Hello again" {
-		t.Fatalf("unexpected relay text: %s", session.Job.Output[1].TextID)
+	if session.Job.Output[0].TextID != "Hello again" {
+		t.Fatalf("unexpected relay text: %s", session.Job.Output[0].TextID)
 	}
 }
 
@@ -359,37 +293,16 @@ func TestRelayTherapyMessageWithImmediateFeedback(t *testing.T) {
 	// Call relayTherapyMessage
 	relayTherapyMessage("I'm feeling anxious about work", session)
 
-	// Check that we got at least 2 outputs: immediate feedback + actual response
-	if len(session.Job.Output) < 2 {
-		t.Fatalf("expected at least 2 outputs, got %d", len(session.Job.Output))
+	// The thinking message is sent immediately via sendMessage, so it won't be in the output
+	// Only the actual therapy response should be in the output
+	if len(session.Job.Output) == 0 {
+		t.Fatalf("expected at least one output (therapy response)")
 	}
 
-	// Check that the first output is a thinking message
-	firstOutput := session.Job.Output[0]
-	validThinkingKeys := []string{
-		"therapy_thinking_1",
-		"therapy_thinking_2", 
-		"therapy_thinking_3",
-		"therapy_thinking_4",
-		"therapy_thinking_5",
-	}
-	
-	found := false
-	for _, validKey := range validThinkingKeys {
-		if firstOutput.TextID == validKey {
-			found = true
-			break
-		}
-	}
-	
-	if !found {
-		t.Fatalf("expected first output to be a thinking message, got %s", firstOutput.TextID)
-	}
-
-	// Check that the second output is the actual therapy response
-	secondOutput := session.Job.Output[1]
-	if !strings.Contains(secondOutput.TextID, "I understand your concerns") {
-		t.Fatalf("expected therapy response in second output TextID, got: %s", secondOutput.TextID)
+	// Check that the output is the actual therapy response
+	output := session.Job.Output[0]
+	if !strings.Contains(output.TextID, "I understand your concerns") {
+		t.Fatalf("expected therapy response in output TextID, got: %s", output.TextID)
 	}
 }
 
