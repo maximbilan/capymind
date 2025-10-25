@@ -63,7 +63,7 @@ func relayTherapyMessage(text string, session *Session) {
 	//coverage:ignore
 	// Send immediate feedback message to let user know we're processing
 	thinkingMessageKey := getRandomThinkingMessage(session)
-	setOutputText(thinkingMessageKey, session)
+	sendMessage(thinkingMessageKey, session)
 
 	// Send the actual request to the therapy endpoint
 	reply := callTherapySessionEndpoint(text, session)
