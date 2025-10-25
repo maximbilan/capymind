@@ -11,7 +11,7 @@ const (
 	Note           Command = "/note"            // Add a new note
 	Last           Command = "/last"            // Get the last note
 	Analysis       Command = "/analysis"        // Get the analysis of the last notes
-	TherapySession Command = "/therapy_session" // Start a real-time therapy session
+	TherapySession Command = "/therapy" // Start a real-time therapy session
 	Language       Command = "/language"        // Change the language
 	Settings       Command = "/settings"        // Show the settings
 	Help           Command = "/help"            // Show the help
