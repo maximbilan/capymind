@@ -9,9 +9,9 @@ const translationsJSON = `{
         "start_note" : "Share your thoughts and feelings by entering them in the text field and sending them my way. Your personal reflections will be securely saved in your journal 👇",
         "finish_note" : "Your thoughts have been successfully saved. Thank you for trusting CapyMind. Remember, each note is a step forward on your journey to better mental well-being 🙂",
         "start_therapy_session": "Your therapist is here and ready to listen. Share what’s on your mind — I’m with you.",
-        "therapy_session_ended": "Your therapy session has ended. You can start a new one anytime with /therapy_session.",
+        "therapy_session_ended": "Your therapy session has ended. You can start a new one anytime with /therapy.",
         "start_therapy_session": "Your therapist is here and ready to listen. Share what’s on your mind — I’m with you.",
-        "therapy_session_ended": "Your therapy session has ended. You can start a new one anytime with /therapy_session.",
+        "therapy_session_ended": "Your therapy session has ended. You can start a new one anytime with /therapy.",
         "your_last_note": "Here’s your most recent note 👇\n\n",
         "no_notes": "You haven’t added any entries yet. Start by sharing your thoughts and feelings with CapyMind.",
         "commands_hint": "Here are the commands you can use to interact with CapyMind 👇\n\n/start Begin using the bot\n/note Make a journal entry\n/last View your most recent entry\n/analysis Receive an analysis of your journal\n/settings Settings\n/language Set your language preference\n/timezone Set your time zone\n/feedback Give feedback \n/help Get assistance with using CapyMind\n",
@@ -89,7 +89,12 @@ const translationsJSON = `{
         "timezone_not_found": "The time zone for the city you entered could not be found. Please set up your time zone manually.",
         "is_this_your_time": "Is this your current time? 🕒\n",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "therapy_thinking_1": "I hear you. Let me think about this...",
+        "therapy_thinking_2": "Thank you for sharing that with me. I'm processing your thoughts...",
+        "therapy_thinking_3": "I understand. Give me a moment to reflect on what you've said...",
+        "therapy_thinking_4": "That's important. I'm taking time to consider your words carefully...",
+        "therapy_thinking_5": "I'm listening and thinking about your message..."
     },
     "uk": {
         "welcome": "Ласкаво просимо до CapyMind 👋 Ваш особистий журнал для записів про психічне здоров'я тут, щоб допомогти вам на вашому шляху. Рефлексуйте над своїми думками та емоціями, використовуйте нагадування, щоб залишатися на шляху, та досліджуйте інсайти терапії, щоб поглибити свою самосвідомість.",
@@ -97,9 +102,9 @@ const translationsJSON = `{
         "start_note": "Поділіться своїми думками та почуттями, введіть їх у текстове поле та надішліть. Ваші особисті роздуми будуть безпечно збережені у вашому журналі 👇",
         "finish_note": "Ваші думки успішно збережені. Дякуємо вам за довіру CapyMind. Пам'ятайте, кожен запис - це крок вперед на вашому шляху до кращого психічного самопочуття 🙂",
         "start_therapy_session": "Терапевт поруч і готовий слухати. Поділіться тим, що на душі — я з вами.",
-        "therapy_session_ended": "Сесію терапії завершено. Ви можете розпочати нову командою /therapy_session.",
+        "therapy_session_ended": "Сесію терапії завершено. Ви можете розпочати нову командою /therapy.",
         "start_therapy_session": "Терапевт поруч і готовий слухати. Поділіться тим, що на душі — я з вами.",
-        "therapy_session_ended": "Сесію терапії завершено. Ви можете розпочати нову командою /therapy_session.",
+        "therapy_session_ended": "Сесію терапії завершено. Ви можете розпочати нову командою /therapy.",
         "your_last_note": "Ось ваш останній запис 👇\n\n",
         "no_notes": "Ви ще не додали жодних записів. Почніть, поділившись своїми думками та почуттями з CapyMind.",
         "commands_hint": "Ось команди, які ви можете використовувати для взаємодії з CapyMind 👇\n\n/start Почати використання бота\n/note Зробити запис у журнал\n/last Переглянути ваш останній запис\n/analysis Отримати аналіз вашого журналу\n/settings Налаштування\n/language Встановити мову\n/timezone Встановити ваш часовий пояс\n/feedback Залишити відгук\n/help Отримати допомогу з використання CapyMind\n",
@@ -177,6 +182,11 @@ const translationsJSON = `{
         "timezone_not_found": "Часовий пояс для введеного вами міста не вдалося знайти. Будь ласка, встановіть свій часовий пояс вручну.",
         "is_this_your_time": "Це ваш поточний час? 🕒\n",
         "yes": "Так",
-        "no": "Ні"
+        "no": "Ні",
+        "therapy_thinking_1": "Я чую вас. Дозвольте мені подумати про це...",
+        "therapy_thinking_2": "Дякую, що поділилися цим зі мною. Я обробляю ваші думки...",
+        "therapy_thinking_3": "Я розумію. Дайте мені хвилинку, щоб обдумати те, що ви сказали...",
+        "therapy_thinking_4": "Це важливо. Я беру час, щоб ретельно обдумати ваші слова...",
+        "therapy_thinking_5": "Я слухаю та думаю про ваше повідомлення..."
     }
 }`

@@ -75,6 +75,7 @@ COMMANDS_EN='[
   { "command": "note", "description": "Make a note" },
   { "command": "last", "description": "Get last note" },
   { "command": "analysis", "description": "Get an analysis" },
+  { "command": "therapy", "description": "Start therapy session" },
   { "command": "settings", "description": "Settings" },
   { "command": "support", "description": "Send feedback" },
   { "command": "help", "description": "Help" }
@@ -98,6 +99,7 @@ COMMANDS_UK='[
   { "command": "note", "description": "Зробити запис" },
   { "command": "last", "description": "Останній запис" },
   { "command": "analysis", "description": "Зробити аналіз" },
+  { "command": "therapy", "description": "Розпочати сесію терапії" },
   { "command": "settings", "description": "Налаштування" },
   { "command": "support", "description": "Надіслати відгук" },
   { "command": "help", "description": "Допомога" }
