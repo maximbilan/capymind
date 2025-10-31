@@ -93,3 +93,7 @@ CapyMind is a personal mental health journal powered by AI, designed to help you
 # Scripts
 
 More information <a href="./docs/SCRIPTS.md">here</a>
+
+# Architecture
+
+![CapyMind Arhitecture](https://github.com/user-attachments/assets/234777c1-47e9-49f4-8d6c-278555384da6)
