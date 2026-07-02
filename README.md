@@ -15,10 +15,6 @@ CapyMind is a personal mental health journal powered by AI, designed to help you
   </tr>
 </table>
 
-# Reference
-
-<a href="t.me/capymind_bot">capymind</a> is available as a Telegram bot
-
 # Commands
 
 ## User commands
